@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Build service for React app
+  react-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./build:/app/build
+    working_dir: /app
+    command: ["npm", "run", "build"]
+
+  # Nginx service to serve the built React app
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - react-app
+    volumes:
+      - ./build:/usr/share/nginx/html
+    ports:
+      - "80:80"
+    restart: always
