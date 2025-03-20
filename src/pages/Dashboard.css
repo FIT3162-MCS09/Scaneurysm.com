@@ -1,0 +1,43 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+    height: 100vh;
+    background: linear-gradient(to right, #1C3334, #376E6F);
+    color: white;
+    font-family: "Outfit", sans-serif;
+    text-align: center;
+}
+
+/* Ensure the heading is centered and white */
+h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: white; /* Ensure text remains white */
+}
+
+/* Center and enlarge buttons */
+.dashboard-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-buttons button {
+    background-color: white;
+    color: #1C3334;
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 500px; /* Make buttons bigger */
+}
+
+.dashboard-buttons button:hover {
+    background-color: #f0f0f0;
+}

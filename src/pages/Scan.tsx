@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
+import React from "react";
+import "./Scan.css"; // Creating this next
 
-const Upload: React.FC = () => {
-    const [file, setFile] = useState<File | null>(null);
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setFile(e.target.files[0]);
-        }
-    };
-
-    const handleUpload = () => {
-        // Handle file upload logic here
-    };
-
-    return (
-        <div className="upload-page">
-            <h2>Upload MRI/CT Scan</h2>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
-        </div>
-    );
+const Scan = () => {
+  return (
+    <div className="dashboard-container">
+      <div className="sidebar">
+        <button className="active">Patient Records</button>
+        <button>Upload Scan</button>
+      </div>
+      <div className="main-content">
+        <h1>Brain Aneurysm Detection</h1>
+        <input type="text" placeholder="Enter Patient ID" />
+        <button>Search</button>
+      </div>
+    </div>
+  );
 };
 
-export default Upload;
+export default Scan;

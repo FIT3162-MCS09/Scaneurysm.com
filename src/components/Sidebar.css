@@ -1,0 +1,34 @@
+.sidebar {
+    background: #376E6F;
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebar button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 15px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.sidebar button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar .active {
+    background: white;
+    color: #376E6F;
+    font-weight: bold;
+    border-radius: 5px;
+}
