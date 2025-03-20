@@ -1,31 +1,29 @@
-import React, { useState } from 'react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
-const Login: React.FC = () => {
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+const Login = () => {
+  const navigate = useNavigate(); // Use navigate for redirection
 
-    const handleLogin = () => {
-        // Handle login logic here
-    };
-
-    return (
-        <div className="login-page">
-            <h2>Login</h2>
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleLogin}>Login</button>
+  return (
+    <div className="login-container">
+      <div className="left-section">
+        <h1>Check your scans!</h1>
+      </div>
+      <div className="right-section">
+        <div className="login-box">
+          <h2>Login</h2>
+          <input type="email" placeholder="Email Address" />
+          <input type="password" placeholder="Password" />
+          <div className="login-actions">
+            <a href="#">Forgot Password?</a>
+            <button onClick={() => navigate("/dashboard")}>Sign In</button>
+          </div>
+          <p>Don’t have an account? <a href="#">Sign up</a></p>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Login;

@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import "./Upload.css";
 
-const Upload: React.FC = () => {
-    const [file, setFile] = useState<File | null>(null);
+const Upload = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setFile(e.target.files[0]);
-        }
-    };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
 
-    const handleUpload = () => {
-        // Handle file upload logic here
-    };
-
-    return (
-        <div className="upload-page">
-            <h2>Upload MRI/CT Scan</h2>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
-        </div>
-    );
+  return (
+    <div className="upload-page">
+      <Sidebar />
+      <div className="upload-content">
+        <h1>Upload Scan</h1>
+        <input type="file" onChange={handleFileChange} />
+        {selectedFile && <p>Selected File: {selectedFile.name}</p>}
+        <button>Analyze</button>
+      </div>
+    </div>
+  );
 };
 
 export default Upload;

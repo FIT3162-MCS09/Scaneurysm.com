@@ -1,14 +1,27 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "./Sidebar.css"; // Styling for sidebar
 
-const Sidebar: React.FC = () => (
+const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  return (
     <div className="sidebar">
-        <Link to="/upload">Upload MRI/CT Scan</Link>
-        <Link to="/records">Patient Records</Link>
-        <Link to="/analyses">Previous Analyses</Link>
-        <Link to="/settings">Settings</Link>
-        <Link to="/help">Help</Link>
+      <button 
+        className={location.pathname === "/upload" ? "active" : ""} 
+        onClick={() => navigate("/upload")}
+      >
+        Upload Scan
+      </button>
+      <button 
+        className={location.pathname === "/patient-records" ? "active" : ""} 
+        onClick={() => navigate("/patient-records")}
+      >
+        Patient Records
+      </button>
     </div>
-);
+  );
+};
 
 export default Sidebar;
