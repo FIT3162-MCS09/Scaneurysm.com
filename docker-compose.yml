@@ -1,23 +1,22 @@
 version: '3.8'
 
 services:
-  # Build service for React app
-  react-app:
+  # Frontend service (React)
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - ./build:/app/build
-    working_dir: /app
-    command: ["npm", "run", "build"]
-
-  # Nginx service to serve the built React app
-  nginx:
-    image: nginx:alpine
-    depends_on:
-      - react-app
-    volumes:
-      - ./build:/usr/share/nginx/html
     ports:
       - "80:80"
-    restart: always
+    volumes:
+      # For development mode hot-reloading (comment out in production)
+      - ./src:/app/src
+      - ./public:/app/public
+    environment:
+      # Set to production or development as needed
+      - NODE_ENV=production
+      # If you have a separate API, set the URL here
+      - REACT_APP_API_URL=http://mcs09-load-balancer-1014002416.ap-southeast-1.elb.amazonaws.com
+    restart: unless-stopped
+    # Use this for development mode instead
+    # command: npm start

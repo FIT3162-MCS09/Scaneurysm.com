@@ -1,4 +1,17 @@
-FROM docker/whalesay:latest
-LABEL Name=fit3162mcs09frontend Version=0.0.1
-RUN apt-get -y update && apt-get install -y fortunes
-CMD ["sh", "-c", "/usr/games/fortune -a | cowsay"]
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Install serve to run the production build
+RUN npm install -g serve
+
+RUN npm install -g axios
+
+# Install jwt-decode package for JWT authentication
+RUN npm install -g jwt-decode
+
+# Start server
+CMD ["serve", "-s", "build", "-l", "80"]
