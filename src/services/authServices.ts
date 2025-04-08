@@ -173,4 +173,5 @@ const doctorService = {
   },
 };
 
+// Use named exports instead of default exports
 export { patientService, doctorService };

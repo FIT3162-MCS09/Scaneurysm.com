@@ -1,13 +1,14 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosError } from 'axios';
 
-console.log("Base API URL:", process.env.REACT_APP_API_URL);
-
+// Create an axios instance with base configuration
 const API: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
   }
 });
+
+
 
 // Skip token for public routes
 const publicRoutes = ["/auth/signup/doctor/", "/auth/signup/patient/", "/auth/signin/"];
