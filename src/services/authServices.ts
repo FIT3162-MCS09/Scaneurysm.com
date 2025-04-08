@@ -1,5 +1,6 @@
 import API from './apiClient';
 
+// Interfaces for patient registration
 interface UserData {
   username: string;
   password: string;
@@ -50,10 +51,38 @@ const patientService = {
     }
   },
 
-  // Add other patient-specific methods here
+  // Login for patient
+  login: async (username: string, password: string) => {
+    try {
+      const formData = new URLSearchParams();
+      formData.append("username", username);
+      formData.append("password", password);
+
+      const response = await API.post('/auth/signin/', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }
+      });
+
+      localStorage.setItem('access_token', response.data.access);
+      localStorage.setItem('refresh_token', response.data.refresh);
+      localStorage.setItem('user_info', JSON.stringify({
+        id: response.data.user_id,
+        username: response.data.username,
+        email: response.data.email,
+        role: response.data.role
+      }));
+
+      return response.data;
+    } catch (error: any) {
+      throw error.response?.data || { message: 'Login failed' };
+    }
+  },
+
+  // Add other patient-specific methods here if needed
 };
 
-// Interface for doctor registration data
+// Interfaces for doctor registration
 interface DoctorSignupData {
   username: string;
   email: string;
@@ -64,7 +93,6 @@ interface DoctorSignupData {
   specialty: string;
 }
 
-// Interface for API response
 interface DoctorSignupResponse {
   id: string;
   user_id: string;
@@ -78,7 +106,6 @@ interface DoctorSignupResponse {
   refresh: string;
 }
 
-// Interface for user info to store in localStorage
 interface DoctorUserInfo {
   id: string;
   username: string;
@@ -94,7 +121,6 @@ const doctorService = {
     try {
       const response = await API.post<DoctorSignupResponse>('/auth/signup/patient/', doctorData);
 
-      // Store tokens after successful registration
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
 
@@ -114,7 +140,6 @@ const doctorService = {
     }
   },
 
-  // Get doctor profile
   getProfile: async (doctorId: string) => {
     try {
       const response = await API.get(`/doctors/${doctorId}/`);
@@ -124,7 +149,6 @@ const doctorService = {
     }
   },
 
-  // Update doctor profile
   updateProfile: async (doctorId: string, profileData: Partial<DoctorSignupData>) => {
     try {
       const response = await API.patch(`/doctors/${doctorId}/`, profileData);
@@ -135,5 +159,5 @@ const doctorService = {
   },
 };
 
-// Use named exports instead of default exports
+// Export both
 export { patientService, doctorService };
