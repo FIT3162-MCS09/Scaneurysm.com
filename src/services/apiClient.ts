@@ -3,6 +3,7 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosError } from 'ax
 // Create an axios instance with base configuration
 const API: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
+  withCredentials: true, // Add this for CORS with credentials
   headers: {
     'Content-Type': 'application/json',
   }
