@@ -5,11 +5,12 @@ interface UserData {
   username: string;
   password: string;
   email: string;
-  firstName?: string;
-  lastName?: string;
-  dateOfBirth?: string;
-  phoneNumber?: string;
-  [key: string]: any;
+  first_name: string;
+  last_name: string;
+  medical_record_number: string;
+  birth_date: string;
+  sex: string;
+  primary_doctor: string;
 }
 
 interface RegisterResponse {
@@ -29,11 +30,19 @@ interface UserInfo {
 }
 
 const patientService = {
-  // Register as patient
   register: async (userData: UserData): Promise<RegisterResponse> => {
     try {
-      const response = await API.post<RegisterResponse>('/auth/signup/patient/', userData);
-      // Store tokens after successful registration
+      const formData = new URLSearchParams();
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      const response = await API.post<RegisterResponse>('/auth/signup/patient/', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }
+      });
+
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
 
@@ -51,7 +60,6 @@ const patientService = {
     }
   },
 
-  // Login for patient
   login: async (username: string, password: string) => {
     try {
       const formData = new URLSearchParams();
@@ -78,8 +86,6 @@ const patientService = {
       throw error.response?.data || { message: 'Login failed' };
     }
   },
-
-  // Add other patient-specific methods here if needed
 };
 
 // Interfaces for doctor registration
@@ -116,10 +122,18 @@ interface DoctorUserInfo {
 }
 
 const doctorService = {
-  // Register as doctor
   signup: async (doctorData: DoctorSignupData): Promise<DoctorSignupResponse> => {
     try {
-      const response = await API.post<DoctorSignupResponse>('/auth/signup/patient/', doctorData);
+      const formData = new URLSearchParams();
+      Object.entries(doctorData).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      const response = await API.post<DoctorSignupResponse>('/auth/signup/doctor/', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }
+      });
 
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
@@ -159,5 +173,4 @@ const doctorService = {
   },
 };
 
-// Export both
 export { patientService, doctorService };

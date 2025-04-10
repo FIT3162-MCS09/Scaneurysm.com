@@ -14,7 +14,9 @@
     font-size: 2.5rem;
     font-weight: bold;
     text-align: left;
+    margin-top: -100px; /* 🆕 Moves the heading higher */
 }
+
 
 .right-section {
     flex: 1;
@@ -86,3 +88,19 @@
     text-decoration: none;
     font-weight: bold;
 }
+
+.login-box-select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Arial", sans-serif;
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
