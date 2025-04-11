@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { patientService } from "../services/authServices";
 
-
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -26,7 +25,10 @@ const Login = () => {
       setError(err.message || "Login failed. Please try again.");
     }
   };
-  
+
+  const goToSignup = () => {
+    navigate("/signup");
+  };
 
   return (
     <div className="login-container">
@@ -53,7 +55,11 @@ const Login = () => {
             <a href="#">Forgot Password?</a>
           </div>
           {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-          <p>Don’t have an account? <a href="#">Sign up</a></p>
+
+          <p>Don’t have an account?
+            <a href="/signup/doctor"> Doctor Sign Up</a> or
+            <a href="/signup/patient"> Patient Sign Up</a>
+          </p>
         </div>
       </div>
     </div>
