@@ -60,6 +60,7 @@ const patientService = {
     }
   },
 
+  // Login for patient
   login: async (username: string, password: string) => {
     try {
       const formData = new URLSearchParams();
@@ -86,6 +87,9 @@ const patientService = {
       throw error.response?.data || { message: 'Login failed' };
     }
   },
+
+  // Add other patient-specific methods here if needed
+
 };
 
 // Interfaces for doctor registration
@@ -173,5 +177,7 @@ const doctorService = {
   },
 };
 
-// Use named exports instead of default exports
+
+// Export both
+
 export { patientService, doctorService };
