@@ -56,8 +56,8 @@ const Login = () => {
           </div>
           {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
           <p>Don’t have an account?
-            <a href="/signup/doctor"> Doctor Sign up</a> or
-            <a href="/signup/patient"> Patient Sign up</a>
+            <a href="/signup/doctor"> Doctor Sign Up</a> or
+            <a href="/signup/patient"> Patient Sign Up</a>
           </p>
         </div>
       </div>
