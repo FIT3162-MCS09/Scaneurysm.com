@@ -1,6 +1,6 @@
+// Updated authServices.ts
 import API from './apiClient';
 
-// Interfaces for patient registration
 interface UserData {
   username: string;
   password: string;
@@ -46,21 +46,14 @@ const patientService = {
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
 
-      const userInfo: UserInfo = {
-        id: response.data.id,
-        username: response.data.username,
-        email: response.data.email,
-        role: 'patient',
-      };
+      await authService.fetchUserProfile();
 
-      localStorage.setItem('user_info', JSON.stringify(userInfo));
       return response.data;
     } catch (error: any) {
       throw error.response?.data || { message: 'Registration failed' };
     }
   },
 
-  // Login for patient
   login: async (username: string, password: string) => {
     try {
       const formData = new URLSearchParams();
@@ -75,24 +68,16 @@ const patientService = {
 
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
-      localStorage.setItem('user_info', JSON.stringify({
-        id: response.data.user_id,
-        username: response.data.username,
-        email: response.data.email,
-        role: response.data.role
-      }));
+
+      await authService.fetchUserProfile();
 
       return response.data;
     } catch (error: any) {
       throw error.response?.data || { message: 'Login failed' };
     }
   },
-
-  // Add other patient-specific methods here if needed
-
 };
 
-// Interfaces for doctor registration
 interface DoctorSignupData {
   username: string;
   email: string;
@@ -142,16 +127,8 @@ const doctorService = {
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
 
-      const userInfo: DoctorUserInfo = {
-        id: response.data.user_id,
-        username: response.data.username,
-        email: response.data.email,
-        role: 'doctor',
-        first_name: response.data.first_name,
-        last_name: response.data.last_name,
-      };
+      await authService.fetchUserProfile();
 
-      localStorage.setItem('user_info', JSON.stringify(userInfo));
       return response.data;
     } catch (error: any) {
       throw error.response?.data || { message: 'Doctor registration failed' };
@@ -177,7 +154,25 @@ const doctorService = {
   },
 };
 
+const authService = {
+  fetchUserProfile: async () => {
+    try {
+      const res = await API.get('/auth/profile/');
 
-// Export both
+      const userInfo: UserInfo = {
+        id: res.data.id,
+        username: res.data.username,
+        email: res.data.email,
+        role: res.data.role,
+      };
 
-export { patientService, doctorService };
+      localStorage.setItem('user_info', JSON.stringify(userInfo));
+      return userInfo;
+    } catch (err: any) {
+      console.error("Failed to fetch user profile:", err);
+      throw err.response?.data || { message: 'Failed to fetch user profile' };
+    }
+  }
+};
+
+export { patientService, doctorService, authService };
