@@ -5,7 +5,10 @@ import Upload from "./pages/Upload";
 import PatientRecords from "./pages/PatientRecords";
 import Dashboard from "./pages/Dashboard";
 import DoctorSignup from "./pages/DoctorSignup";
-import PatientSignup from "./pages/PatientSignup"; // ✅ Add this line
+import PatientSignup from "./pages/PatientSignup";
+import PatientProfile from "./pages/PatientProfile";
+import MyRecords from "./pages/MyRecords";
+
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
         <Route path="/patient-records" element={<PatientRecords />} />
         <Route path="/signup/doctor" element={<DoctorSignup />} />
         <Route path="/signup/patient" element={<PatientSignup />} />
+        <Route path="/profile" element={<PatientProfile />} />
+        <Route path="/my-records" element={<MyRecords />} />
+
       </Routes>
     </Router>
   );

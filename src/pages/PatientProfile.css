@@ -1,0 +1,59 @@
+.patient-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(to right, #1C3334, #376E6F);
+    color: white;
+    min-height: 100vh;
+    padding: 40px;
+    font-family: "Outfit", sans-serif;
+  }
+  
+  .patient-profile-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+  }
+  
+  .patient-info-box {
+    background: white;
+    color: #1C3334;
+    padding: 30px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+  }
+  
+  .patient-info-box p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+  }
+  
+  .records-list {
+    background: white;
+    color: #1C3334;
+    padding: 25px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .records-list h2 {
+    margin-bottom: 20px;
+  }
+  
+  .record-card {
+    background-color: #f5f5f5;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .record-card:hover {
+    background-color: #e0e0e0;
+  }
+  
