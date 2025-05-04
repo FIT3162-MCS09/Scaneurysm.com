@@ -1,42 +1,95 @@
-import React, { useEffect, useState } from "react";
-import SidebarDoctor from "../components/SidebarDoctor";
-import SidebarPatient from "../components/SidebarPatient";
-import API from "../services/apiClient";
-import "./Upload.css";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Scan.css";
 
 const Upload = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [role, setRole] = useState<string>("");
+  const [file,    setFile]   = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate  = useNavigate();
 
-  useEffect(() => {
-    const fetchRole = async () => {
-      try {
-        const res = await API.get("/auth/profile/");
-        setRole(res.data.role);
-      } catch (err) {
-        console.error("Error fetching user role", err);
-      }
-    };
+  const API_URL   = process.env.REACT_APP_API_URL!;
+  const user      = JSON.parse(localStorage.getItem("user_info") || "{}");
+  const accessTok = localStorage.getItem("access_token");
 
-    fetchRole();
-  }, []);
+  /* ------------ helpers ------------------------------------------------ */
+  const pickFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (f) setFile(f);
+  };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
+  const analyze = async () => {
+    if (!file || !accessTok) {
+      alert("Please upload a file and make sure you’re logged in.");
+      return;
+    }
+    setLoading(true);
+
+    try {
+      /* STEP 1 – upload -------------------------------------------------- */
+      const fd = new FormData();
+      fd.append("file", file);
+      console.log("Uploading image …");
+
+      const uploadRes = await axios.post(`${API_URL}/files/upload/`, fd, {
+        headers: { Authorization: `Bearer ${accessTok}` }, // let axios set multipart headers
+      });
+
+      const imageUrl: string = uploadRes.data.image_url ?? uploadRes.data.file;
+      if (!imageUrl) throw new Error("Upload succeeded but no image URL returned");
+
+      /* STEP 2 – prediction --------------------------------------------- */
+      console.log("Requesting AI prediction …");
+      const predRes = await axios.post(
+        `${API_URL}/analysis/predictions/create/`,
+        { image_url: imageUrl, include_shap: false },
+        { headers: { Authorization: `Bearer ${accessTok}` } },
+      );
+
+      const id = predRes.data.id;
+      if (!id) throw new Error("Prediction succeeded but no id returned");
+
+      /* STEP 3 – go to results ------------------------------------------ */
+      navigate(`/result/${id}`);
+    } catch (err: any) {
+      console.error("Upload / prediction error:", err.response ?? err);
+      alert(
+        err.response?.data?.detail ??
+        err.message ??
+        "Something went wrong during upload or analysis."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
-  const Sidebar = role === "doctor" ? SidebarDoctor : SidebarPatient;
-
+  /* ------------ UI ----------------------------------------------------- */
   return (
-    <div className="upload-page">
-      <Sidebar />
-      <div className="upload-content">
+    <div className="dashboard-container">
+      <div className="sidebar">
+        <button className="active">Upload Scan</button>
+        <button>Patient Records</button>
+      </div>
+
+      <div className="main-content">
         <h1>Upload Scan</h1>
-        <input type="file" onChange={handleFileChange} />
-        {selectedFile && <p>Selected File: {selectedFile.name}</p>}
-        <button>Analyze</button>
+
+        <input type="file" accept="image/*" onChange={pickFile} />
+        {file && (
+          <p style={{ marginTop: 10 }}>
+            Selected file:&nbsp;<strong>{file.name}</strong>
+          </p>
+        )}
+
+        <button onClick={analyze} disabled={!file || loading}>
+          {loading ? "Analyzing…" : "Analyze"}
+        </button>
+
+        {loading && (
+          <p style={{ marginTop: 20, color: "#1C3334", fontWeight: "bold" }}>
+            Please wait – this may take up to a minute…
+          </p>
+        )}
       </div>
     </div>
   );

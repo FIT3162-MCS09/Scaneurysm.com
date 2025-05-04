@@ -1,0 +1,136 @@
+/* Result Page Styling */
+.result-container {
+    display: flex;
+    height: 100vh;
+    font-family: "Outfit", sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  .sidebar {
+    background: #376E6F;
+    width: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 15px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .sidebar .active {
+    background: white;
+    color: #376E6F;
+    border-radius: 5px;
+  }
+  
+  .result-main {
+    flex: 1;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    overflow-y: auto;
+  }
+  
+  .result-main h1 {
+    color: #1C3334;
+    text-align: center;
+  }
+  
+  .result-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  
+  .patient-info,
+  .image-section,
+  .analysis-summary {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    flex: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .patient-info h2,
+  .analysis-summary h2 {
+    margin-bottom: 15px;
+    color: #1C3334;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+  }
+  
+  .patient-info p,
+  .analysis-summary p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .image-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .image-section img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .notes-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .notes-section textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .action-buttons button {
+    background-color: #1C3334;
+    color: white;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .action-buttons button:hover {
+    background-color: #2a4a4b;
+  }
+  

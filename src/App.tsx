@@ -8,7 +8,8 @@ import DoctorSignup from "./pages/DoctorSignup";
 import PatientSignup from "./pages/PatientSignup";
 import PatientProfile from "./pages/PatientProfile";
 import MyRecords from "./pages/MyRecords";
-
+import AboutAneurysm from "./pages/AboutAneurysm";
+import Result from "./pages/Result";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         <Route path="/signup/patient" element={<PatientSignup />} />
         <Route path="/profile" element={<PatientProfile />} />
         <Route path="/my-records" element={<MyRecords />} />
+        <Route path="/about" element={<AboutAneurysm />} />
+        <Route path="/result/:id" element={<Result />} />
+
 
       </Routes>
     </Router>

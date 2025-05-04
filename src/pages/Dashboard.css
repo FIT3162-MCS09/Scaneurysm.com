@@ -1,43 +1,122 @@
-.dashboard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: top;
-    height: 100vh;
-    background: linear-gradient(to right, #1C3334, #376E6F);
-    color: white;
-    font-family: "Outfit", sans-serif;
-    text-align: center;
+/* DASHBOARD STYLING */
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(to right, #1C3334, #376E6F);
+  color: white;
+  font-family: "Outfit", sans-serif;
 }
 
-/* Ensure the heading is centered and white */
-h1 {
-    font-size: 4rem;
-    font-weight: bold;
-    margin-bottom: 40px;
-    color: white; /* Ensure text remains white */
+/* Header with logo only */
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px 20px;
+  position: relative;
 }
 
-/* Center and enlarge buttons */
+/* Logo styling */
+.dashboard-logo {
+  width: 650px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0px;
+}
+
+/* Add separator line */
+.dashboard-header::after {
+  content: "";
+  margin-top: 20px;
+  width: 80%;
+  max-width: 1400px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Buttons container */
+.dashboard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 20px;
+}
+
+/* Buttons layout */
 .dashboard-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
 }
 
+/* Button styling */
 .dashboard-buttons button {
-    background-color: white;
-    color: #1C3334;
-    border: none;
-    padding: 20px 40px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-    width: 500px; /* Make buttons bigger */
+  background-color: white;
+  color: #1C3334;
+  border: none;
+  padding: 30px 150px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 220px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
 }
 
 .dashboard-buttons button:hover {
-    background-color: #f0f0f0;
+  background-color: #f1f1f1;
+  transform: translateY(-3px);
+}
+
+/* FOOTER STYLING */
+.dashboard-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #1C3334;
+  color: white;
+  padding: 30px 50px;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+.footer-left, .footer-center, .footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.footer-left a, .footer-right a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-left a:hover, .footer-right a:hover {
+  color: #ccc;
+}
+
+.footer-center p, .footer-right p {
+  margin: 4px 0;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  font-size: 1.2rem;
+}
+
+.social-icons i {
+  color: white;
+}
+
+.social-icons i:hover {
+  color: #ccc;
 }
