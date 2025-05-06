@@ -9,7 +9,7 @@ import PatientSignup from "./pages/PatientSignup";
 import PatientProfile from "./pages/PatientProfile";
 import MyRecords from "./pages/MyRecords";
 import AboutAneurysm from "./pages/AboutAneurysm";
-import Result from "./pages/Result";
+import ResultList from "./pages/Result";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
         <Route path="/profile" element={<PatientProfile />} />
         <Route path="/my-records" element={<MyRecords />} />
         <Route path="/about" element={<AboutAneurysm />} />
-        <Route path="/result/:id" element={<Result />} />
+        <Route path="/result/" element={<ResultList />} />
 
 
       </Routes>

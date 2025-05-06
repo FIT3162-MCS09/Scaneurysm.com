@@ -1,85 +1,132 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import predictionServices from "../services/predictionServices";
 import "./Result.css";
+import SidebarPatient from "../components/SidebarPatient";
 
 const Result = () => {
-  const { predictionId } = useParams();
-  const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+    const [results, setResults] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!predictionId) {
-      setError("Missing prediction ID");
-      setLoading(false);
-      return;
-    }
+    useEffect(() => {
+        const loadResults = async () => {
+            try {
+                const data = await predictionServices.getPredictionDetails();
+                // @ts-ignore
+                setResults(data);
+            } catch (err: any) {
+                setError(err.message || "Failed to get results");
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const loadResult = async () => {
-      try {
-        const data = await predictionServices.pollUntilComplete(predictionId);
-        setResult(data);
-      } catch (err: any) {
-        setError(err.message || "Failed to get results");
-      } finally {
-        setLoading(false);
-      }
-    };
+        loadResults();
+    }, []);
 
-    loadResult();
-  }, [predictionId]);
+    if (loading)
+        return (
+            <div className="loading">
+                <div className="spinner"></div>
+                <p>Analyzing your brain scans...</p>
+                <p>This may take a few minutes</p>
+            </div>
+        );
 
-  if (loading) return (
-    <div className="loading">
-      <div className="spinner"></div>
-      <p>Analyzing your brain scan...</p>
-      <p>This may take a few minutes</p>
-    </div>
-  );
+    if (error)
+        return (
+            <div className="error">
+                <h2>Error</h2>
+                <p>{error}</p>
+                <button onClick={() => navigate("/upload")}>Try Again</button>
+            </div>
+        );
 
-  if (error) return (
-    <div className="error">
-      <h2>Error</h2>
-      <p>{error}</p>
-      <button onClick={() => navigate("/upload")}>Try Again</button>
-    </div>
-  );
+    return (
+        <div className="result-container">
+            <SidebarPatient />
+            <h1>Analysis Results</h1>
 
-  return (
-    <div className="result-container">
-      <h1>Analysis Results</h1>
-      
-      <div className="image-section">
-        <h3>Original Scan</h3>
-        <img src={result.image_url} alt="Brain scan" />
-      </div>
+            {results.map((result) => (
+                <div key={result.id} className="result-card">
+                    <h2>Result ID: {result.id}</h2>
 
-      <div className="prediction-section">
-        <h3>AI Prediction</h3>
-        <div className="prediction-card">
-          <p className={result.prediction?.has_aneurysm ? "positive" : "negative"}>
-            {result.prediction?.has_aneurysm ? "ANEURYSM DETECTED" : "No aneurysm detected"}
-          </p>
-          {result.prediction?.confidence && (
-            <p>Confidence: {(result.prediction.confidence * 100).toFixed(1)}%</p>
-          )}
+                    {/* Prediction Section */}
+                    <div className="prediction-section">
+                        <h3>AI Prediction</h3>
+                        <div className="prediction-card">
+                            <p className={result.prediction?.prediction === "aneurysm" ? "positive" : "negative"}>
+                                {result.prediction?.prediction === "aneurysm"
+                                    ? "ANEURYSM DETECTED"
+                                    : "No aneurysm detected"}
+                            </p>
+                            {result.prediction?.confidence && (
+                                <p>Confidence: {(result.prediction.confidence * 100).toFixed(1)}%</p>
+                            )}
+                            {result.prediction?.probabilities && (
+                                <div>
+                                    <p>Aneurysm Probability: {(result.prediction.probabilities.aneurysm * 100).toFixed(1)}%</p>
+                                    <p>Non-Aneurysm Probability: {(result.prediction.probabilities.non_aneurysm * 100).toFixed(1)}%</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* SHAP Explanation Section */}
+                    {result.shap_explanation && (
+                        <div className="explanation-section">
+                            <h3>AI Explanation</h3>
+                            {result.shap_explanation.status === "processing" ? (
+                                <p>SHAP explanation is still being processed. Please check back later.</p>
+                            ) : (
+                                <div className="shap-visualization">
+                                    <h4>Quadrant Scores:</h4>
+                                    <ul>
+                                        {Object.entries(result.shap_explanation.analysis.quadrant_scores).map(
+                                            ([key, value]) => (
+                                                <li key={key}>
+                                                    <span>{`${key}: ${value}`}</span>
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                    <h4>Stability Score:</h4>
+                                    <p>{result.shap_explanation.analysis.stability_score}</p>
+                                    <h4>Importance Score:</h4>
+                                    <p>{result.shap_explanation.analysis.importance_score}</p>
+                                    <h4>Most Important Quadrant:</h4>
+                                    <p>{result.shap_explanation.analysis.most_important_quadrant}</p>
+                                    {result.shap_explanation.visualization?.url && (
+                                        <div>
+                                            <h4>Visualization:</h4>
+                                            <img
+                                                className="visualization-image"
+                                                src={result.shap_explanation.visualization.url}
+                                                alt="SHAP Analysis Visualization"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Metadata Section */}
+                    {result.prediction?.metadata && (
+                        <div className="metadata-section">
+                            <h3>Metadata</h3>
+                            <p>Timestamp: {result.prediction.metadata.timestamp}</p>
+                            <p>PyTorch Version: {result.prediction.metadata.pytorch_version}</p>
+                        </div>
+                    )}
+                </div>
+            ))}
+
+            <button onClick={() => navigate("/upload")}>Analyze Another Scan</button>
         </div>
-      </div>
-
-      {result.shap_explanation && (
-        <div className="explanation-section">
-          <h3>AI Explanation</h3>
-          <div className="shap-visualization">
-            <pre>{JSON.stringify(result.shap_explanation, null, 2)}</pre>
-          </div>
-        </div>
-      )}
-
-      <button onClick={() => navigate("/upload")}>Analyze Another Scan</button>
-    </div>
-  );
+    );
 };
 
 export default Result;
