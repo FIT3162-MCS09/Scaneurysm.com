@@ -1,73 +1,41 @@
 import API from './apiClient';
 
-interface FileUploadRequest {
-  user_id: number;
-  file: string | File;
-}
-
-interface FileUploadResponse {
-  message: string;
-}
-
-interface FileViewResponse {
-  file_urls: string[];
-}
-
 const fileServices = {
-  /**
-   * Upload a file to the server
-   * @param fileData - Object containing user_id and file 
-   * @returns Promise with success message on successful upload
-   */
-  uploadFile: async (fileData: FileUploadRequest): Promise<FileUploadResponse> => {
-    try {
-      if (!(fileData.file instanceof File)) {
-        throw new Error('Invalid file type. Expected a File object.');
-      }
+  async uploadFile(user_id: string, file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('user_id', user_id);
+    formData.append('file', file);
 
-      const requestData = new FormData();
-      requestData.append('user_id', fileData.user_id.toString());
-      requestData.append('file', fileData.file);
+    const response = await API.post('/files/upload/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
-      const response = await API.post<FileUploadResponse>('/files/upload/', requestData, {
-        headers: {
-          // Explicitly remove Content-Type to let browser set it with boundary
-          'Content-Type': undefined,
-          // Add this to ensure the browser handles the form data properly
-          'Accept': 'application/json',
-        },
-      });
-
-      return response.data;
-    } catch (error: any) {
-      if (error.response?.status === 500) {
-        throw { message: 'Server error occurred during file upload', status: 500 };
-      }
-      throw error.response?.data || { message: 'File upload failed' };
+    // Case 1: If response contains direct URL
+    if (response.data.image_url) {
+      return response.data.image_url;
     }
-  },
-  
-  /**
-   * Retrieve file URLs for a specific user
-   * @param userId - ID of the user to retrieve files for
-   * @returns Promise with array of file URLs
-   */
-  getFileUrls: async (userId: number): Promise<FileViewResponse> => {
-    try {
-      const response = await API.get<FileViewResponse>(`/files/view/`, {
-        params: { user_id: userId }
-      });
-      
-      return response.data;
-    } catch (error: any) {
-      if (error.response?.status === 400) {
-        throw { message: 'Bad request: Invalid user ID', status: 400 };
-      }
-      throw error.response?.data || { message: 'Failed to retrieve file URLs' };
+
+    // Case 2: If response is just success message
+    if (response.data.message === "File uploaded successfully") {
+      // Construct URL using known API pattern
+      const timestamp = Date.now();
+      const fileExt = file.name.split('.').pop();
+      const fileName = `upload_${user_id}_${timestamp}.${fileExt}`;
+      return `${process.env.REACT_APP_API_URL}/uploads/${fileName}`;
     }
+
+    // Case 3: If URL is in another field
+    const possibleUrlFields = ['url', 'location', 'file_url'];
+    for (const field of possibleUrlFields) {
+      if (response.data[field]) {
+        return response.data[field];
+      }
+    }
+
+    throw new Error(`Could not determine image URL from: ${JSON.stringify(response.data)}`);
   },
-  
-  // Additional file-related methods can be added here
 };
 
 export default fileServices;

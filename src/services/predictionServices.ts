@@ -9,40 +9,41 @@ interface PredictionResponse {
 }
 
 const predictionServices = {
-  async createPrediction(imageUrl: string): Promise<{ id: string }> {
+  async create(imageUrl: string): Promise<string> {
     const user = JSON.parse(localStorage.getItem("user_info") || "{}");
     const response = await API.post('/analysis/predictions/create/', {
+      user: user.id,
       image_url: imageUrl,
-      user: user.id
+      include_shap: true
+    });
+    return response.data.id;
+  },
+
+  async checkStatus(predictionId: string): Promise<PredictionResponse> {
+    const user = JSON.parse(localStorage.getItem("user_info") || "{}");
+    const response = await API.post('/analysis/predictions/status/', null, {
+      params: {
+        request_id: predictionId,
+        user_id: user.id
+      }
     });
     return response.data;
   },
 
-  async getPrediction(id: string): Promise<PredictionResponse> {
-    const response = await API.get(`/analysis/predictions/${id}/`);
-    return response.data;
-  },
-
-  async pollPrediction(id: string, interval = 2000, maxAttempts = 30): Promise<PredictionResponse> {
-    let attempts = 0;
+  async pollUntilComplete(predictionId: string): Promise<PredictionResponse> {
+    const maxAttempts = 30;
+    const delay = 2000;
     
-    const checkStatus = async (): Promise<PredictionResponse> => {
-      attempts++;
-      const result = await this.getPrediction(id);
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const result = await this.checkStatus(predictionId);
       
-      if (result.status === 'COMPLETED') {
-        return result;
-      } else if (result.status === 'FAILED') {
-        throw new Error('Prediction processing failed');
-      } else if (attempts >= maxAttempts) {
-        throw new Error('Prediction timeout');
-      } else {
-        await new Promise(resolve => setTimeout(resolve, interval));
-        return checkStatus();
-      }
-    };
-
-    return checkStatus();
+      if (result.status === 'COMPLETED') return result;
+      if (result.status === 'FAILED') throw new Error('Prediction failed');
+      
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+    
+    throw new Error('Prediction timed out');
   }
 };
 
