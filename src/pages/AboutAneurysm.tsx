@@ -24,7 +24,7 @@ const AboutAneurysm = () => {
           <li>Seizure or confusion</li>
           <li>Drooping eyelid</li>
         </ul>
-        <img src="/images/symptoms-infographic.png" alt="Symptoms infographic" className="infographic" />
+        
       </section>
 
       <section className="section">
@@ -36,7 +36,7 @@ const AboutAneurysm = () => {
           <li>Eat a healthy, low-fat diet</li>
           <li>Get regular medical checkups if at risk</li>
         </ul>
-        <img src="/images/prevention-chart.png" alt="Prevention tips chart" className="infographic" />
+        
       </section>
 
       <footer className="footer-bar">
