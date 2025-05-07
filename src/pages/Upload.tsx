@@ -1,42 +1,83 @@
-import React, { useEffect, useState } from "react";
-import SidebarDoctor from "../components/SidebarDoctor";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import fileServices from "../services/fileServices";
+import predictionServices from "../services/predictionServices";
+import "./Scan.css";
 import SidebarPatient from "../components/SidebarPatient";
-import API from "../services/apiClient";
-import "./Upload.css";
 
 const Upload = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [role, setRole] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchRole = async () => {
-      try {
-        const res = await API.get("/auth/profile/");
-        setRole(res.data.role);
-      } catch (err) {
-        console.error("Error fetching user role", err);
-      }
-    };
+  const user = JSON.parse(localStorage.getItem("user_info") || "{}");
 
-    fetchRole();
-  }, []);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
+  const analyze = async () => {
+    if (!file) {
+      setError("Please select a file first");
+      return;
+    }
+  
+    setLoading(true);
+    setProgress(0);
+    setError("");
+  
+    try {
+      // 1. Upload file (25%)
+      setProgress(25);
+      console.log("Starting file upload...");
+      const imageUrl = await fileServices.uploadFile(user.id, file);
+      console.log("Received image URL:", imageUrl);
+      setProgress(50);
+  
+      // 2. Create prediction (50%)
+      console.log("Creating prediction...");
+      await predictionServices.create(imageUrl);
+      setProgress(75);
+  
+      // 3. Navigate to results
+      navigate(`/result/`);
+    } catch (err: any) {
+      console.error("Full analysis error:", err);
+      setError(
+        err.response?.data?.error ||
+        err.message ||
+        "Analysis failed. Please check console for details."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
-  const Sidebar = role === "doctor" ? SidebarDoctor : SidebarPatient;
-
   return (
-    <div className="upload-page">
-      <Sidebar />
-      <div className="upload-content">
-        <h1>Upload Scan</h1>
-        <input type="file" onChange={handleFileChange} />
-        {selectedFile && <p>Selected File: {selectedFile.name}</p>}
-        <button>Analyze</button>
+    <div className="dashboard-container">
+      <SidebarPatient /> {/* Use the Sidebar component here */}
+
+      <div className="main-content">
+        <h1>Upload Brain Scan</h1>
+        
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          disabled={loading}
+        />
+        
+        {file && <p>Selected file: {file.name}</p>}
+
+        <button onClick={analyze} disabled={!file || loading}>
+          {loading ? `Processing (${progress}%)...` : "Analyze"}
+        </button>
+
+        {loading && (
+          <div className="progress-container">
+            <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+          </div>
+        )}
+
+        {error && <div className="error">{error}</div>}
       </div>
     </div>
   );
