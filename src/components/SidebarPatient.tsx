@@ -11,6 +11,12 @@ const SidebarPatient = () => {
     return (
         <div className="sidebar">
             <button
+                className={location.pathname === `/dashboard` ? "active" : ""}
+                onClick={() => navigate(`/dashboard/`)}
+            >
+                Dashboard
+            </button>
+            <button
                 className={location.pathname === "/upload" ? "active" : ""}
                 onClick={() => navigate("/upload")}
             >
