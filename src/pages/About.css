@@ -1,0 +1,52 @@
+.navigation-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 30px 0;
+    justify-content: center; /* Center the cards */
+}
+
+.card {
+    background-color: #ffffff; /* Match the existing white background */
+    border: 2px solid #376E6F; /* Use the existing accent color */
+    border-radius: 12px;
+    padding: 40px;
+    flex: 1 1 calc(33.333% - 60px); /* Adjust width dynamically */
+    max-width: 400px; /* Increase the maximum width */
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    color: #1C3334; /* Use the existing text color */
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: #f0f8f8; /* Subtle hover background */
+}
+
+.card h3 {
+    margin: 0 0 15px;
+    font-size: 22px; /* Larger font size */
+    color: #376E6F; /* Accent color for headings */
+}
+
+.card p {
+    margin: 0;
+    font-size: 16px; /* Slightly larger font size */
+    color: #555; /* Subtle text color */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 calc(50% - 30px); /* Adjust to two cards per row */
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        flex: 1 1 100%; /* Full width for smaller screens */
+    }
+}

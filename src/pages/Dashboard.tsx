@@ -44,7 +44,7 @@ const Dashboard = () => {
         <div className="footer-left">
           <a href="#">Give us feedback</a>
           <a href="#">Privacy Policy</a>
-          <a href="/about">About Aneurysm</a>
+          <a href="/about-aneurysm">About Aneurysm</a>
         </div>
 
         <div className="footer-center">
