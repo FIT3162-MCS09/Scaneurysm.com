@@ -1,24 +1,32 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./Sidebar.css"; // Styling for sidebar
+import "./Sidebar.css";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate     = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <div className="sidebar">
-      <button 
-        className={location.pathname === "/upload" ? "active" : ""} 
+      <button
+        className={pathname === "/dashboard" ? "active" : ""}
+        onClick={() => navigate("/dashboard")}
+      >
+        Dashboard
+      </button>
+
+      <button
+        className={pathname === "/upload" ? "active" : ""}
         onClick={() => navigate("/upload")}
       >
         Upload Scan
       </button>
-      <button 
-        className={location.pathname === "/patient-records" ? "active" : ""} 
-        onClick={() => navigate("/patient-records")}
+
+      <button
+        className={pathname.startsWith("/result") ? "active" : ""}
+        onClick={() => navigate("/result")}
       >
-        Patient Records
+        My Results
       </button>
     </div>
   );
