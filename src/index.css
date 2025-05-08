@@ -1,20 +1,52 @@
-/* Global Styles */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Arial&family=Roboto:wght@300;400;500&family=PT+Serif:wght@400;700&display=swap');
+/* ──────────────────────────────────────────────
+   GLOBAL STYLES
+   ─────────────────────────────────────────── */
+   @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Arial&family=Roboto:wght@300;400;500&family=PT+Serif:wght@400;700&display=swap");
 
-body {
-    font-family: 'Outfit', 'Arial', 'Roboto', 'PT Serif', sans-serif;
-    background-color: #FFFFFF;
-    margin: 0;
-    padding: 0;
-}
-
-h1, h2, h3, h4, h5 {
-    color: white;
-}
-
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+   :root {
+     /* width of the fixed sidebar ( keep in sync with Sidebar.css ) */
+     --sidebar-w: 240px;
+   }
+   
+   /* basic reset */
+   body {
+     font-family: "Outfit", "Arial", "Roboto", "PT Serif", sans-serif;
+     background: #ffffff;
+     margin: 0;
+     padding: 0;
+   }
+   
+   h1,
+   h2,
+   h3,
+   h4,
+   h5 {
+     color: #ffffff;
+   }
+   
+   .container {
+     width: 100%;
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 20px;
+   }
+   
+   /* ──────────────────────────────────────────────
+      SPACE FOR THE FIXED SIDEBAR (prevents overlap)
+      Add any other top-level wrappers your app uses.
+      ─────────────────────────────────────────── */
+   .page-wrapper,
+   .dashboard-container,
+   .result-container {
+     padding-left: var(--sidebar-w);
+     box-sizing: border-box;   /* include padding in width calc */
+   }
+   
+   /* optional: keep footer clear if you use a fixed footer height variable */
+   /* .page-wrapper,
+   .dashboard-wrapper,
+   .dashboard-container,
+   .result-container {
+     padding-bottom: var(--footer-h);
+   } */
+   
