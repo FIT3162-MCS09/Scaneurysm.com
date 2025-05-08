@@ -13,16 +13,20 @@
     display: flex;
     flex-direction: column;
 }
-
 .footer-left a {
     color: white;
     text-decoration: none;
     margin-bottom: 10px;
-    transition: color 0.3s;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s, text-shadow 0.3s;
 }
 
 .footer-left a:hover {
     color: #DA7B93;
+    text-shadow: 0 0 5px #DA7B93;
+    font-weight: 600;
+    text-decoration: underline;
 }
 
 .footer-center {
