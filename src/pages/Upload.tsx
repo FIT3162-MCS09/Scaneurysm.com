@@ -1,4 +1,4 @@
-import React, { useState, useRef, DragEvent } from "react";
+import React, { useState, useRef, useEffect, DragEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import fileServices from "../services/fileServices";
 import predictionServices from "../services/predictionServices";
@@ -83,6 +83,27 @@ const Upload = () => {
     }
   };
 
+  useEffect(() => {
+    const cancelButton = document.querySelector(".cancel-button");
+    const imagePreview = document.querySelector(".image-preview");
+
+    const handleCancelClick = () => {
+      if (imagePreview) {
+        imagePreview.classList.add("fade-out");
+        setTimeout(() => {
+          setFile(null);
+          setPreview("");
+        }, 300); // Match the animation duration in CSS
+      }
+    };
+
+    cancelButton?.addEventListener("click", handleCancelClick);
+
+    return () => {
+      cancelButton?.removeEventListener("click", handleCancelClick);
+    };
+  }, [preview]);
+
   return (
       <div className="dashboard-container">
         <ProfileButton />
@@ -101,14 +122,7 @@ const Upload = () => {
             {preview ? (
                 <>
                   <img src={preview} alt="Preview" className="image-preview" />
-                  <button
-                      className="cancel-button"
-                      onClick={() => {
-                        setFile(null);
-                        setPreview("");
-                      }}
-                      type="button"
-                  >
+                  <button className="cancel-button" type="button">
                     &times;
                   </button>
                 </>
@@ -153,10 +167,7 @@ const Upload = () => {
 
           {loading && (
               <div className="progress-container">
-                <div
-                    className="progress-bar"
-                    style={{ width: `${progress}%` }}
-                />
+                <div className="progress-bar" style={{ width: `${progress}%` }} />
               </div>
           )}
 

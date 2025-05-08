@@ -153,17 +153,32 @@ button:hover {
     display: block; /* Ensures proper centering */
 }
 
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+.image-preview.fade-out {
+    animation: fadeOut 0.3s forwards;
+}
+
 .cancel-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px; /* Adjusted to make it less chunky */
+    right: 5px; /* Adjusted to make it less chunky */
     background: #ff4d4d;
     color: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 1.2rem;
+    width: 28px; /* Slightly smaller */
+    height: 28px; /* Slightly smaller */
+    font-size: 1rem; /* Adjusted font size */
     font-weight: bold;
     cursor: pointer;
     display: flex;
@@ -175,4 +190,8 @@ button:hover {
 
 .cancel-button:hover {
     background: #e60000;
+}
+
+.cancel-button.fade-out {
+    animation: fadeOut 0.3s forwards; /* Adds the fade-out animation */
 }
