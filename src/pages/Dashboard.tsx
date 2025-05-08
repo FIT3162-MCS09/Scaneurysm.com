@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authServices";
 import ProfileButton from "../components/ProfileButton";
 import "./Dashboard.css";
+import Footer from "../components/Footer";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -40,27 +41,7 @@ const Dashboard = () => {
         </div>
       </main>
 
-      <footer className="dashboard-footer">
-        <div className="footer-left">
-          <a href="#">Give us feedback</a>
-          <a href="#">Privacy Policy</a>
-          <a href="/about-aneurysm">About Aneurysm</a>
-        </div>
-
-        <div className="footer-center">
-          <p><strong>Emergency Help</strong></p>
-          <p>📞 +60&nbsp;1234567</p>
-        </div>
-
-        <div className="footer-right">
-          <p><strong>Connect with us!</strong></p>
-          <div className="social-icons">
-            <a href="#"><i className="fab fa-facebook-f" /></a>
-            <a href="#"><i className="fab fa-instagram" /></a>
-            <a href="#"><i className="fab fa-linkedin-in" /></a>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 };
