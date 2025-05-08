@@ -1,3 +1,7 @@
+.sidebar-container {
+    position: relative;
+}
+
 .sidebar {
     background: #376E6F;
     width: 250px;
@@ -6,29 +10,41 @@
     flex-direction: column;
     padding-top: 20px;
     position: fixed;
-    left: 0;
+    left: -250px; /* Initially hidden */
     top: 0;
+    transition: left 0.3s ease;
 }
 
-.sidebar button {
-    background: none;
-    border: none;
+.sidebar.open {
+    left: 0; /* Slide in when open */
+}
+
+.sidebar.closed {
+    left: -250px; /* Slide out when closed */
+}
+
+.sidebar-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #376E6F;
     color: white;
-    font-size: 1rem;
-    padding: 15px;
-    text-align: left;
+    border: none;
+    padding: 10px 15px;
     cursor: pointer;
-    width: 100%;
-    transition: 0.3s;
-}
-
-.sidebar button:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.sidebar .active {
-    background: white;
-    color: #376E6F;
-    font-weight: bold;
     border-radius: 5px;
+    transition: left 0.3s, background 0.3s;
+    z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.sidebar-toggle.open {
+    left: 270px; /* Adjust to match the sidebar's width when open */
+}
+
+.sidebar-toggle.closed {
+    left: 20px; /* Default position when sidebar is closed */
+}
+
+.sidebar-toggle:hover {
+    background: #2c5a5b;
 }

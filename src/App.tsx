@@ -12,6 +12,8 @@ import AboutAneurysm from "./pages/AboutAneurysm";
 import ResultList from "./pages/Result";
 import Popup from "./components/Popup";
 import API from "./services/apiClient";
+import AboutModel from "./pages/AboutModel";
+import About from "./pages/About";
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -56,16 +58,18 @@ function App() {
               />
           )}
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/patient-records" element={<PatientRecords />} />
-            <Route path="/signup/doctor" element={<DoctorSignup />} />
-            <Route path="/signup/patient" element={<PatientSignup />} />
-            <Route path="/profile" element={<PatientProfile />} />
-            <Route path="/my-records" element={<MyRecords />} />
-            <Route path="/about" element={<AboutAneurysm />} />
-            <Route path="/result/" element={<ResultList />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/upload" element={<Upload />} />
+              <Route path="/patient-records" element={<PatientRecords />} />
+              <Route path="/signup/doctor" element={<DoctorSignup />} />
+              <Route path="/signup/patient" element={<PatientSignup />} />
+              <Route path="/profile" element={<PatientProfile />} />
+              <Route path="/my-records" element={<MyRecords />} />
+              <Route path="/about" element={<About/>} />
+              <Route path="/result/" element={<ResultList />} />
+              <Route path="/about-model" element={<AboutModel />} />
+              <Route path="/about-aneurysm" element={<AboutAneurysm />} />
           </Routes>
         </div>
       </Router>

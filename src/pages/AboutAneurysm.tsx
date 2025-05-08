@@ -1,10 +1,12 @@
 // File: src/pages/AboutAneurysm.tsx
 import React from "react";
 import "./AboutAneurysm.css";
+import SidebarPatient from "../components/SidebarPatient";
 
 const AboutAneurysm = () => {
   return (
     <div className="about-container">
+      <SidebarPatient />
       <h1>About Brain Aneurysms</h1>
       <section className="section">
         <h2>What is a Brain Aneurysm?</h2>
@@ -43,7 +45,7 @@ const AboutAneurysm = () => {
         <div className="footer-left">
           <a href="#">Give us feedback</a>
           <a href="#">Privacy Policy</a>
-          <a href="/about">About Aneurysm</a>
+          <a href="/about-aneurysm">About Aneurysm</a>
         </div>
         <div className="footer-center">
           <strong>Emergency Help</strong>
