@@ -1,21 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useRef, DragEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import fileServices from "../services/fileServices";
 import predictionServices from "../services/predictionServices";
 import SidebarPatient from "../components/SidebarPatient";
-import ProfileButton from "../components/ProfileButton";     // ← NEW
-import "./Scan.css";
+import ProfileButton from "../components/ProfileButton";
+import "./Upload.css";
 
 const Upload = () => {
-  const [file, setFile]         = useState<File | null>(null);
-  const [loading, setLoading]   = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [error, setError]       = useState("");
-  const navigate                = useNavigate();
+  const [error, setError] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user_info") || "{}");
 
-  /* ------------- full flow ---------------------------------- */
+  const handleFile = (newFile: File) => {
+    if (!newFile.type.startsWith("image/")) {
+      setError("Please upload an image file");
+      return;
+    }
+    setFile(newFile);
+    setError("");
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreview(reader.result as string);
+    };
+    reader.readAsDataURL(newFile);
+  };
+
+  const handleDrag = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setIsDragging(true);
+    } else if (e.type === "dragleave") {
+      setIsDragging(false);
+    }
+  };
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      handleFile(droppedFile);
+    }
+  };
+
   const analyze = async () => {
     if (!file) {
       setError("Please select a file first");
@@ -27,21 +65,16 @@ const Upload = () => {
     setError("");
 
     try {
-      // 1. Upload
       setProgress(25);
       const imageUrl = await fileServices.uploadFile(user.id, file);
       setProgress(50);
-
-      // 2. Prediction
       await predictionServices.create(imageUrl);
       setProgress(75);
-
-      // 3. Navigate
       navigate("/result/");
     } catch (err: any) {
       console.error("Full analysis error:", err);
       setError(
-        err.response?.data?.error ||
+          err.response?.data?.error ||
           err.message ||
           "Analysis failed. Please check console for details."
       );
@@ -50,42 +83,86 @@ const Upload = () => {
     }
   };
 
-  /* ------------- UI ----------------------------------------- */
   return (
-    <div className="dashboard-container">
-      {/* floating profile trigger */}
-      <ProfileButton />
+      <div className="dashboard-container">
+        <ProfileButton />
+        <SidebarPatient />
 
-      <SidebarPatient />
+        <div className="main-content">
+          <h1>Upload Brain Scan</h1>
 
-      <div className="main-content">
-        <h1>Upload Brain Scan</h1>
+          <div
+              className={`drop-zone ${isDragging ? "dragging" : ""}`}
+              onDragEnter={handleDrag}
+              onDragLeave={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
+          >
+            {preview ? (
+                <>
+                  <img src={preview} alt="Preview" className="image-preview" />
+                  <button
+                      className="cancel-button"
+                      onClick={() => {
+                        setFile(null);
+                        setPreview("");
+                      }}
+                      type="button"
+                  >
+                    &times;
+                  </button>
+                </>
+            ) : (
+                <>
+                  <div className="drop-zone-text">
+                    <p>Drag & Drop your brain scan here</p>
+                    <p className="small">Accepts image files only</p>
+                  </div>
+                  <div className="or-divider">
+                    <span>OR</span>
+                  </div>
+                  <button
+                      className="manual-upload-btn"
+                      onClick={() => fileInputRef.current?.click()}
+                      type="button"
+                  >
+                    Choose File
+                  </button>
+                </>
+            )}
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-          disabled={loading}
-        />
-
-        {file && <p>Selected file: {file.name}</p>}
-
-        <button onClick={analyze} disabled={!file || loading}>
-          {loading ? `Processing (${progress}%)…` : "Analyze"}
-        </button>
-
-        {loading && (
-          <div className="progress-container">
-            <div
-              className="progress-bar"
-              style={{ width: `${progress}%` }}
+            <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+                style={{ display: "none" }}
+                disabled={loading}
             />
           </div>
-        )}
 
-        {error && <div className="error">{error}</div>}
+          {file && <p className="file-name">Selected file: {file.name}</p>}
+
+          <button
+              className="analyze-button"
+              onClick={analyze}
+              disabled={!file || loading}
+          >
+            {loading ? `Processing (${progress}%)…` : "Analyze"}
+          </button>
+
+          {loading && (
+              <div className="progress-container">
+                <div
+                    className="progress-bar"
+                    style={{ width: `${progress}%` }}
+                />
+              </div>
+          )}
+
+          {error && <div className="error">{error}</div>}
+        </div>
       </div>
-    </div>
   );
 };
 
