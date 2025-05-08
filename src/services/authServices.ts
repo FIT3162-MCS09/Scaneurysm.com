@@ -1,6 +1,10 @@
-// Updated authServices.ts
-import API from './apiClient';
+// authServices.ts – consolidated with full profile helpers
 
+import API from "./apiClient";
+
+/* -----------------------------------------------------------
+ * Patient registration / login types
+ * --------------------------------------------------------- */
 interface UserData {
   username: string;
   password: string;
@@ -12,7 +16,6 @@ interface UserData {
   sex: string;
   primary_doctor: string;
 }
-
 interface RegisterResponse {
   id: string;
   username: string;
@@ -21,63 +24,16 @@ interface RegisterResponse {
   refresh: string;
   [key: string]: any;
 }
-
 interface UserInfo {
-  id: string;
+  id: string;      // UUID
   username: string;
   email: string;
   role: string;
 }
 
-const patientService = {
-  register: async (userData: UserData): Promise<RegisterResponse> => {
-    try {
-      const formData = new URLSearchParams();
-      Object.entries(userData).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-
-      const response = await API.post<RegisterResponse>('/auth/signup/patient/', formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
-      });
-
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
-
-      await authService.fetchUserProfile();
-
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || { message: 'Registration failed' };
-    }
-  },
-
-  login: async (username: string, password: string) => {
-    try {
-      const formData = new URLSearchParams();
-      formData.append("username", username);
-      formData.append("password", password);
-
-      const response = await API.post('/auth/signin/', formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
-      });
-
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
-
-      await authService.fetchUserProfile();
-
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || { message: 'Login failed' };
-    }
-  },
-};
-
+/* -----------------------------------------------------------
+ * Doctor registration types
+ * --------------------------------------------------------- */
 interface DoctorSignupData {
   username: string;
   email: string;
@@ -87,7 +43,6 @@ interface DoctorSignupData {
   license_number: string;
   specialty: string;
 }
-
 interface DoctorSignupResponse {
   id: string;
   user_id: string;
@@ -101,78 +56,127 @@ interface DoctorSignupResponse {
   refresh: string;
 }
 
-interface DoctorUserInfo {
-  id: string;
-  username: string;
-  email: string;
-  role: string;
-  first_name?: string;
-  last_name?: string;
-}
+/* -----------------------------------------------------------
+ * PATIENT SERVICE
+ * --------------------------------------------------------- */
+const patientService = {
+  async register(userData: UserData): Promise<RegisterResponse> {
+    const form = new URLSearchParams();
+    Object.entries(userData).forEach(([k, v]) => form.append(k, v));
 
-const doctorService = {
-  signup: async (doctorData: DoctorSignupData): Promise<DoctorSignupResponse> => {
-    try {
-      const formData = new URLSearchParams();
-      Object.entries(doctorData).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
+    const res = await API.post<RegisterResponse>(
+      "/auth/signup/patient/",
+      form,
+      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+    );
 
-      const response = await API.post<DoctorSignupResponse>('/auth/signup/doctor/', formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
-      });
+    localStorage.setItem("access_token", res.data.access);
+    localStorage.setItem("refresh_token", res.data.refresh);
 
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
-
-      await authService.fetchUserProfile();
-
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || { message: 'Doctor registration failed' };
-    }
+    await authService.fetchUserProfile();
+    return res.data;
   },
 
-  getProfile: async (doctorId: string) => {
-    try {
-      const response = await API.get(`/doctors/${doctorId}/`);
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || { message: 'Failed to fetch doctor profile' };
-    }
-  },
+  async login(username: string, password: string) {
+    const form = new URLSearchParams();
+    form.append("username", username);
+    form.append("password", password);
 
-  updateProfile: async (doctorId: string, profileData: Partial<DoctorSignupData>) => {
-    try {
-      const response = await API.patch(`/doctors/${doctorId}/`, profileData);
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || { message: 'Failed to update doctor profile' };
-    }
+    const res = await API.post("/auth/signin/", form, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    });
+
+    localStorage.setItem("access_token", res.data.access);
+    localStorage.setItem("refresh_token", res.data.refresh);
+
+    await authService.fetchUserProfile();
+    return res.data;
   },
 };
 
+/* -----------------------------------------------------------
+ * DOCTOR SERVICE
+ * --------------------------------------------------------- */
+const doctorService = {
+  async signup(doctorData: DoctorSignupData): Promise<DoctorSignupResponse> {
+    const form = new URLSearchParams();
+    Object.entries(doctorData).forEach(([k, v]) => form.append(k, v));
+
+    const res = await API.post<DoctorSignupResponse>(
+      "/auth/signup/doctor/",
+      form,
+      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+    );
+
+    localStorage.setItem("access_token", res.data.access);
+    localStorage.setItem("refresh_token", res.data.refresh);
+
+    await authService.fetchUserProfile();
+    return res.data;
+  },
+
+  async getProfile(doctorId: string) {
+    const res = await API.get(`/doctors/${doctorId}/`);
+    return res.data;
+  },
+
+  async updateProfile(doctorId: string, data: Partial<DoctorSignupData>) {
+    const res = await API.patch(`/doctors/${doctorId}/`, data);
+    return res.data;
+  },
+};
+
+/* -----------------------------------------------------------
+ * AUTH SERVICE – shared helpers for any logged‑in user
+ * --------------------------------------------------------- */
 const authService = {
-  fetchUserProfile: async () => {
+  /* cache basic info for client-side role checks */
+  async fetchUserProfile(): Promise<UserInfo> {
+    const res = await API.get("/auth/profile/");
+
+    const userInfo: UserInfo = {
+      id: res.data.id,
+      username: res.data.username,
+      email: res.data.email,
+      role: res.data.role,
+    };
+
+    localStorage.setItem("user_info", JSON.stringify(userInfo));
+    return userInfo;
+  },
+
+  /* -------- full profile CRUD used by ProfilePopup -------- */
+
+  async getProfile(): Promise<any> {
     try {
-      const res = await API.get('/auth/profile/');
-
-      const userInfo: UserInfo = {
-        id: res.data.id,
-        username: res.data.username,
-        email: res.data.email,
-        role: res.data.role,
-      };
-
-      localStorage.setItem('user_info', JSON.stringify(userInfo));
-      return userInfo;
+      const res = await API.get("/auth/profile/");
+      return res.data;
     } catch (err: any) {
-      console.error("Failed to fetch user profile:", err);
-      throw err.response?.data || { message: 'Failed to fetch user profile' };
+      console.error("Profile fetch error:", err);
+      throw err.response?.data || { message: "Failed to fetch profile" };
     }
-  }
+  },
+
+  async updateProfile(data: {
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+  }): Promise<any> {
+    try {
+      const res = await API.patch("/auth/profile/", data);
+      return res.data;
+    } catch (err: any) {
+      throw err.response?.data || { message: "Failed to update profile" };
+    }
+  },
+
+  async changePassword(data: { old_password: string; new_password: string }): Promise<void> {
+    try {
+      await API.post("/auth/change-password/", data);
+    } catch (err: any) {
+      throw err.response?.data || { message: "Failed to change password" };
+    }
+  },
 };
 
 export { patientService, doctorService, authService };

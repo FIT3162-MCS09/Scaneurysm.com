@@ -1,0 +1,127 @@
+/* overlay */
+.profile-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* popup card */
+  .profile-popup {
+    background: #fff;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    padding: 25px;
+    border-radius: 8px;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    color: #1c3334;          /* <<< text now dark by default */
+  }
+  
+  /* close button */
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  /* headings */
+  .profile-view h2,
+  .profile-edit h2,
+  .password-change h2 {
+    text-align: center;
+    margin: 0 0 20px;
+    color: #1c3334;
+  }
+  
+  /* view mode info */
+  .profile-info p {
+    margin: 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    color: #1c3334;          /* ensure dark in view mode */
+  }
+  
+  /* shared form styles */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #1c3334;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #1c3334;          /* dark text in inputs */
+  }
+  
+  .profile-actions,
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+  }
+  
+  button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .edit-btn,
+  .save-btn {
+    background: #376e6f;
+    color: #fff;
+    flex: 1;
+  }
+  .password-btn {
+    background: #1c3334;
+    color: #fff;
+    flex: 1;
+  }
+  .cancel-btn {
+    background: #f0f0f0;
+    color: #333;
+    flex: 1;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+  
+  .profile-loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+  }
+  
+  @media (max-width: 480px) {
+    .profile-popup {
+      padding: 20px 15px;
+    }
+    .profile-actions,
+    .form-actions {
+      flex-direction: column;
+    }
+  }
+  

@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import predictionServices from "../services/predictionServices";
-import "./Result.css";
 import SidebarPatient from "../components/SidebarPatient";
+import ProfileButton from "../components/ProfileButton";    // ← NEW
+import "./Result.css";
 
 const Result = () => {
-  const [results, setResults] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [results, setResults]   = useState<any[]>([]);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState("");
+  const navigate                = useNavigate();
 
-  /* ----------------------------------------------------------- *
-   * fetch once at mount
-   * ----------------------------------------------------------- */
   useEffect(() => {
-    const loadResults = async () => {
+    (async () => {
       try {
         const data = await predictionServices.getPredictionDetails();
         // @ts-ignore
@@ -24,19 +22,14 @@ const Result = () => {
       } finally {
         setLoading(false);
       }
-    };
-
-    loadResults();
+    })();
   }, []);
 
-  /* ----------------------------------------------------------- *
-   * screens: loading / error
-   * ----------------------------------------------------------- */
   if (loading)
     return (
       <div className="loading">
-        <div className="spinner"></div>
-        <p>Analyzing your brain scans...</p>
+        <div className="spinner" />
+        <p>Analyzing your brain scans…</p>
         <p>This may take a few minutes</p>
       </div>
     );
@@ -50,15 +43,14 @@ const Result = () => {
       </div>
     );
 
-  /* ----------------------------------------------------------- *
-   * main UI
-   * ----------------------------------------------------------- */
   return (
     <div className="result-container">
+      {/* floating profile trigger */}
+      <ProfileButton />
+
       <SidebarPatient />
 
       <h1>Analysis Results</h1>
-      {/* refresh button just below the heading */}
       <button
         style={{ marginBottom: "20px" }}
         onClick={() => window.location.reload()}
@@ -127,10 +119,8 @@ const Result = () => {
                   <ul>
                     {Object.entries(
                       result.shap_explanation.analysis.quadrant_scores
-                    ).map(([key, value]) => (
-                      <li key={key}>
-                        <span>{`${key}: ${value}`}</span>
-                      </li>
+                    ).map(([k, v]) => (
+                      <li key={k}>{`${k}: ${v}`}</li>
                     ))}
                   </ul>
                   <h4>Stability Score:</h4>
@@ -138,7 +128,9 @@ const Result = () => {
                   <h4>Importance Score:</h4>
                   <p>{result.shap_explanation.analysis.importance_score}</p>
                   <h4>Most Important Quadrant:</h4>
-                  <p>{result.shap_explanation.analysis.most_important_quadrant}</p>
+                  <p>
+                    {result.shap_explanation.analysis.most_important_quadrant}
+                  </p>
                   {result.shap_explanation.visualization?.url && (
                     <div>
                       <h4>Visualization:</h4>
