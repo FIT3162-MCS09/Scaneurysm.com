@@ -1,38 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Sidebar.css";
 
 const SidebarPatient = () => {
-  const navigate     = useNavigate();
-  const { pathname } = useLocation();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+        // Retrieve the sidebar state from localStorage or default to false
+        return localStorage.getItem("isSidebarOpen") === "true";
+    });
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
 
-  return (
-    <div className="sidebar">
-      {/* Dashboard */}
-      <button
-        className={pathname === "/dashboard" ? "active" : ""}
-        onClick={() => navigate("/dashboard")}
-      >
-        Dashboard
-      </button>
+    const toggleSidebar = () => {
+        const newState = !isSidebarOpen;
+        setIsSidebarOpen(newState);
+        localStorage.setItem("isSidebarOpen", String(newState)); // Save the state to localStorage
+    };
 
-      {/* Upload */}
-      <button
-        className={pathname === "/upload" ? "active" : ""}
-        onClick={() => navigate("/upload")}
-      >
-        Upload Scan
-      </button>
+    useEffect(() => {
+        // Sync the sidebar state with localStorage on component mount
+        const savedState = localStorage.getItem("isSidebarOpen") === "true";
+        setIsSidebarOpen(savedState);
+    }, []);
 
-      {/* Results */}
-      <button
-        className={pathname.startsWith("/result") ? "active" : ""}
-        onClick={() => navigate("/result")}
-      >
-        My Results
-      </button>
-    </div>
-  );
+    return (
+        <div className="sidebar-container">
+            {/* Sidebar */}
+            <div className={`sidebar ${isSidebarOpen ? "open" : "closed"}`}>
+                <button
+                    className={pathname === "/dashboard" ? "active" : ""}
+                    onClick={() => navigate("/dashboard")}
+                >
+                    Dashboard
+                </button>
+                <button
+                    className={pathname === "/upload" ? "active" : ""}
+                    onClick={() => navigate("/upload")}
+                >
+                    Upload Scan
+                </button>
+                <button
+                    className={pathname.startsWith("/result") ? "active" : ""}
+                    onClick={() => navigate("/result")}
+                >
+                    My Results
+                </button>
+
+                <button
+                    className={pathname === "/about" ? "active" : ""}
+                    onClick={() => navigate("/about")}
+                >
+                    About
+                </button>
+            </div>
+
+            {/* Toggle Button */}
+            <button
+                className={`sidebar-toggle ${isSidebarOpen ? "open" : "closed"}`}
+                onClick={toggleSidebar}
+            >
+                <span className="arrow">{isSidebarOpen ? "←" : "→"}</span>
+            </button>
+        </div>
+    );
 };
 
 export default SidebarPatient;
