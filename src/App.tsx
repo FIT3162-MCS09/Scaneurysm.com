@@ -14,33 +14,34 @@ import Popup from "./components/Popup";
 import API from "./services/apiClient";
 import AboutModel from "./pages/AboutModel";
 import About from "./pages/About";
+import SidebarStateHandler from "./handler/SidebarStateHandler";
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
 
   // Add Axios interceptor to handle 401 errors
-  React.useEffect(() => {
-    const interceptor = API.interceptors.response.use(
-        (response) => response,
-        (error) => {
-          if (
-              error.response?.status === 401 &&
-              error.response.data?.detail === "Authentication credentials were not provided."
-          ) {
-            if (!error.config._handled401) {
-              error.config._handled401 = true; // Mark as handled
-              setShowPopup(true); // Trigger the popup
-            }
-          }
-          return Promise.reject(error);
-        }
-    );
+    React.useEffect(() => {
+        const interceptor = API.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error.response?.status === 401) {
+                    const isAuthMissing = error.response.data?.detail === "Authentication credentials were not provided.";
+                    const isTokenInvalid = error.response.data?.code === "token_not_valid";
 
-    // Cleanup interceptor on unmount
-    return () => {
-      API.interceptors.response.eject(interceptor);
-    };
-  }, []);
+                    if ((isAuthMissing || isTokenInvalid) && !error.config._handled401) {
+                        error.config._handled401 = true; // Mark as handled
+                        setShowPopup(true); // Trigger the popup
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        // Cleanup interceptor on unmount
+        return () => {
+            API.interceptors.response.eject(interceptor);
+        };
+    }, []);
 
   const handleRedirect = () => {
     setShowPopup(false);
@@ -49,14 +50,17 @@ function App() {
 
   return (
       <Router>
+          <SidebarStateHandler/>
         <div>
-          {showPopup && (
-              <Popup
-                  message="Session expired. Please log in again."
-                  onClose={() => setShowPopup(false)}
-                  onAction={handleRedirect}
-              />
-          )}
+            {showPopup && (
+                <div className="profile-popup-overlay" style={{ zIndex: 9999 }}>
+                    <Popup
+                        message="Session expired. Please log in again."
+                        onClose={() => setShowPopup(false)}
+                        onAction={handleRedirect}
+                    />
+                </div>
+            )}
           <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
