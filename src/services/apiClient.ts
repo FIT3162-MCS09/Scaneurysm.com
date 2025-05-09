@@ -8,7 +8,12 @@ const API: AxiosInstance = axios.create({
     },
 });
 
-const publicRoutes = ["/auth/signup/doctor/", "/auth/signup/patient/", "/auth/signin/"];
+const publicRoutes = [
+    "/auth/signup/doctor/",
+    "/auth/signup/patient/",
+    "/auth/signin/",
+    "/search/user/"  // Added search endpoint to public routes
+];
 
 API.interceptors.request.use(
     (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {

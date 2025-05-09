@@ -75,166 +75,180 @@ const ProfilePopup = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
-  if (!profile)
-    return <div className="profile-loading">Loading profile…</div>;
+  if (!profile) {
+    return (
+        <div className="profile-popup-overlay">
+          <div className="profile-loading">Loading profile…</div>
+        </div>
+    );
+  }
 
   /* ------ RENDER ------------------------------------------- */
   return (
-    <div className="profile-popup-overlay" onClick={onClose}>
-      <div
-        className="profile-popup"
-        onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
-      >
-        <button className="close-btn" onClick={onClose}>
-          &times;
-        </button>
+      <div className="profile-popup-overlay" onClick={onClose}>
+        <div
+            className="profile-popup"
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+        >
+          <button className="close-btn" onClick={onClose}>
+            &times;
+          </button>
 
-        {mode === "view" && (
-          <div className="profile-view">
-            <h2>My Profile</h2>
-            <div className="profile-info">
-              <p>
-                <strong>Name:</strong> {profile.first_name} {profile.last_name}
-              </p>
-              <p>
-                <strong>Username:</strong> {profile.username}
-              </p>
-              <p>
-                <strong>Email:</strong> {profile.email}
-              </p>
-              <p>
-                <strong>Role:</strong> {profile.role}
-              </p>
-            </div>
+          {mode === "view" && (
+              <div className="profile-view">
+                <h2>My Profile</h2>
+                <div className="profile-info">
+                  <p>
+                    <strong>Name:</strong> {profile.first_name} {profile.last_name}
+                  </p>
+                  <p>
+                    <strong>Username:</strong> {profile.username}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {profile.email}
+                  </p>
+                  <p>
+                    <strong>Role:</strong> {profile.role}
+                  </p>
+                </div>
 
-            <div className="profile-actions">
-              <button className="edit-btn" onClick={() => setMode("edit")}>
-                Edit Profile
-              </button>
-              <button
-                className="password-btn"
-                onClick={() => setMode("password")}
-              >
-                Change Password
-              </button>
-            </div>
-          </div>
-        )}
+                <div className="profile-actions">
+                  {/*<button className="edit-btn" onClick={() => setMode("edit")}>*/}
+                  {/*  Edit Profile*/}
+                  {/*</button>*/}
+                  {/*<button*/}
+                  {/*    className="password-btn"*/}
+                  {/*    onClick={() => setMode("password")}*/}
+                  {/*>*/}
+                  {/*  Change Password*/}
+                  {/*</button>*/}
+                  <button
+                      className="logout-btn"
+                      onClick={() => {
+                        localStorage.removeItem("user_info"); // Clear user data
+                        window.location.href = "/"; // Redirect to default URL
+                      }}
+                  >
+                    Log Out
+                  </button>
+                </div>
+              </div>
+          )}
 
-        {mode === "edit" && (
-          <form className="profile-edit" onSubmit={handleProfileUpdate}>
-            <h2>Edit Profile</h2>
+          {mode === "edit" && (
+              <form className="profile-edit" onSubmit={handleProfileUpdate}>
+                <h2>Edit Profile</h2>
 
-            <div className="form-group">
-              <label>First Name</label>
-              <input
-                type="text"
-                value={formData.first_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, first_name: e.target.value })
-                }
-              />
-            </div>
+                <div className="form-group">
+                  <label>First Name</label>
+                  <input
+                      type="text"
+                      value={formData.first_name}
+                      onChange={(e) =>
+                          setFormData({ ...formData, first_name: e.target.value })
+                      }
+                  />
+                </div>
 
-            <div className="form-group">
-              <label>Last Name</label>
-              <input
-                type="text"
-                value={formData.last_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, last_name: e.target.value })
-                }
-              />
-            </div>
+                <div className="form-group">
+                  <label>Last Name</label>
+                  <input
+                      type="text"
+                      value={formData.last_name}
+                      onChange={(e) =>
+                          setFormData({ ...formData, last_name: e.target.value })
+                      }
+                  />
+                </div>
 
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                      }
+                  />
+                </div>
 
-            <div className="form-actions">
-              <button type="submit" className="save-btn">
-                Save Changes
-              </button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => setMode("view")}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        )}
+                <div className="form-actions">
+                  <button type="submit" className="save-btn">
+                    Save Changes
+                  </button>
+                  <button
+                      type="button"
+                      className="cancel-btn"
+                      onClick={() => setMode("view")}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+          )}
 
-        {mode === "password" && (
-          <form className="password-change" onSubmit={handlePasswordChange}>
-            <h2>Change Password</h2>
+          {mode === "password" && (
+              <form className="password-change" onSubmit={handlePasswordChange}>
+                <h2>Change Password</h2>
 
-            <div className="form-group">
-              <label>Current Password</label>
-              <input
-                type="password"
-                value={passwordData.old_password}
-                onChange={(e) =>
-                  setPasswordData({
-                    ...passwordData,
-                    old_password: e.target.value,
-                  })
-                }
-              />
-            </div>
+                <div className="form-group">
+                  <label>Current Password</label>
+                  <input
+                      type="password"
+                      value={passwordData.old_password}
+                      onChange={(e) =>
+                          setPasswordData({
+                            ...passwordData,
+                            old_password: e.target.value,
+                          })
+                      }
+                  />
+                </div>
 
-            <div className="form-group">
-              <label>New Password</label>
-              <input
-                type="password"
-                value={passwordData.new_password}
-                onChange={(e) =>
-                  setPasswordData({
-                    ...passwordData,
-                    new_password: e.target.value,
-                  })
-                }
-              />
-            </div>
+                <div className="form-group">
+                  <label>New Password</label>
+                  <input
+                      type="password"
+                      value={passwordData.new_password}
+                      onChange={(e) =>
+                          setPasswordData({
+                            ...passwordData,
+                            new_password: e.target.value,
+                          })
+                      }
+                  />
+                </div>
 
-            <div className="form-group">
-              <label>Confirm New Password</label>
-              <input
-                type="password"
-                value={passwordData.confirm_password}
-                onChange={(e) =>
-                  setPasswordData({
-                    ...passwordData,
-                    confirm_password: e.target.value,
-                  })
-                }
-              />
-            </div>
+                <div className="form-group">
+                  <label>Confirm New Password</label>
+                  <input
+                      type="password"
+                      value={passwordData.confirm_password}
+                      onChange={(e) =>
+                          setPasswordData({
+                            ...passwordData,
+                            confirm_password: e.target.value,
+                          })
+                      }
+                  />
+                </div>
 
-            <div className="form-actions">
-              <button type="submit" className="save-btn">
-                Change Password
-              </button>
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => setMode("view")}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        )}
+                <div className="form-actions">
+                  <button type="submit" className="save-btn">
+                    Change Password
+                  </button>
+                  <button
+                      type="button"
+                      className="cancel-btn"
+                      onClick={() => setMode("view")}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
