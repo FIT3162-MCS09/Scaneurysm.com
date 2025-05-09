@@ -55,10 +55,12 @@ const SidebarPatient = () => {
 
             {/* Toggle Button */}
             <button
-                className={`sidebar-toggle ${isSidebarOpen ? "open" : "closed"}`}
+                className={`sidebar-toggle ${isSidebarOpen ? "open" : ""}`}
                 onClick={toggleSidebar}
             >
-                <span className="arrow">{isSidebarOpen ? "←" : "→"}</span>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
             </button>
         </div>
     );
