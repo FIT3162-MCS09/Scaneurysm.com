@@ -73,7 +73,7 @@ const patientService = {
     localStorage.setItem("access_token", res.data.access);
     localStorage.setItem("refresh_token", res.data.refresh);
 
-    await authService.fetchUserProfile();
+    // await authService.fetchUserProfile();
     return res.data;
   },
 
@@ -111,7 +111,8 @@ const doctorService = {
     localStorage.setItem("access_token", res.data.access);
     localStorage.setItem("refresh_token", res.data.refresh);
 
-    await authService.fetchUserProfile();
+    // this requires a valid access token, which is set after login and not signup
+    // await authService.fetchUserProfile();
     return res.data;
   },
 

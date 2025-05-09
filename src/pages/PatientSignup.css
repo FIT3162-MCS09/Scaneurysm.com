@@ -1,0 +1,278 @@
+/* Login Page Styling */
+.login-container {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(to right, #1C3334, #376E6F);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.left-section {
+    flex: 1;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: left;
+    margin-top: -100px; /* 🆕 Moves the heading higher */
+}
+
+
+.right-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    width: 350px;
+    text-align: center;
+}
+
+.login-box h2 {
+    color: #1C3334;
+    font-family: "PT Serif", serif;
+    margin-bottom: 20px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Arial", sans-serif;
+}
+
+.login-box button {
+    background: #1C3334;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.login-box button:hover {
+    background: #376E6F;
+}
+
+.login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-actions a {
+    font-size: 0.9rem;
+    color: #376E6F;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.login-box p {
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.login-box p a {
+    color: #376E6F;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-box-select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Arial", sans-serif;
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+.left-section h1 {
+    color: white;
+    font-size: 5rem;
+    font-weight: bold;
+    font-family: "Times New Roman", sans-serif;
+}
+
+.login-logo-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.login-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-logo {
+    width: 400px;
+    height: auto;
+    margin-bottom: 0px;
+    object-fit: contain;
+}
+
+
+/* Add these styles to Login.css */
+.dropdown {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Arial", sans-serif;
+    background-color: white;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%231C3334' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+.dropdown:focus {
+    outline: none;
+    border-color: #376E6F;
+    box-shadow: 0 0 0 2px rgba(55, 110, 111, 0.1);
+}
+
+.dropdown.input-error {
+    border-color: #ff4444;
+    background-color: #fff8f8;
+}
+
+input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Arial", sans-serif;
+    color: #333;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: transparent;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background-color: rgba(55, 110, 111, 0.1);
+}
+
+.input-with-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.input-with-search input {
+    flex: 1;
+    width: calc(100% - 48px); /* Account for button width + gap */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "Arial", sans-serif;
+    margin: 0; /* Remove default margin */
+}
+
+.input-with-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.input-with-search {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+}
+
+.search-input {
+    width: 90%;
+    height: 40px;
+}
+
+.search-button {
+    width: 10%;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1C3334;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+
+.search-button svg {
+    width: 16px;
+    height: 16px;
+}
+
+.search-button:hover {
+    background: #376E6F;
+}
+
+.search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.search-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 15px 0;
+}
+
+.doctor-result {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.doctor-result:hover {
+    background: #f5f5f5;
+}
