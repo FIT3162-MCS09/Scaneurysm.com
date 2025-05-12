@@ -199,7 +199,7 @@ const PatientSignup = () => {
                   }}
                   style={{ width: '20%', minWidth: '40px' }}
               >
-                <FaSearch />
+                <FaSearch size={16} />
               </button>
             </div>
             {form.primary_doctor && (
