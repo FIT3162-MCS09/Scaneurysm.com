@@ -4,7 +4,8 @@ import { patientService } from "../services/authServices";
 import { patientSchema } from "../schemas/patientSchema";
 import "./PatientSignup.css";
 import { searchDoctors } from "../services/searchServices";
-import { FaSearch } from "react-icons/fa";
+import { IconType } from 'react-icons';
+import { FaSearch } from 'react-icons/fa';
 
 const PatientSignup = () => {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ const PatientSignup = () => {
   const [showDoctorSearch, setShowDoctorSearch] = useState(false);
   const [doctorSearchInput, setDoctorSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const SearchIcon: IconType = FaSearch;
+
 
   const [form, setForm] = useState({
     username: "",
@@ -191,16 +194,16 @@ const PatientSignup = () => {
                   onChange={(e) => setDoctorSearchInput(e.target.value)}
                   style={{ width: '80%', padding: '8px', height: '38px', boxSizing: 'border-box' }}
               />
-              <button
-                  className="search-button"
-                  onClick={() => {
-                    handleDoctorSearch();
-                    setShowDoctorSearch(true);
-                  }}
-                  style={{ width: '20%', minWidth: '40px' }}
-              >
-                {React.createElement(FaSearch, { size: 16 })}
-              </button>
+            <button
+                className="search-button"
+                onClick={() => {
+                  handleDoctorSearch();
+                  setShowDoctorSearch(true);
+                }}
+                style={{ width: '20%', minWidth: '40px' }}
+            >
+                <SearchIcon size={16} />
+            </button>
             </div>
             {form.primary_doctor && (
                 <div style={{
