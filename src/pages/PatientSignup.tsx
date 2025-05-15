@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { patientService } from "../services/authServices";
 import { patientSchema } from "../schemas/patientSchema";
 import "./PatientSignup.css";
@@ -7,11 +8,13 @@ import { searchDoctors } from "../services/searchServices";
 
 const PatientSignup = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('patientSignup');
   const [error, setError] = useState("");
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [showDoctorSearch, setShowDoctorSearch] = useState(false);
   const [doctorSearchInput, setDoctorSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+
 
   const SearchIcon = () => (
   <svg
@@ -110,13 +113,13 @@ const PatientSignup = () => {
   return (
       <div className="login-container">
         <div className="left-section">
-          <h1>Patient Signup</h1>
+          <h1>{t('title')}</h1>
         </div>
         <div className="right-section">
           <div className="login-box">
             <input
                 name="username"
-                placeholder="Username"
+                placeholder={t('username')}
                 value={form.username}
                 onChange={handleChange}
                 className={getInputClassName("username")}
@@ -125,7 +128,7 @@ const PatientSignup = () => {
 
             <input
                 name="email"
-                placeholder="Email"
+                placeholder={t('email')}
                 type="email"
                 value={form.email}
                 onChange={handleChange}
@@ -135,7 +138,7 @@ const PatientSignup = () => {
 
             <input
                 name="password"
-                placeholder="Password"
+                placeholder={t('password')}
                 type="password"
                 value={form.password}
                 onChange={handleChange}
@@ -145,7 +148,7 @@ const PatientSignup = () => {
 
             <input
                 name="first_name"
-                placeholder="First Name"
+                placeholder={t('firstName')}
                 value={form.first_name}
                 onChange={handleChange}
                 className={getInputClassName("first_name")}
@@ -154,7 +157,7 @@ const PatientSignup = () => {
 
             <input
                 name="last_name"
-                placeholder="Last Name"
+                placeholder={t('lastName')}
                 value={form.last_name}
                 onChange={handleChange}
                 className={getInputClassName("last_name")}
@@ -163,7 +166,7 @@ const PatientSignup = () => {
 
             <input
                 name="medical_record_number"
-                placeholder="Medical Record Number"
+                placeholder={t('medicalNumber')}
                 value={form.medical_record_number}
                 onChange={handleChange}
                 className={getInputClassName("medical_record_number")}
@@ -178,7 +181,7 @@ const PatientSignup = () => {
                 value={form.birth_date}
                 onChange={handleChange}
                 className={getInputClassName("birth_date")}
-                max={new Date().toISOString().split('T')[0]} // Prevents future dates
+                max={new Date().toISOString().split('T')[0]}
             />
             {validationErrors.birth_date && <span className="error-message">{validationErrors.birth_date}</span>}
 
@@ -188,89 +191,38 @@ const PatientSignup = () => {
                 onChange={handleChange}
                 className={`dropdown ${getInputClassName("sex")}`}
             >
-              <option value="" disabled hidden>Select gender</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-              <option value="I">Intersex</option>
-              <option value="O">Other</option>
-              <option value="U">Unspecified</option>
-              <option value="P">Prefer not to say</option>
+              <option value="" disabled hidden>{t('sex')}</option>
+              <option value="M">{t('sex.male')}</option>
+              <option value="F">{t('sex.female')}</option>
+              <option value="I">{t('sex.intersex')}</option>
+              <option value="O">{t('sex.other')}</option>
+              <option value="U">{t('sex.unspecified')}</option>
+              <option value="P">{t('sex.preferNotToSay')}</option>
             </select>
             {validationErrors.sex && <span className="error-message">{validationErrors.sex}</span>}
 
             <div className="input-with-search">
               <input
                   name="primary_doctor"
-                  placeholder="Search doctor by full name"
+                  placeholder={t('searchDoctor')}
                   value={doctorSearchInput}
                   onChange={(e) => setDoctorSearchInput(e.target.value)}
                   style={{ width: '80%', padding: '8px', height: '38px', boxSizing: 'border-box' }}
               />
-                <button
-                    className="search-button"
-                    onClick={() => {
-                      handleDoctorSearch();
-                      setShowDoctorSearch(true);
-                    }}
-                    style={{ width: '20%', minWidth: '40px' }}
-                >
-                    <SearchIcon />
-                </button>
+              <button
+                  className="search-button"
+                  onClick={() => {
+                    handleDoctorSearch();
+                    setShowDoctorSearch(true);
+                  }}
+                  style={{ width: '20%', minWidth: '40px' }}
+              >
+                <SearchIcon />
+              </button>
             </div>
-            {form.primary_doctor && (
-                <div style={{
-                  backgroundColor: '#f0f9f9',
-                  padding: '8px 12px',
-                  borderRadius: '4px',
-                  marginTop: '5px',
-                  fontSize: '0.9rem',
-                  color: '#1C3334',
-                  border: '1px solid #d0e8e8'
-                }}>
-                  ✓ Selected Doctor: {doctorSearchInput}
-                </div>
-            )}
-            {validationErrors.primary_doctor && (
-                <span className="error-message">{validationErrors.primary_doctor}</span>
-            )}
-            {showDoctorSearch && (
-                <div className="search-modal">
-                  <div className="search-modal-content">
-                    <h3>Select a Doctor</h3>
-                    <div className="search-results">
-                      {searchResults.map((doctor: any) => (
-                          <div
-                              key={doctor.id}
-                              className="doctor-result"
-                              onClick={() => {
-                                setForm({ ...form, primary_doctor: doctor.id });
-                                setDoctorSearchInput(`${doctor.first_name} ${doctor.last_name}`);
-                                setShowDoctorSearch(false);
-                              }}
-                          >
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <span style={{ fontWeight: '500' }}>
-                {doctor.first_name} {doctor.last_name}
-              </span>
-                              <span style={{ fontSize: '0.9rem', color: '#666' }}>
-                {doctor.email}
-              </span>
-                            </div>
-                          </div>
-                      ))}
-                    </div>
-                    <button
-                        onClick={() => setShowDoctorSearch(false)}
-                        style={{ marginTop: '15px' }}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-            )}
 
-            <button onClick={handleSubmit}>Sign Up</button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <button onClick={handleSubmit}>{t('submit')}</button>
+            {error && <p style={{ color: "red" }}>{t('errors.generic')}</p>}
           </div>
         </div>
       </div>
