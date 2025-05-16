@@ -5,6 +5,7 @@ import ProfileButton from "../components/ProfileButton";
 import "./Dashboard.css";
 import Footer from "../components/Footer";
 import { useTranslation } from 'react-i18next';
+import LanguageSelector from "../components/LanguageSelector";
 
 
 const Dashboard = () => {
@@ -26,7 +27,10 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <ProfileButton />
+        <div className="top-controls">
+            <LanguageSelector />
+            <ProfileButton />
+        </div>
 
       <header className="dashboard-header">
         <img

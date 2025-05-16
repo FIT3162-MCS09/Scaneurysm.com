@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./Login.css";
 import { patientService } from "../services/authServices";
+import LanguageSelector from "../components/LanguageSelector";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -27,6 +28,9 @@ const Login = () => {
 
     return (
         <div className="login-container">
+            <div className="login-language-selector">
+                <LanguageSelector />
+            </div>
             <div className="left-section">
                 <h1>{t("title")}</h1>
             </div>
