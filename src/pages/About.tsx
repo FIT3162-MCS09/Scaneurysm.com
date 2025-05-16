@@ -1,16 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./About.css";
 import SidebarPatient from "../components/SidebarPatient";
 import Footer from "../components/Footer";
 
 const About = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation("about");
 
     return (
         <div className="about-model-container">
             <SidebarPatient />
-            <h1>About Information</h1>
+            <h1>{t("title")}</h1>
             <div className="navigation-cards">
                 <div
                     className="card"
@@ -19,8 +21,8 @@ const About = () => {
                     tabIndex={0}
                     onKeyDown={(e) => e.key === "Enter" && navigate("/about-aneurysm")}
                 >
-                    <h3>About Aneurysm</h3>
-                    <p>Learn more about brain aneurysms, their symptoms, and prevention.</p>
+                    <h3>{t("aboutAneurysm")}</h3>
+                    <p>{t("aneurysmDescription")}</p>
                 </div>
                 <div
                     className="card"
@@ -29,8 +31,8 @@ const About = () => {
                     tabIndex={0}
                     onKeyDown={(e) => e.key === "Enter" && navigate("/about-model")}
                 >
-                    <h3>About the MRI Image Classification Model</h3>
-                    <p>Discover how the MRI Image Classification Model works and its limitations.</p>
+                    <h3>{t("aboutModel")}</h3>
+                    <p>{t("modelDescription")}</p>
                 </div>
             </div>
             <Footer />
