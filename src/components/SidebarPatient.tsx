@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Sidebar.css";
+import LanguageSelector from "./LanguageSelector";
 
 const SidebarPatient = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
@@ -51,6 +52,9 @@ const SidebarPatient = () => {
                 >
                     About
                 </button>
+                <div className="sidebar-footer">
+                    <LanguageSelector />
+                </div>
             </div>
 
             {/* Toggle Button */}

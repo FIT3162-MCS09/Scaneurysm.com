@@ -120,3 +120,16 @@
 .social-icons i:hover {
   color: #ccc;
 }
+
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+/* Adjust the width of language selector in this context */
+.top-controls .custom-dropdown {
+  max-width: 160px;
+}

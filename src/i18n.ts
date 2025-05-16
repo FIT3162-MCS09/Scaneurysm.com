@@ -17,8 +17,15 @@ i18n
         resources,
         fallbackLng: 'en',
         supportedLngs: ['en', 'es', 'ms', 'zh', 'ta', 'id'],
-        ns: ['patientSignup', 'dashboard'],
-        defaultNS: 'patientSignup',
+        ns: ['about',
+            'aboutAneurysm',
+            'aboutModel',
+            'login',
+            'patientProfile',
+            'patientSignup',
+            'dashboard'
+        ],
+        defaultNS: 'about',
         interpolation: {
             escapeValue: false
         },

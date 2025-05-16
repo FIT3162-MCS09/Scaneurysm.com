@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, DragEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import fileServices from "../services/fileServices";
 import predictionServices from "../services/predictionServices";
 import SidebarPatient from "../components/SidebarPatient";
@@ -7,6 +8,7 @@ import ProfileButton from "../components/ProfileButton";
 import "./Upload.css";
 
 const Upload = () => {
+  const { t } = useTranslation("upload");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -20,7 +22,7 @@ const Upload = () => {
 
   const handleFile = (newFile: File) => {
     if (!newFile.type.startsWith("image/")) {
-      setError("Please upload an image file");
+      setError(t('error'));
       return;
     }
     setFile(newFile);
@@ -56,7 +58,7 @@ const Upload = () => {
 
   const analyze = async () => {
     if (!file) {
-      setError("Please select a file first");
+      setError(t('error'));
       return;
     }
 
@@ -76,7 +78,7 @@ const Upload = () => {
       setError(
           err.response?.data?.error ||
           err.message ||
-          "Analysis failed. Please check console for details."
+          t('analysisFailed')
       );
     } finally {
       setLoading(false);
@@ -93,7 +95,7 @@ const Upload = () => {
         setTimeout(() => {
           setFile(null);
           setPreview("");
-        }, 300); // Match the animation duration in CSS
+        }, 300);
       }
     };
 
@@ -110,7 +112,7 @@ const Upload = () => {
         <SidebarPatient />
 
         <div className="main-content">
-          <h1>Upload Brain Scan</h1>
+          <h1>{t('title')}</h1>
 
           <div
               className={`drop-zone ${isDragging ? "dragging" : ""}`}
@@ -129,18 +131,18 @@ const Upload = () => {
             ) : (
                 <>
                   <div className="drop-zone-text">
-                    <p>Drag & Drop your brain scan here</p>
-                    <p className="small">Accepts image files only</p>
+                    <p>{t('dragDrop')}</p>
+                    <p className="small">{t('accepts')}</p>
                   </div>
                   <div className="or-divider">
-                    <span>OR</span>
+                    <span>{t('or')}</span>
                   </div>
                   <button
                       className="manual-upload-btn"
                       onClick={() => fileInputRef.current?.click()}
                       type="button"
                   >
-                    Choose File
+                    {t('chooseFile')}
                   </button>
                 </>
             )}
@@ -155,14 +157,14 @@ const Upload = () => {
             />
           </div>
 
-          {file && <p className="file-name">Selected file: {file.name}</p>}
+          {file && <p className="file-name">{t('selectedFile')}: {file.name}</p>}
 
           <button
               className="analyze-button"
               onClick={analyze}
               disabled={!file || loading}
           >
-            {loading ? `Processing (${progress}%)…` : "Analyze"}
+            {loading ? `${t('processing')} (${progress}%)…` : t('analyze')}
           </button>
 
           {loading && (

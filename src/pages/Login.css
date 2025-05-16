@@ -129,5 +129,14 @@
     margin-bottom: 0px;
     object-fit: contain;
   }
-  
-  
+
+.login-language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.login-language-selector .custom-dropdown {
+    max-width: 160px;
+}
