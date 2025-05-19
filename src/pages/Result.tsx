@@ -82,31 +82,31 @@ const Result = () => {
                             </div>
                         </div>
 
-                        {result.explanation && (
+                        {result.shap_explanation && (
                             <div className="explanation-section">
                                 <h3>{t('aiExplanation')}</h3>
-                                {result.explanation.status === "processing" ? (
+                                {result.shap_explanation.status === "processing" ? (
                                     <p>{t('shapProcessing')}</p>
                                 ) : (
                                     <div className="shap-visualization">
                                         <h4>{t('quadrantScores')}:</h4>
                                         <ul>
-                                            {Object.entries(result.explanation.quadrant_scores).map(([k, v]) => (
+                                            {Object.entries(result.shap_explanation.analysis.quadrant_scores).map(([k, v]) => (
                                                 <li key={k}>{`${k}: ${v}`}</li>
                                             ))}
                                         </ul>
                                         <h4>{t('stabilityScore')}:</h4>
-                                        <p>{result.explanation.stability_score}</p>
+                                        <p>{result.shap_explanation.analysis.stability_score}</p>
                                         <h4>{t('importanceScore')}:</h4>
-                                        <p>{result.explanation.importance_score}</p>
+                                        <p>{result.shap_explanation.analysis.importance_score}</p>
                                         <h4>{t('mostImportantQuadrant')}:</h4>
-                                        <p>{result.explanation.most_important_quadrant}</p>
-                                        {result.explanation.visualization?.url && (
+                                        <p>{result.shap_explanation.analysis.most_important_quadrant}</p>
+                                        {result.shap_explanation.visualization?.url && (
                                             <div>
                                                 <h4>{t('visualization')}:</h4>
                                                 <img
                                                     className="visualization-image"
-                                                    src={result.explanation.visualization.url}
+                                                    src={result.shap_explanation.visualization.url}
                                                     alt="SHAP Analysis Visualization"
                                                 />
                                             </div>
