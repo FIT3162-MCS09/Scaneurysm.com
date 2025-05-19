@@ -1,0 +1,35 @@
+/* DoctorLocator.css – minimal custom styling for leaflet map page */
+
+/* spacing & typography tweaks (using Tailwind classes in the component, but
+   provide fallbacks so the page still looks good without Tailwind) */
+.page-wrapper {
+  padding: 1.5rem;                /* p-6 fallback */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;                    /* space-y-6 fallback */
+}
+
+.page-wrapper h1 {
+  font-size: 1.875rem;            /* text-3xl */
+  font-weight: 600;               /* font-semibold */
+  text-align: center;
+  color: #1c3334;
+  margin-bottom: 0.5rem;          /* mb-2 */
+}
+
+.page-wrapper p {
+  text-align: center;
+  color: #6b7280;                 /* text-gray-600 */
+  max-width: 48rem;               /* max-w-xl */
+  margin: 0 auto;
+}
+
+/* ensure leaflet map respects rounded corners */
+.leaflet-container {
+  border-radius: 8px;
+}
+
+/* fix z-index so ProfileButton stays above map popups */
+.profile-button {
+  z-index: 1000;
+}

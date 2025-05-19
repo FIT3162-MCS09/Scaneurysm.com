@@ -15,6 +15,7 @@ import API from "./services/apiClient";
 import AboutModel from "./pages/AboutModel";
 import About from "./pages/About";
 import SidebarStateHandler from "./handler/SidebarStateHandler";
+import DoctorLocator from "./pages/DoctorLocator";
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -74,6 +75,7 @@ function App() {
               <Route path="/result/" element={<ResultList />} />
               <Route path="/about-model" element={<AboutModel />} />
               <Route path="/about-aneurysm" element={<AboutAneurysm />} />
+              <Route path="/find-hospital" element={<DoctorLocator />} />
           </Routes>
         </div>
       </Router>
