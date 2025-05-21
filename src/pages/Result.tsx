@@ -5,6 +5,7 @@ import predictionServices from "../services/predictionServices";
 import SidebarPatient from "../components/SidebarPatient";
 import ProfileButton from "../components/ProfileButton";
 import "./Result.css";
+import ShapQuadrantChart from "../components/ShapQuadrantChart";
 
 const Result = () => {
     const { t } = useTranslation("result");
@@ -67,8 +68,8 @@ const Result = () => {
                         <div className="prediction-section">
                             <h3>{t('aiPrediction')}</h3>
                             <div className="prediction-card">
-                                <p className={result.prediction?.prediction === "aneurysm" ? "positive" : "negative"}>
-                                    {result.prediction?.prediction === "aneurysm" ? t('aneurysmDetected') : t('noAneurysm')}
+                                <p className={result.prediction?.prediction === "Aneurysm" ? "positive" : "negative"}>
+                                    {result.prediction?.prediction === "Aneurysm" ? t('aneurysmDetected') : t('noAneurysm')}
                                 </p>
                                 {result.prediction?.confidence && (
                                     <p>{t('confidence')}: {(result.prediction.confidence * 100).toFixed(1)}%</p>
@@ -89,20 +90,22 @@ const Result = () => {
                                     <p>{t('shapProcessing')}</p>
                                 ) : (
                                     <div className="shap-visualization">
-                                        <h4>{t('quadrantScores')}:</h4>
-                                        <ul>
-                                            {Object.entries(result.shap_explanation.analysis.quadrant_scores).map(([k, v]) => (
-                                                <li key={k}>{`${k}: ${v}`}</li>
-                                            ))}
-                                        </ul>
-                                        <h4>{t('stabilityScore')}:</h4>
-                                        <p>{result.shap_explanation.analysis.stability_score}</p>
-                                        <h4>{t('importanceScore')}:</h4>
-                                        <p>{result.shap_explanation.analysis.importance_score}</p>
-                                        <h4>{t('mostImportantQuadrant')}:</h4>
-                                        <p>{result.shap_explanation.analysis.most_important_quadrant}</p>
+                                        <div className="visualization-container">
+                                            <div className="chart-container">
+                                                <h4>{t('quadrantAnalysis')}</h4>
+                                                <ShapQuadrantChart result={result} />
+                                            </div>
+                                            <div className="scores-container">
+                                                <h4>{t('stabilityScore')}:</h4>
+                                                <p>{result.shap_explanation.analysis.stability_score.toFixed(3)}</p>
+                                                <h4>{t('importanceScore')}:</h4>
+                                                <p>{result.shap_explanation.analysis.importance_score.toFixed(6)}</p>
+                                                <h4>{t('mostImportantQuadrant')}:</h4>
+                                                <p>{result.shap_explanation.analysis.most_important_quadrant}</p>
+                                            </div>
+                                        </div>
                                         {result.shap_explanation.visualization?.url && (
-                                            <div>
+                                            <div className="shap-image">
                                                 <h4>{t('visualization')}:</h4>
                                                 <img
                                                     className="visualization-image"
