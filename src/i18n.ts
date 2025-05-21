@@ -23,7 +23,11 @@ i18n
             'login',
             'patientProfile',
             'patientSignup',
-            'dashboard'
+            'dashboard',
+            'profilePopup',
+            'result',
+            'upload',
+            'resultSummary'
         ],
         defaultNS: 'about',
         interpolation: {
