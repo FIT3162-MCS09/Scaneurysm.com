@@ -14,7 +14,7 @@ const ResultSummary: React.FC<ResultSummaryProps> = ({
                                                          totalScans,
                                                          recentResults
                                                      }) => {
-    const { t } = useTranslation('dashboard');
+    const { t } = useTranslation('resultSummary');
 
     const getConfidenceLevel = (confidence: number): string => {
         if (confidence >= 0.8) return 'high';
@@ -22,18 +22,25 @@ const ResultSummary: React.FC<ResultSummaryProps> = ({
         return 'low';
     };
 
+    const mapPredictionToKey = (prediction: string): string => {
+        const lowercasePrediction = prediction.toLowerCase();
+        if (lowercasePrediction === 'aneurysm') return 'positive';
+        if (lowercasePrediction === 'non-aneurysm') return 'negative';
+        return 'inconclusive';
+    };
+
     return (
         <div className="result-summary">
-            <h3>{t('summary.title')}</h3>
+            <h3>{t('title')}</h3>
 
             <div className="summary-stats">
                 <div className="stat-box">
-                    <span className="stat-label">{t('summary.totalScans')}</span>
+                    <span className="stat-label">{t('totalScans')}</span>
                     <span className="stat-value">{totalScans}</span>
                 </div>
 
                 <div className="stat-box">
-                    <span className="stat-label">{t('summary.latestScan')}</span>
+                    <span className="stat-label">{t('latestScan')}</span>
                     <span className="stat-value">
                         {new Date(latestResult.created_at).toLocaleDateString()}
                     </span>
@@ -42,9 +49,9 @@ const ResultSummary: React.FC<ResultSummaryProps> = ({
                 <div className={`stat-box prediction ${
                     latestResult.prediction.prediction.toLowerCase()
                 }`}>
-                    <span className="stat-label">{t('summary.result')}</span>
+                    <span className="stat-label">{t('result')}</span>
                     <span className="stat-value">
-                        {t(`prediction.${latestResult.prediction.prediction.toLowerCase()}`)}
+                            {t(`prediction.${mapPredictionToKey(latestResult.prediction.prediction)}`)}
                         <span className="confidence">
                             {(latestResult.prediction.confidence * 100).toFixed(1)}%
                             ({t(`confidence.${getConfidenceLevel(latestResult.prediction.confidence)}`)})
@@ -56,11 +63,11 @@ const ResultSummary: React.FC<ResultSummaryProps> = ({
             {recentResults.length > 1 && (
                 <>
                     <div className="prediction-trends">
-                        <h4>{t('summary.trends')}</h4>
+                        <h4>{t('trends')}</h4>
                         <PredictionGraph results={[...recentResults].reverse()} />
                     </div>
                     <div className="recent-scans">
-                        <h4>{t('summary.recentScans')}</h4>
+                        <h4>{t('recentScans')}</h4>
                         <div className="recent-list">
                             {recentResults.slice(1).map(result => (
                                 <div key={result.id} className="recent-item">
@@ -70,7 +77,7 @@ const ResultSummary: React.FC<ResultSummaryProps> = ({
                                     <span className={`prediction ${
                                         result.prediction.prediction.toLowerCase()
                                     }`}>
-                                        {t(`prediction.${result.prediction.prediction.toLowerCase()}`)}
+                                        {t(`prediction.${mapPredictionToKey(result.prediction.prediction)}`)}
                                     </span>
                                 </div>
                             ))}
