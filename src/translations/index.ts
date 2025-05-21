@@ -8,6 +8,7 @@ import { patientProfile } from './pages/PatientProfile';
 import { profilePopupTranslations } from './pages/ProfilePopup';
 import { resultTranslations } from './pages/Result';
 import { uploadTranslations } from './pages/Upload';
+import { resultSummary } from './components/resultSummary';
 
 export const resources = {
     en: {
@@ -20,7 +21,8 @@ export const resources = {
         dashboard: dashboard.en,
         profilePopup: profilePopupTranslations.en,
         result: resultTranslations.en,
-        upload: uploadTranslations.en
+        upload: uploadTranslations.en,
+        resultSummary:resultSummary.en
     },
     es: {
         about: about.es,
@@ -32,7 +34,8 @@ export const resources = {
         dashboard: dashboard.es,
         profilePopup: profilePopupTranslations.es,
         result: resultTranslations.es,
-        upload: uploadTranslations.es
+        upload: uploadTranslations.es,
+        resultSummary:resultSummary.es
     },
     ms: {
         about: about.ms,
@@ -44,7 +47,8 @@ export const resources = {
         dashboard: dashboard.ms,
         profilePopup: profilePopupTranslations.ms,
         result: resultTranslations.ms,
-        upload: uploadTranslations.ms
+        upload: uploadTranslations.ms,
+        resultSummary:resultSummary.ms
     },
     zh: {
         about: about.zh,
@@ -56,7 +60,8 @@ export const resources = {
         dashboard: dashboard.zh,
         profilePopup: profilePopupTranslations.zh,
         result: resultTranslations.zh,
-        upload: uploadTranslations.zh
+        upload: uploadTranslations.zh,
+        resultSummary:resultSummary.zh
     },
     ta: {
         about: about.ta,
@@ -68,7 +73,8 @@ export const resources = {
         dashboard: dashboard.ta,
         profilePopup: profilePopupTranslations.ta,
         result: resultTranslations.ta,
-        upload: uploadTranslations.ta
+        upload: uploadTranslations.ta,
+        resultSummary:resultSummary.ta
     },
     id: {
         about: about.id,
@@ -80,6 +86,7 @@ export const resources = {
         dashboard: dashboard.id,
         profilePopup: profilePopupTranslations.id,
         result: resultTranslations.id,
-        upload: uploadTranslations.id
+        upload: uploadTranslations.id,
+        resultSummary:resultSummary.id
     }
 };

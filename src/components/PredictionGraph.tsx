@@ -7,11 +7,7 @@ import {
     LineElement,
     Title,
     Tooltip,
-    Legend,
-    ScaleOptionsByType,
-    Scale,
-    CoreScaleOptions,
-    Tick
+    Legend
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { PredictionResult } from '../types/prediction';
