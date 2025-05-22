@@ -102,8 +102,27 @@ const Result = () => {
                                                 <p>{result.shap_explanation.analysis.importance_score.toFixed(6)}</p>
                                                 <h4>{t('mostImportantQuadrant')}:</h4>
                                                 <p>{result.shap_explanation.analysis.most_important_quadrant}</p>
+                                                
+                                                {/* Add relative importance scores */}
+                                                <h4>{t('relativeImportance')}:</h4>
+                                                <div className="relative-importance">
+                                                    {Object.entries(result.shap_explanation.analysis.relative_importances).map(([key, value]) => (
+                                                        <p key={key}>{key.replace('_', ' ')}: {(value as number).toFixed(3)}</p>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
+
+                                        {/* Add SHAP analysis timing information */}
+                                        {result.shap_explanation.metadata && (
+                                            <div className="timing-info">
+                                                <h4>{t('analysisDetails')}:</h4>
+                                                <p>{t('startTime')}: {new Date(result.shap_explanation.metadata.start_time).toLocaleString()}</p>
+                                                <p>{t('endTime')}: {new Date(result.shap_explanation.metadata.end_time).toLocaleString()}</p>
+                                                <p>{t('duration')}: {result.shap_explanation.metadata.analysis_duration.toFixed(2)} seconds</p>
+                                            </div>
+                                        )}
+
                                         {result.shap_explanation.visualization?.url && (
                                             <div className="shap-image">
                                                 <h4>{t('visualization')}:</h4>
@@ -122,8 +141,24 @@ const Result = () => {
                         {result.prediction?.metadata && (
                             <div className="metadata-section">
                                 <h3>{t('metadata')}</h3>
-                                <p>{t('timestamp')}: {result.prediction.metadata.timestamp}</p>
-                                <p>{t('pytorchVersion')}: {result.prediction.metadata.pytorch_version}</p>
+                                <div className="metadata-grid">
+                                    <div className="metadata-item">
+                                        <label>{t('timestamp')}:</label>
+                                        <p>{new Date(result.prediction.metadata.timestamp).toLocaleString()}</p>
+                                    </div>
+                                    <div className="metadata-item">
+                                        <label>{t('pytorchVersion')}:</label>
+                                        <p>{result.prediction.metadata.pytorch_version}</p>
+                                    </div>
+                                    <div className="metadata-item">
+                                        <label>{t('user')}:</label>
+                                        <p>{result.prediction.metadata.user}</p>
+                                    </div>
+                                    <div className="metadata-item">
+                                        <label>{t('createdAt')}:</label>
+                                        <p>{new Date(result.created_at).toLocaleString()}</p>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>

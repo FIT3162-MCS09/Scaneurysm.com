@@ -22,7 +22,14 @@ export const resultTranslations = {
         visualization: "Visualization",
         metadata: "Metadata",
         timestamp: "Timestamp",
-        pytorchVersion: "PyTorch Version"
+        pytorchVersion: "PyTorch Version",
+        relativeImportance: "Relative Importance",
+        analysisDetails: "Analysis Details",
+        startTime: "Start Time",
+        endTime: "End Time",
+        duration: "Duration",
+        user: "User",
+        createdAt: "Created At"
     },
     es: {
         title: "Resultados del Análisis",
@@ -47,9 +54,15 @@ export const resultTranslations = {
         visualization: "Visualización",
         metadata: "Metadatos",
         timestamp: "Marca de Tiempo",
-        pytorchVersion: "Versión de PyTorch"
+        pytorchVersion: "Versión de PyTorch",
+        relativeImportance: "Importancia Relativa",
+        analysisDetails: "Detalles del Análisis",
+        startTime: "Hora de Inicio",
+        endTime: "Hora de Finalización",
+        duration: "Duración",
+        user: "Usuario",
+        createdAt: "Creado en"
     },
-    // ...translations for ms, zh, ta, id...
     ms: {
         title: "Keputusan Analisis",
         error: "Ralat",
@@ -73,7 +86,14 @@ export const resultTranslations = {
         visualization: "Visualisasi",
         metadata: "Metadata",
         timestamp: "Cap Masa",
-        pytorchVersion: "Versi PyTorch"
+        pytorchVersion: "Versi PyTorch",
+        relativeImportance: "Kepentingan Relatif",
+        analysisDetails: "Butiran Analisis",
+        startTime: "Masa Mula",
+        endTime: "Masa Tamat",
+        duration: "Tempoh",
+        user: "Pengguna",
+        createdAt: "Dibuat Pada"
     },
     zh: {
         title: "分析结果",
@@ -98,7 +118,14 @@ export const resultTranslations = {
         visualization: "可视化",
         metadata: "元数据",
         timestamp: "时间戳",
-        pytorchVersion: "PyTorch 版本"
+        pytorchVersion: "PyTorch 版本",
+        relativeImportance: "相对重要性",
+        analysisDetails: "分析详情",
+        startTime: "开始时间",
+        endTime: "结束时间",
+        duration: "持续时间",
+        user: "用户",
+        createdAt: "创建时间"
     },
     ta: {
         title: "விசாரணை முடிவுகள்",
@@ -123,7 +150,14 @@ export const resultTranslations = {
         visualization: "காட்சி",
         metadata: "மெட்டாடேட்டா",
         timestamp: "காலச்சுவடு",
-        pytorchVersion: "PyTorch பதிப்பு"
+        pytorchVersion: "PyTorch பதிப்பு",
+        relativeImportance: "ஒப்பீட்டு முக்கியத்துவம்",
+        analysisDetails: "பகுப்பாய்வு விவரங்கள்",
+        startTime: "தொடக்க நேரம்",
+        endTime: "முடிவு நேரம்",
+        duration: "கால அளவு",
+        user: "பயனர்",
+        createdAt: "உருவாக்கப்பட்டது"
     },
     id: {
         title: "Hasil Analisis",
@@ -148,6 +182,13 @@ export const resultTranslations = {
         visualization: "Visualisasi",
         metadata: "Metadata",
         timestamp: "Cap Waktu",
-        pytorchVersion: "Versi PyTorch"
+        pytorchVersion: "Versi PyTorch",
+        relativeImportance: "Kepentingan Relatif",
+        analysisDetails: "Detail Analisis",
+        startTime: "Waktu Mulai",
+        endTime: "Waktu Selesai",
+        duration: "Durasi",
+        user: "Pengguna",
+        createdAt: "Dibuat Pada"
     }
 };
