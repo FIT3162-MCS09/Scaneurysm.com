@@ -221,6 +221,58 @@ const PatientSignup = () => {
               </button>
             </div>
 
+            {form.primary_doctor && (
+                <div style={{
+                  backgroundColor: '#f0f9f9',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  marginTop: '5px',
+                  fontSize: '0.9rem',
+                  color: '#1C3334',
+                  border: '1px solid #d0e8e8'
+                }}>
+                  ✓ Selected Doctor: {doctorSearchInput}
+                </div>
+            )}
+            {validationErrors.primary_doctor && (
+                <span className="error-message">{validationErrors.primary_doctor}</span>
+            )}
+            {showDoctorSearch && (
+                <div className="search-modal">
+                  <div className="search-modal-content">
+                    <h3>Select a Doctor</h3>
+                    <div className="search-results">
+                      {searchResults.map((doctor: any) => (
+                          <div
+                              key={doctor.id}
+                              className="doctor-result"
+                              onClick={() => {
+                                setForm({ ...form, primary_doctor: doctor.id });
+                                setDoctorSearchInput(`${doctor.first_name} ${doctor.last_name}`);
+                                setShowDoctorSearch(false);
+                              }}
+                          >
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                              <span style={{ fontWeight: '500' }}>
+                                {doctor.first_name} {doctor.last_name}
+                              </span>
+                              <span style={{ fontSize: '0.9rem', color: '#666' }}>
+                                {doctor.email}
+                              </span>
+                            </div>
+                          </div>
+                      ))}
+                    </div>
+                    <button
+                        onClick={() => setShowDoctorSearch(false)}
+                        style={{ marginTop: '15px' }}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+            )}
+
             <button onClick={handleSubmit}>{t('submit')}</button>
             {error && <p style={{ color: "red" }}>{t('errors.generic')}</p>}
           </div>
