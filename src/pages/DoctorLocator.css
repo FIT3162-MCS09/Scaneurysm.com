@@ -33,3 +33,9 @@
 .profile-button {
   z-index: 1000;
 }
+
+.leaflet-popup-content,
+.leaflet-popup-content h3 {
+  color: #000;                    /* override any inherited white */
+}
+
