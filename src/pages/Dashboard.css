@@ -58,8 +58,7 @@
   min-width: 300px;
 }
 
-/* Make the About button span full width */
-.dashboard-buttons button:last-child {
+.dashboard-buttons .full-width {
   grid-column: 1 / -1;
 }
 
@@ -444,4 +443,41 @@
   .recent-list {
     grid-template-columns: 1fr;
   }
+}
+
+/* ─── Hospital preview card ────────────────────────────────────────────── */
+.hospital-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-height: 818px;
+}
+
+.hospital-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  background: #ffffff;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.hospital-card-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1C3334;
+  text-align: center;
+}
+
+.hospital-card-label i {
+  color: #376E6F;
+  margin-right: 6px;
+}
+
+.hospital-card .leaflet-container {
+  height: 800px !important;  /* adjust preview height here */
 }

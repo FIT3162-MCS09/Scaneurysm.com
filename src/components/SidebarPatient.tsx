@@ -45,6 +45,13 @@ const SidebarPatient = () => {
                 >
                     My Results
                 </button>
+                       
+                <button
+                className={pathname === "/find-hospital" ? "active" : ""}
+                onClick={() => navigate("/find-hospital")}
+                >
+                Find&nbsp;Hospitals
+                </button>
 
                 <button
                     className={pathname === "/about" ? "active" : ""}

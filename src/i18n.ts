@@ -27,7 +27,8 @@ i18n
             'profilePopup',
             'result',
             'upload',
-            'resultSummary'
+            'resultSummary',
+            'DoctorLocator'
         ],
         defaultNS: 'about',
         interpolation: {
