@@ -324,7 +324,7 @@
   font-weight: 500;
 }
 
-.summary-loading,
+/*.summary-loading,*/
 .summary-error,
 .summary-empty {
   background: white;
@@ -366,7 +366,7 @@
 }
 
 /* Update loading state styles to match */
-.summary-loading,
+/*.summary-loading,*/
 .summary-error,
 .summary-empty {
   width: 100%;
@@ -421,7 +421,7 @@
 
   .dashboard-buttons,
   .result-summary,
-  .summary-loading,
+  /*.summary-loading,*/
   .summary-error,
   .summary-empty {
     width: 100%;
@@ -750,5 +750,16 @@
   .patients-table td:nth-child(2) {
     display: none;
   }
+}
+
+.result-summary-container {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
