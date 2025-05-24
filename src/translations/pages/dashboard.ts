@@ -35,6 +35,8 @@ export const dashboard = {
         },
         prediction:{
             unknown: 'Unknown',
+            aneurysm: 'Aneurysm',
+            nonAneurysm: 'No Aneurysm'
         }
     },
     es: {
@@ -73,6 +75,8 @@ export const dashboard = {
         },
         prediction:{
             unknown: 'Desconocido',
+            aneurysm: 'Aneurisma',
+            nonAneurysm: 'Sin Aneurisma'
         }
     },
     ms: {
@@ -111,6 +115,8 @@ export const dashboard = {
         },
         prediction:{
             unknown: 'Tidak Diketahui',
+            aneurysm: 'Aneurisma',
+            nonAneurysm: 'Tiada Aneurisma'
         }
     },
     zh: {
@@ -149,6 +155,8 @@ export const dashboard = {
         },
         prediction:{
             unknown: '未知',
+            aneurysm: '动脉瘤',
+            nonAneurysm: '无动脉瘤'
         }
     },
     ta: {
@@ -187,6 +195,8 @@ export const dashboard = {
         },
         prediction:{
             unknown: 'தெரியாது',
+            aneurysm: 'அனியூரிசம்',
+            nonAneurysm: 'அனியூரிசம் இல்லாதது'
         }
     },
     id: {
@@ -225,6 +235,8 @@ export const dashboard = {
         },
         prediction:{
             unknown: 'Tidak Diketahui',
+            aneurysm: 'Aneurisma',
+            nonAneurysm: 'Tanpa Aneurisma'
         }
     }
 };

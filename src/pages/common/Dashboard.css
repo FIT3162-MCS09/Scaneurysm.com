@@ -629,6 +629,14 @@
   color: #27ae60;
 }
 
+.diagnosis-badge.Non-aneurysm {
+    background-color: #fef9e7;
+    color: #f39c12;
+}
+.diagnosis-badge.Aneurysm {
+  background-color: #f0f3f4;
+  color: #2c3e50;
+}
 .diagnosis-badge.unknown,
 .diagnosis-badge.error,
 .diagnosis-badge.none {
