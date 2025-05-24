@@ -4,29 +4,57 @@ import { useTranslation } from "react-i18next";
 import predictionServices from "../services/predictionServices";
 import SidebarPatient from "../components/SidebarPatient";
 import ProfileButton from "../components/ProfileButton";
+import ResultCard from "../components/ResultCard";
 import "./Result.css";
-import ShapQuadrantChart from "../components/ShapQuadrantChart";
+import { authService } from "../services/authServices";
 
 const Result = () => {
     const { t } = useTranslation("result");
     const [results, setResults] = useState<any[]>([]);
+    const [patients, setPatients] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [isDoctor, setIsDoctor] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
             try {
-                const data = await predictionServices.getPredictionDetails();
-                // @ts-ignore
-                setResults(data);
+                // First check if user is a doctor
+                const profile = await authService.fetchUserProfile();
+                const userIsDoctor = profile.role === "doctor";
+                setIsDoctor(userIsDoctor);
+
+                if (userIsDoctor) {
+                    // If doctor, fetch patients instead of results
+                    const patientData = await predictionServices.getDoctorPatients();
+                    console.log("Doctor patients:", patientData); // Debug log
+                    setPatients(patientData);
+                } else {
+                    // If patient, fetch their results as before
+                    const data = await predictionServices.getPredictionDetails();
+                    setResults(Array.isArray(data) ? data : [data]);
+                }
             } catch (err: any) {
-                setError(err.message || "Failed to get results");
+                console.error("Error fetching data:", err);
+                setError(err.message || "Failed to get data");
             } finally {
                 setLoading(false);
             }
         })();
     }, []);
+
+    const handlePatientSelect = (patient: any) => {
+        // Ensure we have a valid patient ID before navigating
+        if (!patient || !patient.user_id) {
+            console.error("Invalid patient data:", patient);
+            setError("Invalid patient data");
+            return;
+        }
+        
+        console.log("Navigating to patient results:", patient.user_id);
+        navigate(`/patient/results/${patient.user_id}/`);
+    };
 
     if (error)
         return (
@@ -37,6 +65,52 @@ const Result = () => {
             </div>
         );
 
+    // Doctor view - show patients list
+    if (isDoctor) {
+        return (
+            <div className="result-container">
+                <ProfileButton />
+                <SidebarPatient />
+
+                <h1>My Patients</h1>
+                <button
+                    style={{ marginBottom: "20px" }}
+                    onClick={() => window.location.reload()}
+                >
+                    {t('refresh')}
+                </button>
+
+                {loading ? (
+                    <div className="result-card loading">
+                        <div className="spinner" />
+                        <p>Loading patients...</p>
+                    </div>
+                ) : patients.length === 0 ? (
+                    <div className="result-card">
+                        <p>No patients found linked to your account.</p>
+                    </div>
+                ) : (
+                    <div className="patients-list">
+                        {patients.map((patient) => (
+                            <div key={patient.user_id} className="patient-card">
+                                <h3>{patient.first_name} {patient.last_name}</h3>
+                                <p>Email: {patient.email}</p>
+                                <p>ID: {patient.user_id}</p>
+                                <button 
+                                    className="view-results-btn"
+                                    onClick={() => handlePatientSelect(patient)}
+                                >
+                                    View Patient Results
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    // Patient view - original results view
     return (
         <div className="result-container">
             <ProfileButton />
@@ -61,73 +135,7 @@ const Result = () => {
                     <p>{t('noResults')}</p>
                 </div>
             ) : (
-                results.map((result) => (
-                    <div key={result.id} className="result-card">
-                        <h2>Result ID: {result.id}</h2>
-
-                        <div className="prediction-section">
-                            <h3>{t('aiPrediction')}</h3>
-                            <div className="prediction-card">
-                                <p className={result.prediction?.prediction === "Aneurysm" ? "positive" : "negative"}>
-                                    {result.prediction?.prediction === "Aneurysm" ? t('aneurysmDetected') : t('noAneurysm')}
-                                </p>
-                                {result.prediction?.confidence && (
-                                    <p>{t('confidence')}: {(result.prediction.confidence * 100).toFixed(1)}%</p>
-                                )}
-                                {result.prediction?.probabilities && (
-                                    <div>
-                                        <p>{t('aneurysmProbability')}: {(result.prediction.probabilities.aneurysm * 100).toFixed(1)}%</p>
-                                        <p>{t('nonAneurysmProbability')}: {(result.prediction.probabilities.non_aneurysm * 100).toFixed(1)}%</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {result.shap_explanation && (
-                            <div className="explanation-section">
-                                <h3>{t('aiExplanation')}</h3>
-                                {result.shap_explanation.status === "processing" ? (
-                                    <p>{t('shapProcessing')}</p>
-                                ) : (
-                                    <div className="shap-visualization">
-                                        <div className="visualization-container">
-                                            <div className="chart-container">
-                                                <h4>{t('quadrantAnalysis')}</h4>
-                                                <ShapQuadrantChart result={result} />
-                                            </div>
-                                            <div className="scores-container">
-                                                <h4>{t('stabilityScore')}:</h4>
-                                                <p>{result.shap_explanation.analysis.stability_score.toFixed(3)}</p>
-                                                <h4>{t('importanceScore')}:</h4>
-                                                <p>{result.shap_explanation.analysis.importance_score.toFixed(6)}</p>
-                                                <h4>{t('mostImportantQuadrant')}:</h4>
-                                                <p>{result.shap_explanation.analysis.most_important_quadrant}</p>
-                                            </div>
-                                        </div>
-                                        {result.shap_explanation.visualization?.url && (
-                                            <div className="shap-image">
-                                                <h4>{t('visualization')}:</h4>
-                                                <img
-                                                    className="visualization-image"
-                                                    src={result.shap_explanation.visualization.url}
-                                                    alt="SHAP Analysis Visualization"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {result.prediction?.metadata && (
-                            <div className="metadata-section">
-                                <h3>{t('metadata')}</h3>
-                                <p>{t('timestamp')}: {result.prediction.metadata.timestamp}</p>
-                                <p>{t('pytorchVersion')}: {result.prediction.metadata.pytorch_version}</p>
-                            </div>
-                        )}
-                    </div>
-                ))
+                results.map((result) => <ResultCard key={result.id} result={result} />)
             )}
 
             <button onClick={() => navigate("/upload")}>{t('analyzeAnother')}</button>

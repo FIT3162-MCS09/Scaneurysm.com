@@ -31,3 +31,17 @@ export const searchPatients = async (email: string, firstName: string, lastName:
         throw error;
     }
 };
+
+export const searchPatientById = async (user_id: string) => {
+    try {
+        const response = await API.get(`/search/patient/`, {
+            params: {
+                user_id: user_id,
+            },
+        });
+        return response.data; // Return the patient data
+    } catch (error) {
+        console.error('Error searching patient by ID:', error);
+        throw error;
+    }
+};
