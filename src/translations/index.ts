@@ -10,6 +10,7 @@ import { resultTranslations } from './pages/Result';
 import { uploadTranslations } from './pages/Upload';
 import { resultSummary } from './components/resultSummary';
 import { doctorLocator } from './pages/DoctorLocator';
+import { privacyPolicy } from './pages/PrivacyPolicy';
 
 export const resources = {
     en: {
@@ -24,7 +25,8 @@ export const resources = {
         result: resultTranslations.en,
         upload: uploadTranslations.en,
         resultSummary:resultSummary.en,
-        doctorLocator:doctorLocator.en
+        doctorLocator:doctorLocator.en,
+        privacyPolicy:privacyPolicy.en
     },
     es: {
         about: about.es,
@@ -38,7 +40,8 @@ export const resources = {
         result: resultTranslations.es,
         upload: uploadTranslations.es,
         resultSummary:resultSummary.es,
-        doctorLocator:doctorLocator.es
+        doctorLocator:doctorLocator.es,
+        privacyPolicy:privacyPolicy.es
     },
     ms: {
         about: about.ms,
@@ -52,7 +55,8 @@ export const resources = {
         result: resultTranslations.ms,
         upload: uploadTranslations.ms,
         resultSummary:resultSummary.ms,
-        doctorLocator:doctorLocator.ms
+        doctorLocator:doctorLocator.ms,
+        privacyPolicy:privacyPolicy.ms
     },
     zh: {
         about: about.zh,
@@ -66,7 +70,8 @@ export const resources = {
         result: resultTranslations.zh,
         upload: uploadTranslations.zh,
         resultSummary:resultSummary.zh,
-        doctorLocator:doctorLocator.zh
+        doctorLocator:doctorLocator.zh,
+        privacyPolicy:privacyPolicy.zh
     },
     ta: {
         about: about.ta,
@@ -80,7 +85,8 @@ export const resources = {
         result: resultTranslations.ta,
         upload: uploadTranslations.ta,
         resultSummary:resultSummary.ta,
-        doctorLocator:doctorLocator.ta
+        doctorLocator:doctorLocator.ta,
+        privacyPolicy:privacyPolicy.ta
     },
     id: {
         about: about.id,
@@ -94,6 +100,7 @@ export const resources = {
         result: resultTranslations.id,
         upload: uploadTranslations.id,
         resultSummary:resultSummary.id,
-        doctorLocator:doctorLocator.id
+        doctorLocator:doctorLocator.id,
+        privacyPolicy:privacyPolicy.id
     }
 };
