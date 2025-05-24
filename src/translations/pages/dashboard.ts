@@ -19,6 +19,23 @@ export const dashboard = {
             description: 'You can view your patients\' scan results and manage their data here.',
             myPatients: 'My Patients',
         },
+        doctorPatients:{
+            title: 'My Patients',
+            description: 'Here you can see all your patients and their scan results.',
+            noPatients: 'You have no patients yet. Start by inviting patients to upload their scans.',
+            totalPatients: 'Total Patients',
+            aneurysmCases: 'Aneurysm Cases',
+            nonAneurysmCases: 'No Aneurysm Case',
+            recentPatients: 'Recent Patients',
+            name:'Name',
+            email:'Email',
+            diagnosis: 'Diagnosis',
+            actions: 'Actions',
+            viewResults: 'View Results',
+        },
+        prediction:{
+            unknown: 'Unknown',
+        }
     },
     es: {
         logoAlt: 'Logo de Scaneurysm',
@@ -39,6 +56,23 @@ export const dashboard = {
             title: 'Bienvenido, Doctor',
             description: 'Puede ver los resultados de los escáneres de sus pacientes y gestionar sus datos aquí.',
             myPatients: 'Mis Pacientes',
+        },
+        doctorPatients:{
+            title: 'Mis Pacientes',
+            description: 'Aquí puede ver todos sus pacientes y sus resultados de escáner.',
+            noPatients: 'Aún no tiene pacientes. Comience invitando a pacientes a subir sus escáneres.',
+            totalPatients: 'Total de Pacientes',
+            aneurysmCases: 'Casos de Aneurisma',
+            nonAneurysmCases: 'Sin Caso de Aneurisma',
+            recentPatients: 'Pacientes Recientes',
+            name:'Nombre',
+            email:'Correo Electrónico',
+            diagnosis: 'Diagnóstico',
+            actions: 'Acciones',
+            viewResults: 'Ver Resultados',
+        },
+        prediction:{
+            unknown: 'Desconocido',
         }
     },
     ms: {
@@ -60,6 +94,23 @@ export const dashboard = {
             title: 'Selamat Datang, Doktor',
             description: 'Anda boleh melihat keputusan imbasan pesakit anda dan menguruskan data mereka di sini.',
             myPatients: 'Pesakit Saya',
+        },
+        doctorPatients:{
+            title: 'Pesakit Saya',
+            description: 'Di sini anda boleh melihat semua pesakit anda dan keputusan imbasan mereka.',
+            noPatients: 'Anda belum mempunyai pesakit. Mulakan dengan menjemput pesakit untuk memuat naik imbasan mereka.',
+            totalPatients: 'Jumlah Pesakit',
+            aneurysmCases: 'Kes Aneurisma',
+            nonAneurysmCases: 'Tiada Kes Aneurisma',
+            recentPatients: 'Pesakit Terkini',
+            name:'Nama',
+            email:'Emel',
+            diagnosis: 'Diagnosis',
+            actions: 'Tindakan',
+            viewResults: 'Lihat Keputusan',
+        },
+        prediction:{
+            unknown: 'Tidak Diketahui',
         }
     },
     zh: {
@@ -81,6 +132,23 @@ export const dashboard = {
             title: '欢迎，医生',
             description: '您可以在这里查看患者的扫描结果并管理他们的数据。',
             myPatients: '我的患者',
+        },
+        doctorPatients:{
+            title: '我的患者',
+            description: '在这里您可以查看所有患者及其扫描结果。',
+            noPatients: '您还没有患者。开始邀请患者上传他们的扫描。',
+            totalPatients: '总患者数',
+            aneurysmCases: '动脉瘤病例',
+            nonAneurysmCases: '无动脉瘤病例',
+            recentPatients: '最近的患者',
+            name:'姓名',
+            email:'电子邮件',
+            diagnosis: '诊断',
+            actions: '操作',
+            viewResults: '查看结果',
+        },
+        prediction:{
+            unknown: '未知',
         }
     },
     ta: {
@@ -102,6 +170,23 @@ export const dashboard = {
             title: 'வணக்கம், மருத்துவர்',
             description: 'இங்கே உங்கள் நோயாளிகளின் ஸ்கேன் முடிவுகளைப் பார்க்கவும், அவர்களது தரவை நிர்வகிக்கவும் முடியும்.',
             myPatients: 'என் நோயாளிகள்',
+        },
+        doctorPatients:{
+            title: 'என் நோயாளிகள்',
+            description: 'இங்கே நீங்கள் உங்கள் அனைத்து நோயாளிகளையும் அவர்களது ஸ்கேன் முடிவுகளையும் காணலாம்.',
+            noPatients: 'உங்களிடம் இன்னும் நோயாளிகள் இல்லை. நோயாளிகளை அவர்களது ஸ்கேன்களை பதிவேற்ற அழைக்கத் தொடங்கவும்.',
+            totalPatients: 'மொத்த நோயாளிகள்',
+            aneurysmCases: 'அனியூரிசம் வழக்குகள்',
+            nonAneurysmCases: 'அனியூரிசம் இல்லாத வழக்குகள்',
+            recentPatients: 'சமீபத்திய நோயாளிகள்',
+            name:'பெயர்',
+            email:'மின்னஞ்சல்',
+            diagnosis: 'வாழ்க்கை நிலை',
+            actions: 'செயல்கள்',
+            viewResults: 'முடிவுகளைப் பார்க்கவும்',
+        },
+        prediction:{
+            unknown: 'தெரியாது',
         }
     },
     id: {
@@ -123,6 +208,23 @@ export const dashboard = {
             title: 'Selamat Datang, Dokter',
             description: 'Anda dapat melihat hasil pemindaian pasien Anda dan mengelola data mereka di sini.',
             myPatients: 'Pasien Saya',
+        },
+        doctorPatients:{
+            title: 'Pasien Saya',
+            description: 'Di sini Anda dapat melihat semua pasien Anda dan hasil pemindaian mereka.',
+            noPatients: 'Anda belum memiliki pasien. Mulailah dengan mengundang pasien untuk mengunggah pemindaian mereka.',
+            totalPatients: 'Total Pasien',
+            aneurysmCases: 'Kasus Aneurisma',
+            nonAneurysmCases: 'Tanpa Kasus Aneurisma',
+            recentPatients: 'Pasien Terbaru',
+            name:'Nama',
+            email:'Email',
+            diagnosis: 'Diagnosis',
+            actions: 'Tindakan',
+            viewResults: 'Lihat Hasil',
+        },
+        prediction:{
+            unknown: 'Tidak Diketahui',
         }
     }
 };

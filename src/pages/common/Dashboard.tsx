@@ -23,6 +23,21 @@ L.Icon.Default.mergeOptions({
 });
 /* ─────────────────────────────────────────────────────────────────── */
 
+// Doctor patient interface
+interface DoctorPatient {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  dateOfBirth?: string;
+  lastVisit?: string;
+  medicalRecordNumber?: string;
+  latestPrediction?: {
+    result: string;
+    confidence: number;
+  };
+}
+
 // Top controls component containing language selector and profile button
 const TopControls: React.FC = () => (
   <div className="top-controls">
@@ -175,6 +190,242 @@ const DoctorWelcome: React.FC<{ t: any }> = ({ t }) => (
   </div>
 );
 
+// Doctor's patients summary component
+const DoctorPatientsSummary: React.FC<{
+  patients: DoctorPatient[];
+  loading: boolean;
+  error: string;
+  t: any;
+  navigate: (path: string) => void;
+}> = ({ patients, loading, error, t, navigate }) => {
+  const [patientPredictions, setPatientPredictions] = useState<Record<string, any>>({});
+  const [predictionLoading, setPredictionLoading] = useState(true);
+
+  // Fetch latest prediction for each patient
+  useEffect(() => {
+    const fetchPatientPredictions = async () => {
+      if (!patients.length) return;
+
+      setPredictionLoading(true);
+      const predictions: Record<string, any> = {};
+
+      try {
+        // Process patients in batches to avoid too many simultaneous requests
+        const batchSize = 3;
+        for (let i = 0; i < patients.length; i += batchSize) {
+          const batch = patients.slice(i, i + batchSize);
+
+          // Fetch predictions for this batch in parallel
+          const batchResults = await Promise.all(
+            batch.map(async (patient) => {
+              try {
+                const result = await predictionServices.getPatientPredictionDetails(patient.user_id);
+                if (Array.isArray(result) && result.length > 0) {
+                  // Get the latest prediction
+                  const latestResult = result[0];
+                  return {
+                    patientId: patient.user_id,
+                    prediction: latestResult.prediction?.prediction || "unknown",
+                    confidence: latestResult.prediction?.confidence || 0,
+                  };
+                }
+                return { patientId: patient.user_id, prediction: "none", confidence: 0 };
+              } catch (error) {
+                console.error(`Error fetching prediction for patient ${patient.user_id}:`, error);
+                return { patientId: patient.user_id, prediction: "error", confidence: 0 };
+              }
+            })
+          );
+
+          // Add batch results to predictions object
+          batchResults.forEach((result) => {
+            predictions[result.patientId] = {
+              prediction: result.prediction,
+              confidence: result.confidence,
+            };
+          });
+        }
+
+        setPatientPredictions(predictions);
+      } catch (err) {
+        console.error("Error fetching patient predictions:", err);
+      } finally {
+        setPredictionLoading(false);
+      }
+    };
+
+    fetchPatientPredictions();
+  }, [patients]);
+
+  if (loading) {
+    return (
+      <div className="doctor-patients-summary loading">
+        <h3>{t("doctorPatients.title") || "My Patients"}</h3>
+        <div className="loading-content">
+          <div className="loading-spinner" />
+          <p>{t("doctorPatients.loading") || "Loading patient data..."}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="doctor-patients-summary error">
+        <h3>{t("doctorPatients.title") || "My Patients"}</h3>
+        <p className="error-message">{error}</p>
+      </div>
+    );
+  }
+
+  if (!patients || patients.length === 0) {
+    return (
+      <div className="doctor-patients-summary empty">
+        <h3>{t("doctorPatients.title") || "My Patients"}</h3>
+        <p>{t("doctorPatients.noPatients") || "You have no patients assigned yet."}</p>
+      </div>
+    );
+  }
+
+  // Count aneurysm vs non-aneurysm cases
+    // Fix the countResults function
+    const countResults = () => {
+        const counts = {
+            aneurysm: 0,
+            non_aneurysm: 0,
+            unknown: 0,
+        };
+
+        Object.values(patientPredictions).forEach((prediction) => {
+            if (prediction.prediction === "aneurysm" || prediction.prediction === "Aneurysm") {
+                counts.aneurysm++;
+            } else if (prediction.prediction === "non_aneurysm" || prediction.prediction === "Non-aneurysm") {
+                counts.non_aneurysm++;
+            } else {
+                counts.unknown++;
+            }
+        });
+
+        return counts;
+    };
+
+  const resultCounts = countResults();
+
+  const handleViewPatient = (patientId: string) => {
+    navigate(`/result?patientId=${patientId}`);
+  };
+
+  const getPredictionColor = (prediction: string) => {
+    if (prediction === "aneurysm") return "#e74c3c"; // Red for aneurysm
+    if (prediction === "non_aneurysm") return "#2ecc71"; // Green for non-aneurysm
+    return "#95a5a6"; // Gray for unknown
+  };
+
+  return (
+    <div className="doctor-patients-summary">
+      <div className="patients-header">
+        <h3>{t("doctorPatients.title") || "My Patients"}</h3>
+        <div className="patient-stats">
+          <div className="stat-item">
+            <span className="stat-number">{patients.length}</span>
+            <span className="stat-label">{t("doctorPatients.totalPatients") || "Total Patients"}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number" style={{ color: "#e74c3c" }}>
+              {resultCounts.aneurysm}
+            </span>
+            <span className="stat-label">{t("doctorPatients.aneurysmCases") || "Aneurysm Cases"}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number" style={{ color: "#2ecc71" }}>
+              {resultCounts.non_aneurysm}
+            </span>
+            <span className="stat-label">{t("doctorPatients.nonAneurysmCases") || "Non-Aneurysm Cases"}</span>
+          </div>
+        </div>
+      </div>
+
+      {/*<div className="patients-chart">*/}
+      {/*  <h4>{t("doctorPatients.patientDistribution") || "Patient Diagnosis Distribution"}</h4>*/}
+      {/*  <div className="chart-container">*/}
+      {/*    {predictionLoading ? (*/}
+      {/*      <div className="chart-loading">*/}
+      {/*        <div className="loading-spinner" />*/}
+      {/*        <p>{t("doctorPatients.loadingPredictions") || "Loading patient diagnoses..."}</p>*/}
+      {/*      </div>*/}
+      {/*    ) : (*/}
+      {/*      <div className="bar-chart">*/}
+      {/*        {patients.map((patient) => {*/}
+      {/*          const prediction = patientPredictions[patient.user_id] || { prediction: "unknown", confidence: 0 };*/}
+      {/*          return (*/}
+      {/*            <div*/}
+      {/*              key={patient.user_id}*/}
+      {/*              className="bar-item"*/}
+      {/*              style={{*/}
+      {/*                height: `${Math.max(30, Math.min(100, 40 + prediction.confidence * 60))}px`,*/}
+      {/*                backgroundColor: getPredictionColor(prediction.prediction),*/}
+      {/*              }}*/}
+      {/*              onClick={() => handleViewPatient(patient.user_id)}*/}
+      {/*            >*/}
+      {/*              <span className="bar-label">*/}
+      {/*                {patient.first_name.charAt(0)}*/}
+      {/*                {patient.last_name.charAt(0)}*/}
+      {/*              </span>*/}
+      {/*            </div>*/}
+      {/*          );*/}
+      {/*        })}*/}
+      {/*      </div>*/}
+      {/*    )}*/}
+      {/*  </div>*/}
+      {/*</div>*/}
+
+      <div className="recent-patients">
+        <h4>{t("doctorPatients.recentPatients") || "Recent Patients"}</h4>
+
+        <table className="patients-table">
+          <thead>
+            <tr>
+              <th>{t("doctorPatients.name") || "Name"}</th>
+              <th>{t("doctorPatients.email") || "Email"}</th>
+              <th>{t("doctorPatients.diagnosis") || "Diagnosis"}</th>
+              <th>{t("doctorPatients.actions") || "Actions"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {patients.slice(0, 5).map((patient) => {
+              const prediction = patientPredictions[patient.user_id] || { prediction: "unknown", confidence: 0 };
+              console.log(prediction);
+              return (
+                <tr key={patient.user_id}>
+                  <td>{`${patient.first_name} ${patient.last_name}`}</td>
+                  <td>{patient.email}</td>
+                  <td>
+                    <span className={`diagnosis-badge ${prediction.prediction}`}>
+                      {prediction.prediction === "aneurysm" || prediction.prediction === "Aneurysm"
+                          ? t("prediction.aneurysm") || "Aneurysm"
+                          : prediction.prediction === "non_aneurysm" || prediction.prediction === "Non-aneurysm"
+                              ? t("prediction.nonAneurysm") || "No Aneurysm"
+                              : t("prediction.unknown") || "Unknown"}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      className="view-patient-btn"
+                      onClick={() => handleViewPatient(patient.user_id)}
+                    >
+                      {t("doctorPatients.viewResults") || "View Results"}
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 // Main Dashboard component
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -183,6 +434,10 @@ const Dashboard: React.FC = () => {
   const [results, setResults] = useState<PredictionResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  // Doctor patients state
+  const [patients, setPatients] = useState<DoctorPatient[]>([]);
+  const [patientsLoading, setPatientsLoading] = useState(true);
+  const [patientsError, setPatientsError] = useState("");
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -192,9 +447,23 @@ const Dashboard: React.FC = () => {
         const profile = await authService.fetchUserProfile();
         console.log("User profile received:", profile);
         setRole(profile.role);
-        
-        // Only fetch prediction data for patients
-        if (profile.role !== "doctor") {
+
+        if (profile.role === "doctor") {
+          // Fetch doctor's patients
+          setPatientsLoading(true);
+          try {
+            console.log("Fetching doctor's patients...");
+            const doctorPatients = await predictionServices.getDoctorPatients();
+            console.log("Doctor patients received:", doctorPatients);
+            setPatients(doctorPatients);
+          } catch (err) {
+            console.error("Error fetching doctor's patients:", err);
+            setPatientsError(t("doctorPatients.error") || "Failed to load patient data");
+          } finally {
+            setPatientsLoading(false);
+          }
+        } else {
+          // Only fetch prediction data for patients
           console.log("Patient role detected, fetching prediction data...");
           const predictionData = await predictionServices.getPredictionDetails();
           if (Array.isArray(predictionData)) {
@@ -204,8 +473,6 @@ const Dashboard: React.FC = () => {
             console.error("Invalid prediction data format:", predictionData);
             throw new Error("Invalid prediction data format");
           }
-        } else {
-          console.log("Doctor role detected, skipping prediction data");
         }
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
@@ -250,16 +517,22 @@ const Dashboard: React.FC = () => {
         {role === "doctor" ? (
           <>
             <DoctorNavigationButtons t={t} navigate={navigate} />
-            <DoctorWelcome t={t} />
+            <DoctorPatientsSummary
+              patients={patients}
+              loading={patientsLoading}
+              error={patientsError}
+              t={t}
+              navigate={navigate}
+            />
           </>
         ) : (
           <>
             <PatientNavigationButtons t={t} navigate={navigate} />
-            <ResultsSection 
-              loading={loading} 
-              error={error} 
-              results={results} 
-              t={t} 
+            <ResultsSection
+              loading={loading}
+              error={error}
+              results={results}
+              t={t}
             />
           </>
         )}
@@ -271,4 +544,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-

@@ -481,3 +481,266 @@
 .hospital-card .leaflet-container {
   height: 800px !important;  /* adjust preview height here */
 }
+
+/* Doctor Patient Summary Styles */
+.doctor-patients-summary {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  color: #333;
+  width: 45%;
+}
+
+.doctor-patients-summary.loading,
+.doctor-patients-summary.error,
+.doctor-patients-summary.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+}
+
+.doctor-patients-summary.error .error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+}
+
+.patients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.patients-header h3 {
+  margin: 0;
+  color: #1C3334;
+  font-size: 1.5rem;
+}
+
+.patient-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3498db;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #7f8c8d;
+}
+
+/* Bar chart styles - updated */
+.patients-chart {
+  margin: 25px 0;
+}
+
+.chart-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.chart-loading p {
+  margin-top: 15px;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.patients-chart h4 {
+  margin: 0 0 15px 0;
+  color: #1C3334;
+  font-size: 1.2rem;
+}
+
+.chart-container {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  height: 160px;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  gap: 10px;
+}
+
+.bar-item {
+  flex: 1;
+  max-width: 40px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+.bar-item:hover {
+  transform: scaleY(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+
+.bar-label {
+  position: absolute;
+  bottom: -25px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* New diagnosis badge styling */
+.diagnosis-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.diagnosis-badge.aneurysm {
+  background-color: #fadbd8;
+  color: #c0392b;
+}
+
+.diagnosis-badge.non_aneurysm {
+  background-color: #d5f5e3;
+  color: #27ae60;
+}
+
+.diagnosis-badge.unknown,
+.diagnosis-badge.error,
+.diagnosis-badge.none {
+  background-color: #f2f3f4;
+  color: #7f8c8d;
+}
+
+.patients-chart h4 {
+  margin: 0 0 15px 0;
+  color: #1C3334;
+  font-size: 1.2rem;
+}
+
+.chart-container {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  height: 160px;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  gap: 10px;
+}
+
+.bar-item {
+  flex: 1;
+  max-width: 40px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+}
+
+.bar-item:hover {
+  transform: scaleY(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.bar-label {
+  position: absolute;
+  bottom: -25px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.recent-patients h4 {
+  margin: 25px 0 15px 0;
+  color: #1C3334;
+  font-size: 1.2rem;
+}
+
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.patients-table th,
+.patients-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.patients-table th {
+  font-weight: 600;
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.patients-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.view-patient-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.view-patient-btn:hover {
+  background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    flex-direction: column;
+  }
+  
+  .doctor-patients-summary {
+    width: 100%;
+  }
+
+  .bar-item {
+    max-width: 30px;
+  }
+
+  .patients-table th:nth-child(2),
+  .patients-table td:nth-child(2) {
+    display: none;
+  }
+}
+
