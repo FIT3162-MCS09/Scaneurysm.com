@@ -1,0 +1,90 @@
+/* Fullscreen visualization overlay styles */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.overlay-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.fullscreen-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.close-button {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background-color: transparent;
+  /*color: white;*/
+  border: none;
+  font-size: 36px;
+  cursor: pointer;
+  padding: 5px 15px;
+  color: #ff6b6b;
+}
+
+.close-button:hover {
+  color: #ff6b6b;
+}
+
+/* Visualization image styles */
+.shap-image {
+  position: relative;
+  display: inline-block;
+}
+
+.visualization-image {
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: block;
+}
+
+.shap-image::before {
+  content: "⤢";  /* Expand symbol */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.shap-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);  /* Gray overlay */
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.shap-image:hover::before,
+.shap-image:hover::after {
+  opacity: 1;
+}
+
+.visualization-image:hover {
+  transform: scale(1.02);
+}
