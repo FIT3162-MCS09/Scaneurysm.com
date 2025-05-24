@@ -70,7 +70,12 @@ const Upload = () => {
       setProgress(25);
       const imageUrl = await fileServices.uploadFile(user.id, file);
       setProgress(50);
-      await predictionServices.create(imageUrl);
+      // Start the prediction but don't wait for it
+      predictionServices.create(imageUrl)
+          .catch(err => {
+            console.error("Prediction error:", err);
+            // Consider adding error logging or notification system
+          });
       setProgress(75);
       navigate("/result/");
     } catch (err: any) {
