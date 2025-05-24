@@ -2,7 +2,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./PrivacyPolicy.css";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import Footer from "../../components/Footer";
 
 const PrivacyPolicy: React.FC = () => {
@@ -11,7 +11,7 @@ const PrivacyPolicy: React.FC = () => {
 
   return (
     <div className="privacy-container">
-      <SidebarPatient />
+      <Sidebar />
 
       {/* title & effective date */}
       <h1>{t("title")}</h1>

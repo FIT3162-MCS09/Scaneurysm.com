@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import fileServices from "../../services/fileServices";
 import predictionServices from "../../services/predictionServices";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import ProfileButton from "../../components/ProfileButton";
 import "./Upload.css";
 
@@ -114,7 +114,7 @@ const Upload = () => {
   return (
       <div className="dashboard-container">
         <ProfileButton />
-        <SidebarPatient />
+        <Sidebar />
 
         <div className="main-content">
           <h1>{t('title')}</h1>

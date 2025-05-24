@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./About.css";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import Footer from "../../components/Footer";
 
 const About = () => {
@@ -11,7 +11,7 @@ const About = () => {
 
     return (
         <div className="about-model-container">
-            <SidebarPatient />
+            <Sidebar />
             <h1>{t("title")}</h1>
             <div className="navigation-cards">
                 <div

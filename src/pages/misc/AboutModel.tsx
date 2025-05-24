@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./AboutModel.css";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import Footer from "../../components/Footer";
 
 const AboutModel = () => {
@@ -9,7 +9,7 @@ const AboutModel = () => {
 
     return (
         <div className="about-model-container">
-            <SidebarPatient />
+            <Sidebar />
             <h1>{t("title")}</h1>
             <section className="section">
                 <h2>{t("purpose")}</h2>

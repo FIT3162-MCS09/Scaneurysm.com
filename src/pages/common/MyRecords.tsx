@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../../services/apiClient";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import "./PatientProfile.css"; // reuse same CSS
 
 const MyRecords = () => {
@@ -27,7 +27,7 @@ const MyRecords = () => {
 
   return (
     <div className="patient-profile-container">
-      <SidebarPatient />
+      <Sidebar />
       <div className="content">
         <h1>My Records</h1>
 

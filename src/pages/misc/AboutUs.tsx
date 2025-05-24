@@ -5,12 +5,12 @@
 import React        from "react";
 import "./AboutUs.css";
 
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import Footer         from "../../components/Footer";
 
 const AboutUs: React.FC = () => (
     <div className="about-us-container">
-        <SidebarPatient />
+        <Sidebar />
 
         {/* ─── Hero ─────────────────────────────────────────────── */}
         <header className="hero">
