@@ -1,0 +1,97 @@
+/* File: src/pages/AboutUs.css */
+
+.about-us-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: "Arial", sans-serif;
+    color: #1C3334;
+    line-height: 1.6;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.hero h1 {
+    font-size: 2.5rem;
+    color: #376E6F;
+    margin-bottom: 10px;
+}
+.hero p {
+    font-size: 1.2rem;
+}
+
+/* Re-use “section” style from AboutModel */
+.section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-left: 4px solid #376E6F;
+}
+.section h2 {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+}
+.section h2::before {
+    content: "•";
+    color: #376E6F;
+    font-size: 2rem;
+    margin-right: 10px;
+}
+
+/* Team */
+.team-photo {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto 25px;
+    object-fit: cover;
+}
+.team-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+}
+.team-list li::before {
+    content: "➜";
+    color: #376E6F;
+    margin-right: 8px;
+}
+.supervisor {
+    font-style: italic;
+    margin-top: 15px;
+}
+
+/* CTA */
+.cta {
+    text-align: center;
+    background: #376E6F;
+    color: #fff;
+}
+.cta-button {
+    background: #DA7B93;
+    border: none;
+    padding: 15px 30px;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+.cta-button:hover {
+    background: #c4667c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-us-container { padding: 20px 15px; }
+    .section { padding: 20px; }
+}
