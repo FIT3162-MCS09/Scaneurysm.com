@@ -9,197 +9,275 @@ import "../patient/Result.css"; // Import Result.css first as base styles
 import "./PatientResult.css"; // Import PatientResult.css second to override specific styles
 import { searchPatientById } from "../../services/searchServices";
 
-const PatientResult = () => {
-    const { patientId } = useParams();
-    const { t } = useTranslation("result");
-    const [results, setResults] = useState<any[]>([]);
-    const [patientInfo, setPatientInfo] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-    const [isDoctor, setIsDoctor] = useState(false); // Example: replace with your actual logic
-    const [patients, setPatients] = useState<any[]>([]); // Example: replace with your actual logic
-    const navigate = useNavigate();
+// Type definitions
+interface PatientInfo {
+  id?: string;
+  user_id?: string;
+  birth_date?: string;
+  user: {
+    id?: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  sex?: string;
+}
 
-    useEffect(() => {
-        const fetchPatientResults = async () => {
-            try {
-                if (!patientId || patientId === "undefined") {
-                    throw new Error("No valid patient ID provided");
-                }
+interface Patient {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
 
-                // Fetch patient info - using the correct endpoint for user info
-                try {
-                    const patientResponse = await searchPatientById(patientId);
-                    setPatientInfo(patientResponse);
-                    console.log("Patient info loaded:", patientResponse);
-                } catch (err) {
-                    console.error("Error fetching patient info:", err);
-                    throw new Error("Failed to get patient information");
-                }
-                
-                // Fetch patient's results using the dedicated method
-                try {
-                    const data = await predictionServices.getPatientPredictionDetails(patientId);
-                    console.log("Patient results:", data);
-                    setResults(Array.isArray(data) ? data : [data]);
-                } catch (err) {
-                    console.error("Error fetching patient results:", err);
-                    throw new Error("Failed to get patient's results");
-                }
-            } catch (err: any) {
-                setError(err.message || "Failed to get patient data");
-            } finally {
-                setLoading(false);
-            }
-        };
+interface PredictionResult {
+  id: string;
+  prediction_date: string;
+  prediction_result: string;
+  model_name: string;
+  confidence_score: number;
+  [key: string]: any; // For any additional properties
+}
 
-        fetchPatientResults();
-    }, [patientId]);
+// Loading indicator component
+const LoadingIndicator: React.FC<{ message: string }> = ({ message }) => (
+  <div className="result-card loading">
+    <div className="spinner" />
+    <p>{message}</p>
+  </div>
+);
 
-    const handlePatientCardClick = () => {
-        // Placeholder for card click action
-        // Could navigate to more detailed patient view or toggle expanded view
-        console.log("Patient card clicked");
-    };
+// Error display component
+const ErrorDisplay: React.FC<{ error: string; t: any; onBack: () => void }> = ({ error, t, onBack }) => (
+  <div className="error">
+    <h2>{t('error')}</h2>
+    <p>{error}</p>
+    <button onClick={onBack}>Back to Patients</button>
+  </div>
+);
 
-    const handlePatientSelect = (patient: any) => {
-        // Placeholder for patient selection logic
-        console.log("Selected patient:", patient);
-    };
+// Patient Header component
+const PatientHeader: React.FC<{ patientInfo: PatientInfo }> = ({ patientInfo }) => {
+  const handlePatientCardClick = () => {
+    console.log("Patient card clicked");
+  };
 
-    if (isDoctor) {
-        return (
-            <div className="result-container">
-                <ProfileButton />
-                <SidebarPatient />
-
-                <div className="content-area">
-                    <h1 className="doctor-patients-header">My Patients</h1>
-                    <button
-                        className="refresh-button"
-                        onClick={() => window.location.reload()}
-                    >
-                        {t('refresh')}
-                    </button>
-
-                    {loading ? (
-                        <div className="result-card loading">
-                            <div className="spinner" />
-                            <p>Loading patients...</p>
-                        </div>
-                    ) : patients.length === 0 ? (
-                        <div className="result-card empty-results">
-                            <p>No patients found linked to your account.</p>
-                        </div>
-                    ) : (
-                        <div className="patients-list">
-                            {patients.map((patient) => (
-                                <div key={patient.user_id} className="patient-card">
-                                    <div className="patient-avatar">
-                                        {patient.first_name?.charAt(0)}
-                                        {patient.last_name?.charAt(0)}
-                                    </div>
-                                    <h3>{patient.first_name} {patient.last_name}</h3>
-                                    <div className="patient-info">
-                                        <div className="patient-info-row">
-                                            <span>Email:</span>
-                                            <span>{patient.email}</span>
-                                        </div>
-                                        <div className="patient-info-row">
-                                            <span>ID:</span>
-                                            <span>{patient.user_id}</span>
-                                        </div>
-                                    </div>
-                                    <button 
-                                        className="view-results-btn"
-                                        onClick={() => handlePatientSelect(patient)}
-                                    >
-                                        View Patient Results
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+  return (
+    <div className="patient-card" onClick={handlePatientCardClick}>
+      <div className="patient-avatar">
+        {patientInfo.user.first_name?.charAt(0)}{patientInfo.user.last_name?.charAt(0)}
+      </div>
+      <div className="patient-details">
+        <h1>{patientInfo.user.first_name} {patientInfo.user.last_name}</h1>
+        <div className="patient-info-grid">
+          <div className="info-item">
+            <span className="label">Sex</span>
+            <span className="value">{patientInfo.sex }</span>
+          </div>
+          <div className="info-item">
+            <span className="label">Email</span>
+            <span className="value">{patientInfo.user.email}</span>
+          </div>
+          {patientInfo.birth_date && (
+            <div className="info-item">
+              <span className="label">Date of Birth</span>
+              <span className="value">{new Date(patientInfo.birth_date).toLocaleDateString()}</span>
             </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="error">
-                <h2>{t('error')}</h2>
-                <p>{error}</p>
-                <button onClick={() => navigate("/result")}>Back to Patients</button>
-            </div>
-        );
-    }
-
-    return (
-        <div className="result-container">
-            <ProfileButton />
-            <SidebarPatient />
-            
-            <div className="content-area">
-                <button
-                    className="back-button"
-                    onClick={() => navigate("/result")}
-                >
-                    ← Back to Patients List
-                </button>
-
-                {patientInfo && (
-                    <div className="patient-card" onClick={handlePatientCardClick}>
-                        <div className="patient-avatar">
-                            {patientInfo.user.first_name?.charAt(0)}{patientInfo.user.last_name?.charAt(0)}
-                        </div>
-                        <div className="patient-details">
-                            <h1>{patientInfo.user.first_name} {patientInfo.user.last_name}</h1>
-                            <div className="patient-info-grid">
-                                <div className="info-item">
-                                    <span className="label">Patient ID</span>
-                                    <span className="value">{patientInfo.user_id || patientInfo.user.id || patientInfo.id}</span>
-                                </div>
-                                <div className="info-item">
-                                    <span className="label">Email</span>
-                                    <span className="value">{patientInfo.user.email}</span>
-                                </div>
-                                {patientInfo.birth_date && (
-                                    <div className="info-item">
-                                        <span className="label">Date of Birth</span>
-                                        <span className="value">{new Date(patientInfo.birth_date).toLocaleDateString()}</span>
-                                    </div>
-                                )}
-                                {/*{patientInfo.phone && (*/}
-                                {/*    <div className="info-item">*/}
-                                {/*        <span className="label">Phone</span>*/}
-                                {/*        <span className="value">{patientInfo.phone}</span>*/}
-                                {/*    </div>*/}
-                                {/*)}*/}
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                <h2 className="results-heading">{t('patientResults')}</h2>
-
-                {loading ? (
-                    <div className="result-card loading">
-                        <div className="spinner" />
-                        <p>Loading patient results...</p>
-                    </div>
-                ) : results.length === 0 ? (
-                    <div className="result-card empty-results">
-                        <p>No results found for this patient.</p>
-                    </div>
-                ) : (
-                    <div className="results-grid">
-                        {results.map((result) => <ResultCard key={result.id} result={result} />)}
-                    </div>
-                )}
-            </div>
+          )}
         </div>
+      </div>
+    </div>
+  );
+};
+
+// Patient Results component
+const PatientResults: React.FC<{ results: PredictionResult[]; loading: boolean; t: any }> = ({ results, loading, t }) => {
+  if (loading) {
+    return <LoadingIndicator message="Loading patient results..." />;
+  }
+
+  if (results.length === 0) {
+    return (
+      <div className="result-card empty-results">
+        <p>No results found for this patient.</p>
+      </div>
     );
+  }
+
+  return (
+    <div className="results-grid">
+      {results.map((result) => <ResultCard key={result.id} result={result} />)}
+    </div>
+  );
+};
+
+// Patient Card component for doctor's view
+const PatientCard: React.FC<{ patient: Patient; onSelect: (patient: Patient) => void }> = ({ patient, onSelect }) => (
+  <div className="patient-card">
+    <div className="patient-avatar">
+      {patient.first_name?.charAt(0)}
+      {patient.last_name?.charAt(0)}
+    </div>
+    <h3>{patient.first_name} {patient.last_name}</h3>
+    <div className="patient-info">
+      <div className="patient-info-row">
+        <span>Email:</span>
+        <span>{patient.email}</span>
+      </div>
+      <div className="patient-info-row">
+        <span>ID:</span>
+        <span>{patient.user_id}</span>
+      </div>
+    </div>
+    <button 
+      className="view-results-btn"
+      onClick={() => onSelect(patient)}
+    >
+      View Patient Results
+    </button>
+  </div>
+);
+
+// Doctor's patients list view
+const DoctorPatientList: React.FC<{ patients: Patient[]; loading: boolean; onSelectPatient: (patient: Patient) => void; t: any }> = 
+  ({ patients, loading, onSelectPatient, t }) => {
+  
+  if (loading) {
+    return <LoadingIndicator message="Loading patients..." />;
+  }
+  
+  if (patients.length === 0) {
+    return (
+      <div className="result-card empty-results">
+        <p>No patients found linked to your account.</p>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="patients-list">
+      {patients.map((patient) => (
+        <PatientCard 
+          key={patient.user_id} 
+          patient={patient} 
+          onSelect={onSelectPatient} 
+        />
+      ))}
+    </div>
+  );
+};
+
+// Main PatientResult component
+const PatientResult: React.FC = () => {
+  const { patientId } = useParams();
+  const { t } = useTranslation("result");
+  const [results, setResults] = useState<PredictionResult[]>([]);
+  const [patientInfo, setPatientInfo] = useState<PatientInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [isDoctor, setIsDoctor] = useState(false); // Example: replace with your actual logic
+  const [patients, setPatients] = useState<Patient[]>([]); // Example: replace with your actual logic
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPatientResults = async () => {
+      try {
+        if (!patientId || patientId === "undefined") {
+          throw new Error("No valid patient ID provided");
+        }
+
+        // Fetch patient info - using the correct endpoint for user info
+        try {
+          const patientResponse = await searchPatientById(patientId);
+          setPatientInfo(patientResponse);
+          console.log("Patient info loaded:", patientResponse);
+        } catch (err) {
+          console.error("Error fetching patient info:", err);
+          throw new Error("Failed to get patient information");
+        }
+        
+        // Fetch patient's results using the dedicated method
+        try {
+          const data = await predictionServices.getPatientPredictionDetails(patientId);
+          console.log("Patient results:", data);
+          // @ts-ignore
+            setResults(Array.isArray(data) ? data : [data]);
+        } catch (err) {
+          console.error("Error fetching patient results:", err);
+          throw new Error("Failed to get patient's results");
+        }
+      } catch (err: any) {
+        setError(err.message || "Failed to get patient data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatientResults();
+  }, [patientId]);
+
+  const handlePatientSelect = (patient: Patient) => {
+    // Placeholder for patient selection logic
+    console.log("Selected patient:", patient);
+    // Navigate to the patient's results page
+    navigate(`/patient/${patient.user_id}/results`);
+  };
+
+  if (error) {
+    return <ErrorDisplay error={error} t={t} onBack={() => navigate("/result")} />;
+  }
+
+  if (isDoctor) {
+    return (
+      <div className="result-container">
+        <ProfileButton />
+        <SidebarPatient />
+
+        <div className="content-area">
+          <h1 className="doctor-patients-header">My Patients</h1>
+          <button
+            className="refresh-button"
+            onClick={() => window.location.reload()}
+          >
+            {t('refresh')}
+          </button>
+
+          <DoctorPatientList 
+            patients={patients} 
+            loading={loading} 
+            onSelectPatient={handlePatientSelect} 
+            t={t} 
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="result-container">
+      <ProfileButton />
+      <SidebarPatient />
+      
+      <div className="content-area">
+        <button
+          className="back-button"
+          onClick={() => navigate("/result")}
+        >
+          ← Back to Patients List
+        </button>
+
+        {patientInfo && <PatientHeader patientInfo={patientInfo} />}
+
+        <h2 className="results-heading">{t('patientResults')}</h2>
+
+        <PatientResults 
+          results={results} 
+          loading={loading} 
+          t={t} 
+        />
+      </div>
+    </div>
+  );
 };
 
 export default PatientResult;
