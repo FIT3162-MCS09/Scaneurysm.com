@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, DragEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import fileServices from "../services/fileServices";
-import predictionServices from "../services/predictionServices";
-import SidebarPatient from "../components/SidebarPatient";
-import ProfileButton from "../components/ProfileButton";
+import fileServices from "../../services/fileServices";
+import predictionServices from "../../services/predictionServices";
+import SidebarPatient from "../../components/SidebarPatient";
+import ProfileButton from "../../components/ProfileButton";
 import "./Upload.css";
 
 const Upload = () => {

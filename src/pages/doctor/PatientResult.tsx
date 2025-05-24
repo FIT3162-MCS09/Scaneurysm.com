@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import ProfileButton from "../components/ProfileButton";
-import SidebarPatient from "../components/SidebarPatient";
-import ResultCard from "../components/ResultCard";
-import predictionServices from "../services/predictionServices";
-import "./Result.css"; // Import Result.css first as base styles
+import ProfileButton from "../../components/ProfileButton";
+import SidebarPatient from "../../components/SidebarPatient";
+import ResultCard from "../../components/ResultCard";
+import predictionServices from "../../services/predictionServices";
+import "../patient/Result.css"; // Import Result.css first as base styles
 import "./PatientResult.css"; // Import PatientResult.css second to override specific styles
-import { searchPatientById } from "../services/searchServices";
+import { searchPatientById } from "../../services/searchServices";
 
 const PatientResult = () => {
     const { patientId } = useParams();

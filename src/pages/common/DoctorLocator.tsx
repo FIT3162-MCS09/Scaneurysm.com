@@ -10,8 +10,8 @@ import {
 import L, { LatLngExpression } from "leaflet";
 import { useTranslation } from "react-i18next";
 
-import SidebarPatient from "../components/SidebarPatient";
-import ProfileButton   from "../components/ProfileButton";
+import SidebarPatient from "../../components/SidebarPatient";
+import ProfileButton   from "../../components/ProfileButton";
 
 import "leaflet/dist/leaflet.css";
 import "./DoctorLocator.css";

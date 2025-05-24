@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../services/authServices";
-import ProfileButton from "../components/ProfileButton";
+import { authService } from "../../services/authServices";
+import ProfileButton from "../../components/ProfileButton";
 import "./Dashboard.css";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "../components/LanguageSelector";
-import ResultSummary from "../components/ResultSummary";
-import predictionServices from "../services/predictionServices";
-import { PredictionResult } from "../types/prediction";
+import LanguageSelector from "../../components/LanguageSelector";
+import ResultSummary from "../../components/ResultSummary";
+import predictionServices from "../../services/predictionServices";
+import { PredictionResult } from "../../types/prediction";
 
 /* ──────────────── NEW: tiny Leaflet preview imports ──────────────── */
 import { MapContainer, TileLayer, Marker } from "react-leaflet";

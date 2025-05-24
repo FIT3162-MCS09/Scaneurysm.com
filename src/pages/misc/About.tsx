@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./About.css";
-import SidebarPatient from "../components/SidebarPatient";
-import Footer from "../components/Footer";
+import SidebarPatient from "../../components/SidebarPatient";
+import Footer from "../../components/Footer";
 
 const About = () => {
     const navigate = useNavigate();

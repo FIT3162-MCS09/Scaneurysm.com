@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./AboutAneurysm.css";
-import SidebarPatient from "../components/SidebarPatient";
+import SidebarPatient from "../../components/SidebarPatient";
 
 const AboutAneurysm = () => {
     const { t } = useTranslation("aboutAneurysm");

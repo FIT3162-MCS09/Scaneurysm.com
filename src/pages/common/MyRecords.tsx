@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import API from "../services/apiClient";
-import SidebarPatient from "../components/SidebarPatient";
+import API from "../../services/apiClient";
+import SidebarPatient from "../../components/SidebarPatient";
 import "./PatientProfile.css"; // reuse same CSS
 
 const MyRecords = () => {

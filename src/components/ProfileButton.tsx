@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProfilePopup from "../pages/ProfilePopup";
+import ProfilePopup from "../pages/common/ProfilePopup";
 import "./ProfileButton.css";
 
 const ProfileButton = () => {
