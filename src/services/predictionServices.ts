@@ -8,6 +8,16 @@ interface PredictionRequest {
   shap_explanation?: any;
 }
 
+interface DoctorPatient {
+  user_id: string;  // Changed from id: number to user_id: string
+  first_name: string;
+  last_name: string;
+  email: string;
+  dateOfBirth?: string;
+  lastVisit?: string;
+  medicalRecordNumber?: string;
+}
+
 interface PredictionDetailsResponse {
   id: number;
   user: string;
@@ -66,7 +76,7 @@ interface PredictionDetailsResponse {
 const predictionServices = {
   async create(imageUrl: string): Promise<void> {
     const user = JSON.parse(localStorage.getItem("user_info") || "{}");
-  await API.post('/analysis/predictions/create/', {
+    await API.post('/analysis/predictions/create/', {
       user: user.id,
       image_url: imageUrl,
       include_shap: true
@@ -118,6 +128,43 @@ const predictionServices = {
     const response = await API.get('/analysis/predictions/history/', { params });
     return response.data;
   },
+
+  async getPatientPredictionDetails(patientId: string): Promise<PredictionDetailsResponse> {
+    if (!patientId || patientId === "undefined") {
+      throw new Error("Invalid patient ID");
+    }
+    
+    console.log("Fetching results for patient:", patientId);
+    
+    // This method allows fetching another user's predictions (for doctors)
+    const params: Record<string, any> = {
+      user_id: patientId
+    };
+
+    const response = await API.get('/analysis/predictions/history/', { params });
+    return response.data;
+  },
+
+  async getDoctorPatients(): Promise<DoctorPatient[]> {
+    const user = JSON.parse(localStorage.getItem("user_info") || "{}");
+    if (!user.id) {
+      throw new Error("User ID not found");
+    }
+
+    console.log("Fetching patients for doctor:", user.id);
+    
+    try {
+      const response = await API.get('/search/doctor/patients/', {
+        params: { doctor_id: user.id }
+      });
+      
+      console.log("Doctor patients response:", response.data);
+      return response.data || [];
+    } catch (err) {
+      console.error("Error fetching doctor patients:", err);
+      throw err;
+    }
+  }
 };
 
 export default predictionServices;

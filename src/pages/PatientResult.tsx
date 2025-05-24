@@ -1,138 +1,97 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import predictionServices from "../services/predictionServices";
-import SidebarPatient from "../components/SidebarPatient";
+import API from "../services/apiClient";
 import ProfileButton from "../components/ProfileButton";
-import "./Result.css";
+import SidebarPatient from "../components/SidebarPatient";
 import ShapQuadrantChart from "../components/ShapQuadrantChart";
-import { authService } from "../services/authServices";
+import predictionServices from "../services/predictionServices";
+import "./Result.css";
+import {searchPatientById} from "../services/searchServices";
 
-const Result = () => {
+const PatientResult = () => {
+    const { patientId } = useParams();
     const { t } = useTranslation("result");
     const [results, setResults] = useState<any[]>([]);
-    const [patients, setPatients] = useState<any[]>([]);
+    const [patientInfo, setPatientInfo] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const [isDoctor, setIsDoctor] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        (async () => {
+        const fetchPatientResults = async () => {
             try {
-                // First check if user is a doctor
-                const profile = await authService.fetchUserProfile();
-                const userIsDoctor = profile.role === "doctor";
-                setIsDoctor(userIsDoctor);
+                if (!patientId || patientId === "undefined") {
+                    throw new Error("No valid patient ID provided");
+                }
 
-                if (userIsDoctor) {
-                    // If doctor, fetch patients instead of results
-                    const patientData = await predictionServices.getDoctorPatients();
-                    console.log("Doctor patients:", patientData); // Debug log
-                    setPatients(patientData);
-                } else {
-                    // If patient, fetch their results as before
-                    const data = await predictionServices.getPredictionDetails();
+                // Fetch patient info - using the correct endpoint for user info
+                try {
+                    const patientResponse = await searchPatientById(patientId);
+                    setPatientInfo(patientResponse);
+                    console.log("Patient info loaded:", patientResponse);
+                } catch (err) {
+                    console.error("Error fetching patient info:", err);
+                    throw new Error("Failed to get patient information");
+                }
+                
+                // Fetch patient's results using the dedicated method
+                try {
+                    const data = await predictionServices.getPatientPredictionDetails(patientId);
+                    console.log("Patient results:", data);
                     setResults(Array.isArray(data) ? data : [data]);
+                } catch (err) {
+                    console.error("Error fetching patient results:", err);
+                    throw new Error("Failed to get patient's results");
                 }
             } catch (err: any) {
-                console.error("Error fetching data:", err);
-                setError(err.message || "Failed to get data");
+                setError(err.message || "Failed to get patient data");
             } finally {
                 setLoading(false);
             }
-        })();
-    }, []);
+        };
 
-    const handlePatientSelect = (patient: any) => {
-        // Ensure we have a valid patient ID before navigating
-        if (!patient || !patient.user_id) {
-            console.error("Invalid patient data:", patient);
-            setError("Invalid patient data");
-            return;
-        }
-        
-        console.log("Navigating to patient results:", patient.user_id);
-        navigate(`/patient/results/${patient.user_id}/`);
-    };
+        fetchPatientResults();
+    }, [patientId]);
 
-    if (error)
+    if (error) {
         return (
             <div className="error">
                 <h2>{t('error')}</h2>
                 <p>{error}</p>
-                <button onClick={() => navigate("/upload")}>{t('tryAgain')}</button>
-            </div>
-        );
-
-    // Doctor view - show patients list
-    if (isDoctor) {
-        return (
-            <div className="result-container">
-                <ProfileButton />
-                <SidebarPatient />
-
-                <h1>My Patients</h1>
-                <button
-                    style={{ marginBottom: "20px" }}
-                    onClick={() => window.location.reload()}
-                >
-                    {t('refresh')}
-                </button>
-
-                {loading ? (
-                    <div className="result-card loading">
-                        <div className="spinner" />
-                        <p>Loading patients...</p>
-                    </div>
-                ) : patients.length === 0 ? (
-                    <div className="result-card">
-                        <p>No patients found linked to your account.</p>
-                    </div>
-                ) : (
-                    <div className="patients-list">
-                        {patients.map((patient) => (
-                            <div key={patient.user_id} className="patient-card">
-                                <h3>{patient.first_name} {patient.last_name}</h3>
-                                <p>Email: {patient.email}</p>
-                                <p>ID: {patient.user_id}</p>
-                                <button 
-                                    className="view-results-btn"
-                                    onClick={() => handlePatientSelect(patient)}
-                                >
-                                    View Patient Results
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <button onClick={() => navigate("/result")}>Back to Patients</button>
             </div>
         );
     }
 
-    // Patient view - original results view
     return (
         <div className="result-container">
             <ProfileButton />
             <SidebarPatient />
 
-            <h1>{t('title')}</h1>
+            {patientInfo && (
+                <div className="patient-header">
+                    <h1>Results for {patientInfo.first_name} {patientInfo.last_name}</h1>
+                    <p>Patient ID: {patientInfo.id}</p>
+                    <p>Email: {patientInfo.email}</p>
+                </div>
+            )}
+            
             <button
                 style={{ marginBottom: "20px" }}
-                onClick={() => window.location.reload()}
+                onClick={() => navigate("/result")}
             >
-                {t('refresh')}
+                Back to Patients List
             </button>
 
             {loading ? (
                 <div className="result-card loading">
                     <div className="spinner" />
-                    <p>{t('analyzing')}</p>
-                    <p>This may take a few minutes</p>
+                    <p>Loading patient results...</p>
                 </div>
             ) : results.length === 0 ? (
                 <div className="result-card">
-                    <p>{t('noResults')}</p>
+                    <p>No results found for this patient.</p>
                 </div>
             ) : (
                 results.map((result) => (
@@ -203,11 +162,8 @@ const Result = () => {
                     </div>
                 ))
             )}
-
-            <button onClick={() => navigate("/upload")}>{t('analyzeAnother')}</button>
         </div>
     );
 };
 
-export default Result;
-
+export default PatientResult;
