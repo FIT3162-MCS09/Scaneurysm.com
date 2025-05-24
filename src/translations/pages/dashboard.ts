@@ -13,7 +13,12 @@ export const dashboard = {
             loadingMessage: 'Loading your scan results...',
             loadingSubtext: 'This may take a few moments',
             noResults: 'No scan results available yet. Upload your first scan to get started.'
-        }
+        },
+        doctorWelcome: {
+            title: 'Welcome, Doctor',
+            description: 'You can view your patients\' scan results and manage their data here.',
+            myPatients: 'My Patients',
+        },
     },
     es: {
         logoAlt: 'Logo de Scaneurysm',
@@ -29,6 +34,11 @@ export const dashboard = {
             loadingMessage: 'Cargando sus resultados...',
             loadingSubtext: 'Esto puede tomar unos momentos',
             noResults: 'Aún no hay resultados disponibles. Suba su primer escáner para comenzar.'
+        },
+        doctorWelcome: {
+            title: 'Bienvenido, Doctor',
+            description: 'Puede ver los resultados de los escáneres de sus pacientes y gestionar sus datos aquí.',
+            myPatients: 'Mis Pacientes',
         }
     },
     ms: {
@@ -45,6 +55,11 @@ export const dashboard = {
             loadingMessage: 'Memuatkan keputusan imbasan anda...',
             loadingSubtext: 'Ini mungkin mengambil masa beberapa saat',
             noResults: 'Tiada keputusan imbasan tersedia lagi. Muat naik imbasan pertama anda untuk bermula.'
+        },
+        doctorWelcome: {
+            title: 'Selamat Datang, Doktor',
+            description: 'Anda boleh melihat keputusan imbasan pesakit anda dan menguruskan data mereka di sini.',
+            myPatients: 'Pesakit Saya',
         }
     },
     zh: {
@@ -61,6 +76,11 @@ export const dashboard = {
             loadingMessage: '正在加载扫描结果...',
             loadingSubtext: '这可能需要一点时间',
             noResults: '暂无扫描结果。上传您的第一次扫描即可开始。'
+        },
+        doctorWelcome: {
+            title: '欢迎，医生',
+            description: '您可以在这里查看患者的扫描结果并管理他们的数据。',
+            myPatients: '我的患者',
         }
     },
     ta: {
@@ -77,6 +97,11 @@ export const dashboard = {
             loadingMessage: 'உங்கள் ஸ்கேன் முடிவுகளை ஏற்றுகிறது...',
             loadingSubtext: 'இது சில நிமிடங்கள் ஆகலாம்',
             noResults: 'இதுவரை ஸ்கேன் முடிவுகள் எதுவும் இல்லை. தொடங்க உங்கள் முதல் ஸ்கேனை பதிவேற்றவும்.'
+        },
+        doctorWelcome: {
+            title: 'வணக்கம், மருத்துவர்',
+            description: 'இங்கே உங்கள் நோயாளிகளின் ஸ்கேன் முடிவுகளைப் பார்க்கவும், அவர்களது தரவை நிர்வகிக்கவும் முடியும்.',
+            myPatients: 'என் நோயாளிகள்',
         }
     },
     id: {
@@ -93,6 +118,11 @@ export const dashboard = {
             loadingMessage: 'Memuat hasil pemindaian Anda...',
             loadingSubtext: 'Ini mungkin membutuhkan beberapa saat',
             noResults: 'Belum ada hasil pemindaian. Unggah pemindaian pertama Anda untuk memulai.'
+        },
+        doctorWelcome: {
+            title: 'Selamat Datang, Dokter',
+            description: 'Anda dapat melihat hasil pemindaian pasien Anda dan mengelola data mereka di sini.',
+            myPatients: 'Pasien Saya',
         }
     }
 };

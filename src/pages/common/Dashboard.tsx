@@ -42,8 +42,8 @@ const DashboardHeader: React.FC<{ logoAlt: string }> = ({ logoAlt }) => (
   </header>
 );
 
-// Navigation buttons component
-const NavigationButtons: React.FC<{
+// Patient navigation buttons component
+const PatientNavigationButtons: React.FC<{
   t: any;
   navigate: (path: string) => void;
 }> = ({ t, navigate }) => (
@@ -59,6 +59,19 @@ const NavigationButtons: React.FC<{
       onClick={() => navigate("/about")}
     >
       {t("aboutAneurysm")}
+    </button>
+    <HospitalPreviewCard t={t} navigate={navigate} />
+  </div>
+);
+
+// Doctor navigation buttons component
+const DoctorNavigationButtons: React.FC<{
+  t: any;
+  navigate: (path: string) => void;
+}> = ({ t, navigate }) => (
+  <div className="dashboard-buttons">
+    <button onClick={() => navigate("/result")}>
+      {t("doctorWelcome.myPatients") || "My Patients"}
     </button>
     <HospitalPreviewCard t={t} navigate={navigate} />
   </div>
@@ -154,6 +167,14 @@ const ResultsSection: React.FC<{
   return <EmptySummary t={t} />;
 };
 
+// Doctor welcome message component
+const DoctorWelcome: React.FC<{ t: any }> = ({ t }) => (
+  <div className="doctor-welcome-section">
+    <h3>{t("doctorWelcome.title") || "Welcome, Doctor"}</h3>
+    <p>{t("doctorWelcome.description") || "Use the buttons above to view patient data and locate nearby hospitals."}</p>
+  </div>
+);
+
 // Main Dashboard component
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -166,27 +187,58 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [profile, predictionData] = await Promise.all([
-          authService.fetchUserProfile(),
-          predictionServices.getPredictionDetails(),
-        ]);
-
+        console.log("Fetching user profile...");
+        // Fetch user profile first to determine role
+        const profile = await authService.fetchUserProfile();
+        console.log("User profile received:", profile);
         setRole(profile.role);
         
-        if (Array.isArray(predictionData)) {
-          setResults(predictionData);
+        // Only fetch prediction data for patients
+        if (profile.role !== "doctor") {
+          console.log("Patient role detected, fetching prediction data...");
+          const predictionData = await predictionServices.getPredictionDetails();
+          if (Array.isArray(predictionData)) {
+            console.log("Prediction data received:", predictionData.length, "items");
+            setResults(predictionData);
+          } else {
+            console.error("Invalid prediction data format:", predictionData);
+            throw new Error("Invalid prediction data format");
+          }
         } else {
-          throw new Error("Invalid prediction data format");
+          console.log("Doctor role detected, skipping prediction data");
         }
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
-        setError(t("errors.fetchData"));
+        setError(t("errors.fetchData") || "Failed to fetch data");
       } finally {
+        // Always set loading to false when done, regardless of success or failure
+        console.log("Setting loading state to false");
         setLoading(false);
       }
     };
 
-    fetchDashboardData();
+    // Check if we have a fallback for missing user profile
+    const checkUserInfo = () => {
+      try {
+        const userInfoStr = localStorage.getItem("user_info");
+        if (!userInfoStr) {
+          console.warn("No user_info found in localStorage");
+          setError("User information is missing. Please log in again.");
+          setLoading(false);
+          return false;
+        }
+        return true;
+      } catch (e) {
+        console.error("Error accessing localStorage:", e);
+        setError("Could not access user data. Please log in again.");
+        setLoading(false);
+        return false;
+      }
+    };
+
+    if (checkUserInfo()) {
+      fetchDashboardData();
+    }
   }, [t]);
 
   return (
@@ -195,13 +247,22 @@ const Dashboard: React.FC = () => {
       <DashboardHeader logoAlt={t("logoAlt")} />
 
       <main className="dashboard-content">
-        <NavigationButtons t={t} navigate={navigate} />
-        <ResultsSection 
-          loading={loading} 
-          error={error} 
-          results={results} 
-          t={t} 
-        />
+        {role === "doctor" ? (
+          <>
+            <DoctorNavigationButtons t={t} navigate={navigate} />
+            <DoctorWelcome t={t} />
+          </>
+        ) : (
+          <>
+            <PatientNavigationButtons t={t} navigate={navigate} />
+            <ResultsSection 
+              loading={loading} 
+              error={error} 
+              results={results} 
+              t={t} 
+            />
+          </>
+        )}
       </main>
 
       <Footer />
@@ -210,3 +271,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
