@@ -68,16 +68,26 @@ const PatientCard: React.FC<{
   patient: Patient;
   onSelect: (patient: Patient) => void;
 }> = ({ patient, onSelect }) => (
-  <div className="patient-card">
-    <h3>{patient.first_name} {patient.last_name}</h3>
-    <p>Email: {patient.email}</p>
-    <p>ID: {patient.user_id}</p>
-    <button 
-      className="view-results-btn"
-      onClick={() => onSelect(patient)}
-    >
-      View Patient Results
-    </button>
+  <div className="patient-card" onClick={() => onSelect(patient)}>
+    {/*<div className="patient-avatar">*/}
+    {/*  {patient.first_name[0]}{patient.last_name[0]}*/}
+    {/*</div>*/}
+    <div className="patient-info">
+      <h3>{patient.first_name} {patient.last_name}</h3>
+      <p className="patient-email">{patient.email}</p>
+      <p className="patient-id">Patient ID: {patient.user_id}</p>
+    </div>
+    <div className="patient-actions">
+      <button 
+        className="view-results-btn"
+        onClick={(e) => {
+          e.stopPropagation();
+          onSelect(patient);
+        }}
+      >
+        View Results
+      </button>
+    </div>
   </div>
 );
 
@@ -87,31 +97,62 @@ const DoctorView: React.FC<{
   loading: boolean;
   onPatientSelect: (patient: Patient) => void;
   t: any;
-}> = ({ patients, loading, onPatientSelect, t }) => (
-  <PageLayout 
-    title="My Patients" 
-    onRefresh={() => window.location.reload()}
-    refreshText={t('refresh')}
-  >
-    {loading ? (
-      <LoadingIndicator primaryText="Loading patients..." />
-    ) : patients.length === 0 ? (
-      <div className="result-card">
-        <p>No patients found linked to your account.</p>
-      </div>
-    ) : (
-      <div className="patients-list">
-        {patients.map((patient) => (
-          <PatientCard 
-            key={patient.user_id} 
-            patient={patient} 
-            onSelect={onPatientSelect} 
-          />
-        ))}
-      </div>
-    )}
-  </PageLayout>
-);
+}> = ({ patients, loading, onPatientSelect, t }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredPatients = patients.filter(patient => 
+    `${patient.first_name} ${patient.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    patient.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    patient.user_id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <PageLayout 
+      title="My Patients" 
+      onRefresh={() => window.location.reload()}
+      refreshText={t('refresh')}
+    >
+      {loading ? (
+        <LoadingIndicator primaryText="Loading patients..." />
+      ) : patients.length === 0 ? (
+        <div className="result-card empty-state">
+          <div className="empty-icon">👤</div>
+          <h3>No patients found</h3>
+          <p>There are no patients linked to your account yet.</p>
+        </div>
+      ) : (
+        <div className="doctor-dashboard">
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Search patients by name, email or ID..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="patient-search"
+            />
+            <div className="patient-count">
+              {filteredPatients.length} {filteredPatients.length === 1 ? 'patient' : 'patients'} found
+            </div>
+          </div>
+          {filteredPatients.length === 0 ? (
+            <div className="result-card empty-state">
+              <p>No patients match your search criteria.</p>
+            </div>
+          ) : (
+            <div className="patients-grid">
+              {filteredPatients.map((patient) => (
+                <PatientCard 
+                  key={patient.user_id} 
+                  patient={patient} 
+                  onSelect={onPatientSelect} 
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </PageLayout>
+  );
+};
 
 // Patient's view component
 const PatientView: React.FC<{
@@ -219,3 +260,4 @@ const Result: React.FC = () => {
 };
 
 export default Result;
+
