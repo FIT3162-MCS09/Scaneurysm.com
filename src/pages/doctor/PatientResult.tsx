@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ProfileButton from "../../components/ProfileButton";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import ResultCard from "../../components/ResultCard";
 import predictionServices from "../../services/predictionServices";
 import "../patient/Result.css"; // Import Result.css first as base styles
@@ -231,7 +231,7 @@ const PatientResult: React.FC = () => {
     return (
       <div className="result-container">
         <ProfileButton />
-        <SidebarPatient />
+        <Sidebar />
 
         <div className="content-area">
           <h1 className="doctor-patients-header">My Patients</h1>
@@ -256,7 +256,7 @@ const PatientResult: React.FC = () => {
   return (
     <div className="result-container">
       <ProfileButton />
-      <SidebarPatient />
+      <Sidebar />
       
       <div className="content-area">
         <button

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import predictionServices from "../../services/predictionServices";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import ProfileButton from "../../components/ProfileButton";
 import ResultCard from "../../components/ResultCard";
 import "./Result.css";
@@ -25,7 +25,7 @@ const PageLayout: React.FC<{
 }> = ({ title, children, onRefresh, refreshText }) => (
   <div className="result-container">
     <ProfileButton />
-    <SidebarPatient />
+    <Sidebar />
     <h1>{title}</h1>
     <button
       style={{ marginBottom: "20px" }}

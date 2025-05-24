@@ -1,14 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./AboutAneurysm.css";
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 
 const AboutAneurysm = () => {
     const { t } = useTranslation("aboutAneurysm");
 
     return (
         <div className="about-container">
-            <SidebarPatient />
+            <Sidebar />
             <h1>{t("title")}</h1>
             <section className="section">
                 <h2>{t("whatIs")}</h2>

@@ -10,7 +10,7 @@ import {
 import L, { LatLngExpression } from "leaflet";
 import { useTranslation } from "react-i18next";
 
-import SidebarPatient from "../../components/SidebarPatient";
+import Sidebar from "../../components/Sidebar";
 import ProfileButton   from "../../components/ProfileButton";
 
 import "leaflet/dist/leaflet.css";
@@ -436,7 +436,7 @@ const DoctorLocator: React.FC = () => {
   return (
     <div className="dashboard-container">
       {/* ─── fixed sidebar ─── */}
-      <SidebarPatient />
+      <Sidebar />
 
       {/* ─── main pane ─── */}
       <div className="main-content page-wrapper p-6 space-y-6">
