@@ -1,6 +1,9 @@
-// DoctorLocator.tsx – 100% free map using Leaflet + OpenStreetMap
+// src/pages/DoctorLocator.tsx
 // -----------------------------------------------------------------------------
-import React, { useEffect, useState } from "react";
+// Leaflet + OpenStreetMap implementation (no paid keys)
+// i18n namespace: “doctorLocator”
+// -----------------------------------------------------------------------------
+import React, { useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -9,25 +12,27 @@ import {
   useMap,
 } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
-import ProfileButton from "../components/ProfileButton";
+import { useTranslation } from "react-i18next";
+
+import SidebarPatient from "../components/SidebarPatient";
+import ProfileButton   from "../components/ProfileButton";
+
 import "leaflet/dist/leaflet.css";
+import "./DoctorLocator.css";
 
-import "./DoctorLocator.css"; // optional custom styles
-
-/* ---------- fix default marker icons when bundling with CRA/Vite ------ */
-// @ts-ignore – this overrides internal path getters
-delete (L.Icon.Default as any).prototype._getIconUrl;
+/* ---------- patch default marker icons (CRA/Vite) -------------------------- */
+delete (L.Icon.Default as any).prototype._getIconUrl;       // eslint-disable-line
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+  iconUrl:       require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl:     require("leaflet/dist/images/marker-shadow.png"),
 });
 
-/* ---------- hard-coded sample hospitals (replace or fetch) ------------ */
+/* ------------------------- sample data (static) ---------------------------- */
 interface Hospital {
   id: number;
   name: string;
-  position: LatLngExpression; // [lat, lng]
+  position: LatLngExpression;
   address: string;
   phone?: string;
 }
@@ -56,17 +61,20 @@ const hospitals: Hospital[] = [
   },
 ];
 
-/* ---------- component to centre map on user geolocation --------------- */
+/* ---------------- centre map on user location ----------------------------- */
 const Locate: React.FC = () => {
   const map = useMap();
+  const { t } = useTranslation("doctorLocator");
 
   useEffect(() => {
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const { latitude, longitude } = pos.coords;
-        const here: LatLngExpression = [latitude, longitude];
+        const here: LatLngExpression = [
+          pos.coords.latitude,
+          pos.coords.longitude,
+        ];
         map.setView(here, 11);
         L.marker(here, {
           icon: L.icon({
@@ -76,62 +84,65 @@ const Locate: React.FC = () => {
           }),
         })
           .addTo(map)
-          .bindPopup("You are here")
+          .bindPopup(t("youAreHere"))
           .openPopup();
       },
-      () => console.log("Geolocation denied – map keeps default view")
+      () => console.log("Geolocation denied – using default centre")
     );
-  }, [map]);
+  }, [map, t]);
 
   return null;
 };
 
-/* ====================================================================== */
-
+/* ========================================================================== */
 const DoctorLocator: React.FC = () => {
-  // centre of Malaysia fallback
-  const defaultPosition: LatLngExpression = [4.2, 102.0];
+  const { t } = useTranslation("doctorLocator");
+  const defaultPosition: LatLngExpression = [4.2, 102.0]; // Malaysia fallback
 
   return (
-    <div className="page-wrapper p-6 space-y-6">
-      <ProfileButton />
+    <div className="dashboard-container">
+      {/* ─── fixed sidebar ─── */}
+      <SidebarPatient />
 
-      <h1 className="text-3xl font-semibold text-center text-[#1c3334] mb-2">
-        Nearby Brain-Aneurysm Treatment Centres
-      </h1>
+      {/* ─── main pane ─── */}
+      <div className="main-content page-wrapper p-6 space-y-6">
+        <ProfileButton />
 
-      <p className="text-center text-gray-600 max-w-xl mx-auto">
-        Hospitals and clinics offering neuroradiology / neurosurgery services
-        are marked below. Click a marker for details.
-      </p>
+        <h1 className="text-3xl font-semibold text-center text-[#1c3334] mb-2">
+          {t("title")}
+        </h1>
 
-      <MapContainer
-        center={defaultPosition as LatLngExpression}
-        zoom={6}
-        scrollWheelZoom={true}
-        style={{ height: "70vh", width: "100%", borderRadius: "8px" }}
-      >
-        {/* Free OSM tiles */}
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="© OpenStreetMap contributors"
-        />
+        <p className="text-center text-gray-600 max-w-xl mx-auto">
+          {t("subtitle")}
+        </p>
 
-        <Locate />
+        <MapContainer
+          center={defaultPosition}
+          zoom={6}
+          scrollWheelZoom
+          style={{ height: "70vh", width: "100%", borderRadius: "8px" }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='© OpenStreetMap contributors'
+          />
 
-        {hospitals.map((h) => (
-          <Marker key={h.id} position={h.position}>
-            <Popup>
-              <h3 className="font-semibold">{h.name}</h3>
-              <p className="text-sm">{h.address}</p>
-              {h.phone && <p className="text-sm">☎ {h.phone}</p>}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+          <Locate />
 
-      <div className="text-center text-sm text-gray-500">
-        Don’t see your hospital? Contact us and we’ll add it!
+          {hospitals.map((h) => (
+            <Marker key={h.id} position={h.position}>
+              <Popup>
+                <h3 className="font-semibold">{h.name}</h3>
+                <p className="text-sm">{h.address}</p>
+                {h.phone && <p className="text-sm">☎ {h.phone}</p>}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+
+        <div className="text-center text-sm text-gray-500">
+          {t("footerNote")}
+        </div>
       </div>
     </div>
   );

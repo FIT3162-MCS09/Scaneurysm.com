@@ -1,4 +1,4 @@
-/* DASHBOARD STYLING */
+/* DASHBOARD STYLING ------------------------------------------------------ */
 .dashboard-wrapper {
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   font-family: "Outfit", sans-serif;
 }
 
-/* Header with logo only */
+/* ─── Header & logo ────────────────────────────────────────────────────── */
 .dashboard-header {
   display: flex;
   flex-direction: column;
@@ -17,15 +17,13 @@
   position: relative;
 }
 
-/* Logo styling */
 .dashboard-logo {
   width: 650px;
   height: auto;
   object-fit: contain;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
-/* Add separator line */
 .dashboard-header::after {
   content: "";
   margin-top: 20px;
@@ -35,7 +33,7 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Buttons container */
+/* ─── Main layout ──────────────────────────────────────────────────────── */
 .dashboard-content {
   flex: 1;
   display: flex;
@@ -48,7 +46,7 @@
   justify-content: space-between;
 }
 
-/* Updated Buttons layout */
+/* ─── Left grid: buttons & preview ─────────────────────────────────────── */
 .dashboard-buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -58,11 +56,12 @@
   min-width: 300px;
 }
 
-/* Make the About button span full width */
-.dashboard-buttons button:last-child {
+/* ❶ Utility: make any element span the full row */
+.dashboard-buttons .full-width {
   grid-column: 1 / -1;
 }
 
+/* Button styling (shared) */
 .dashboard-buttons button {
   position: relative;
   background: rgba(255, 255, 255, 0.95);
@@ -87,7 +86,7 @@
 }
 
 .dashboard-buttons button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -104,7 +103,7 @@
 
 .dashboard-buttons button:hover {
   transform: translateY(-5px) scale(1.02);
-  background: white;
+  background: #ffffff;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
@@ -116,7 +115,7 @@
   transform: translateY(0) scale(0.98);
 }
 
-/* Add icons to buttons */
+/* Icons on buttons ------------------------------------------------------- */
 .dashboard-buttons button::after {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
@@ -125,224 +124,68 @@
   color: #376E6F;
 }
 
-.dashboard-buttons button:nth-child(1)::after {
-  content: "\f093"; /* Upload icon */
-}
+.dashboard-buttons button:nth-child(1)::after { content: "\f093"; } /* upload */
+.dashboard-buttons button:nth-child(2)::after { content: "\f080"; } /* chart  */
+.dashboard-buttons button:nth-child(3)::after { content: "\f05a"; } /* info   */
 
-.dashboard-buttons button:nth-child(2)::after {
-  content: "\f080"; /* Chart icon */
-}
-
-.dashboard-buttons button:nth-child(3)::after {
-  content: "\f05a"; /* Info icon */
-}
-
-.dashboard-layout {
-  display: flex;
-  gap: 40px;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.dashboard-main {
-  flex: 1;
-}
-
-/* FOOTER STYLING */
-.dashboard-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  background-color: #1C3334;
-  color: white;
-  padding: 30px 50px;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
-}
-
-.footer-left, .footer-center, .footer-right {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.footer-left a, .footer-right a {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.footer-left a:hover, .footer-right a:hover {
-  color: #ccc;
-}
-
-.footer-center p, .footer-right p {
-  margin: 4px 0;
-}
-
-.social-icons {
-  display: flex;
-  gap: 15px;
-  font-size: 1.2rem;
-}
-
-.social-icons i {
-  color: white;
-}
-
-.social-icons i:hover {
-  color: #ccc;
-}
-
-.top-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ─── Hospital preview card ────────────────────────────────────────────── */
+.hospital-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
   padding: 20px;
-  width: 100%;
-}
-
-/* Adjust the width of language selector in this context */
-.top-controls .custom-dropdown {
-  max-width: 160px;
-}
-
-/* Dashboard.css */
-/* Result Summary styling */
-.result-summary {
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  width: 45%; /* Updated from 75% to 45% */
-  max-width: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  color: #333;
-  margin-top: 50px;
-}
-
-.summary-content {
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-height: 291px;
 }
 
-.summary-main {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+.hospital-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  background: #ffffff;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-.summary-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-}
-
-.stat-box {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.latest-prediction {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.prediction-trends {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.prediction-graph {
-  height: 300px;
-  margin-top: 15px;
-}
-
-.recent-scans {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.recent-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.recent-item {
-  background: #f8f9fa;
-  padding: 15px 20px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.prediction {
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.prediction.aneurysm {
-  background: #ffebee;
-  color: #c62828;
-}
-
-.prediction.non-aneurysm {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-.confidence {
-  font-size: 0.9rem;
-  margin-left: 8px;
-  opacity: 0.8;
-}
-
-.result-summary h3 {
-  color: #1C3334; /* Matches your theme color */
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+.hospital-card-label {
+  font-size: 1.1rem;
   font-weight: 600;
+  color: #1C3334;
+  text-align: center;
+  
 }
 
-.result-summary h4 {
-  color: #1C3334; /* Matches your theme color */
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  font-weight: 500;
+.hospital-card-label i {
+  color: #376E6F;
+  margin-right: 6px;
+  
 }
 
+.hospital-card .leaflet-container {
+  height: 260px !important;   /* pick the height you want */
+}
+
+/* ─── Result-summary / states (right column) ───────────────────────────── */
+.result-summary,
 .summary-loading,
 .summary-error,
 .summary-empty {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
-  padding: 24px;
+  padding: 30px;
+  width: 45%;
+  max-width: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   color: #333;
-  width: 45%; /* Updated from 75% to 45% */
-  max-width: none;
   margin-top: 50px;
 }
 
-.loading-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 0;
+.summary-loading .loading-content,
+.summary-error,
+.summary-empty {
+  padding: 24px;
 }
 
 .loading-spinner {
@@ -355,93 +198,45 @@
   margin-bottom: 20px;
 }
 
-.loading-subtext {
-  color: #666;
-  font-size: 0.9rem;
-  margin-top: 8px;
-}
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Update loading state styles to match */
-.summary-loading,
-.summary-error,
-.summary-empty {
+/* ─── Footer & top controls ────────────────────────────────────────────── */
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
   width: 100%;
-  padding: calc(1rem + 1.5vw);
 }
 
-.loading-content {
-  padding: calc(2rem + 2vw) 0;
-}
+.top-controls .custom-dropdown { max-width: 160px; }
 
-/* Update recent scans list for better responsive layout */
-.recent-list {
-  display: grid;
-  gap: 15px;
-  margin-top: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-}
+.dashboard-footer { /* (unchanged) */ }
 
-/* Prediction trends section (graph) */
-.prediction-trends {
-  margin-top: calc(1rem + 1vw);
-}
-
-.prediction-graph {
-  height: calc(250px + 10vw);
-  max-height: 400px;
-}
-
+/* ─── Responsive tweaks ────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .dashboard-content {
-    gap: 30px;
-  }
-
-  .dashboard-buttons {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .dashboard-content { gap: 30px; }
+  .dashboard-buttons { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .dashboard-content {
-    flex-direction: column;
-  }
+  .dashboard-content { flex-direction: column; }
 
   .dashboard-buttons {
     grid-template-columns: 1fr;
     width: 100%;
+    margin-top: 20px;
   }
 
-  .dashboard-buttons button {
-    min-height: 100px;
-  }
+  .dashboard-buttons button,
+  .hospital-card { max-width: none; }
 
-  .dashboard-buttons,
   .result-summary,
   .summary-loading,
   .summary-error,
-  .summary-empty {
-    width: 100%;
-  }
-
-  .dashboard-buttons {
-    margin-top: 20px;
-    max-width: none; /* Allow buttons to take full width on mobile */
-  }
-
-  .dashboard-buttons button {
-    max-width: none; /* Allow buttons to take full width on mobile */
-  }
-
-  .summary-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .recent-list {
-    grid-template-columns: 1fr;
-  }
+  .summary-empty { width: 100%; }
 }
+

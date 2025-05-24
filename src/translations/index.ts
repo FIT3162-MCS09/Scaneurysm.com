@@ -9,6 +9,7 @@ import { profilePopupTranslations } from './pages/ProfilePopup';
 import { resultTranslations } from './pages/Result';
 import { uploadTranslations } from './pages/Upload';
 import { resultSummary } from './components/resultSummary';
+import { doctorLocator } from './pages/DoctorLocator';
 
 export const resources = {
     en: {
@@ -22,7 +23,8 @@ export const resources = {
         profilePopup: profilePopupTranslations.en,
         result: resultTranslations.en,
         upload: uploadTranslations.en,
-        resultSummary:resultSummary.en
+        resultSummary:resultSummary.en,
+        doctorLocator:doctorLocator.en
     },
     es: {
         about: about.es,
@@ -35,7 +37,8 @@ export const resources = {
         profilePopup: profilePopupTranslations.es,
         result: resultTranslations.es,
         upload: uploadTranslations.es,
-        resultSummary:resultSummary.es
+        resultSummary:resultSummary.es,
+        doctorLocator:doctorLocator.es
     },
     ms: {
         about: about.ms,
@@ -48,7 +51,8 @@ export const resources = {
         profilePopup: profilePopupTranslations.ms,
         result: resultTranslations.ms,
         upload: uploadTranslations.ms,
-        resultSummary:resultSummary.ms
+        resultSummary:resultSummary.ms,
+        doctorLocator:doctorLocator.ms
     },
     zh: {
         about: about.zh,
@@ -61,7 +65,8 @@ export const resources = {
         profilePopup: profilePopupTranslations.zh,
         result: resultTranslations.zh,
         upload: uploadTranslations.zh,
-        resultSummary:resultSummary.zh
+        resultSummary:resultSummary.zh,
+        doctorLocator:doctorLocator.zh
     },
     ta: {
         about: about.ta,
@@ -74,7 +79,8 @@ export const resources = {
         profilePopup: profilePopupTranslations.ta,
         result: resultTranslations.ta,
         upload: uploadTranslations.ta,
-        resultSummary:resultSummary.ta
+        resultSummary:resultSummary.ta,
+        doctorLocator:doctorLocator.ta
     },
     id: {
         about: about.id,
@@ -87,6 +93,7 @@ export const resources = {
         profilePopup: profilePopupTranslations.id,
         result: resultTranslations.id,
         upload: uploadTranslations.id,
-        resultSummary:resultSummary.id
+        resultSummary:resultSummary.id,
+        doctorLocator:doctorLocator.id
     }
 };
