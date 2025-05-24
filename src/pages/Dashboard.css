@@ -58,13 +58,7 @@
   min-width: 300px;
 }
 
-/* helper class for anything that needs to span full width */
 .dashboard-buttons .full-width {
-  grid-column: 1 / -1;
-}
-
-/* (legacy) keep last-child rule in case nothing else uses .full-width */
-.dashboard-buttons button:last-child {
   grid-column: 1 / -1;
 }
 
@@ -130,9 +124,17 @@
   color: #376E6F;
 }
 
-.dashboard-buttons button:nth-child(1)::after { content: "\f093"; } /* Upload */
-.dashboard-buttons button:nth-child(2)::after { content: "\f080"; } /* Chart  */
-.dashboard-buttons button:nth-child(3)::after { content: "\f05a"; } /* Info   */
+.dashboard-buttons button:nth-child(1)::after {
+  content: "\f093"; /* Upload icon */
+}
+
+.dashboard-buttons button:nth-child(2)::after {
+  content: "\f080"; /* Chart icon */
+}
+
+.dashboard-buttons button:nth-child(3)::after {
+  content: "\f05a"; /* Info icon */
+}
 
 .dashboard-layout {
   display: flex;
@@ -143,7 +145,9 @@
   padding: 0 20px;
 }
 
-.dashboard-main { flex: 1; }
+.dashboard-main {
+  flex: 1;
+}
 
 /* FOOTER STYLING */
 .dashboard-footer {
@@ -169,17 +173,28 @@
   text-decoration: none;
   transition: color 0.3s;
 }
-.footer-left a:hover, .footer-right a:hover { color: #ccc; }
 
-.footer-center p, .footer-right p { margin: 4px 0; }
+.footer-left a:hover, .footer-right a:hover {
+  color: #ccc;
+}
+
+.footer-center p, .footer-right p {
+  margin: 4px 0;
+}
 
 .social-icons {
   display: flex;
   gap: 15px;
   font-size: 1.2rem;
 }
-.social-icons i { color: white; }
-.social-icons i:hover { color: #ccc; }
+
+.social-icons i {
+  color: white;
+}
+
+.social-icons i:hover {
+  color: #ccc;
+}
 
 .top-controls {
   display: flex;
@@ -190,28 +205,72 @@
 }
 
 /* Adjust the width of language selector in this context */
-.top-controls .custom-dropdown { max-width: 160px; }
+.top-controls .custom-dropdown {
+  max-width: 160px;
+}
 
+/* Dashboard.css */
 /* Result Summary styling */
 .result-summary {
   background: white;
   border-radius: 12px;
   padding: 30px;
-  width: 45%;
+  width: 45%; /* Updated from 75% to 45% */
   max-width: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   color: #333;
   margin-top: 50px;
 }
 
-.summary-content     { display: flex; flex-direction: column; gap: 30px; }
-.summary-main        { display: flex; flex-direction: column; gap: 25px; }
-.summary-stats       { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-.stat-box            { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
-.latest-prediction   { display: flex; flex-direction: column; gap: 10px; }
-.prediction-trends   { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
-.prediction-graph    { height: 300px; margin-top: 15px; }
-.recent-scans        { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.summary-main {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.stat-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.latest-prediction {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prediction-trends {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.prediction-graph {
+  height: 300px;
+  margin-top: 15px;
+}
+
+.recent-scans {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
 
 .recent-list {
   display: grid;
@@ -229,14 +288,41 @@
   align-items: center;
 }
 
-.prediction         { padding: 4px 12px; border-radius: 4px; font-weight: 500; }
-.prediction.aneurysm      { background: #ffebee; color: #c62828; }
-.prediction.non-aneurysm  { background: #e8f5e9; color: #2e7d32; }
+.prediction {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+}
 
-.confidence { font-size: 0.9rem; margin-left: 8px; opacity: 0.8; }
+.prediction.aneurysm {
+  background: #ffebee;
+  color: #c62828;
+}
 
-.result-summary h3 { color: #1C3334; font-size: 1.5rem; margin-bottom: 20px; font-weight: 600; }
-.result-summary h4 { color: #1C3334; font-size: 1.2rem; margin-bottom: 15px; font-weight: 500; }
+.prediction.non-aneurysm {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.confidence {
+  font-size: 0.9rem;
+  margin-left: 8px;
+  opacity: 0.8;
+}
+
+.result-summary h3 {
+  color: #1C3334; /* Matches your theme color */
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.result-summary h4 {
+  color: #1C3334; /* Matches your theme color */
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
 
 .summary-loading,
 .summary-error,
@@ -246,12 +332,17 @@
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   color: #333;
-  width: 45%;
+  width: 45%; /* Updated from 75% to 45% */
   max-width: none;
   margin-top: 50px;
 }
 
-.loading-content { display: flex; flex-direction: column; align-items: center; padding: 40px 0; }
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
 
 .loading-spinner {
   border: 4px solid #f3f3f3;
@@ -263,37 +354,95 @@
   margin-bottom: 20px;
 }
 
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loading-subtext {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
 
-.loading-subtext { color: #666; font-size: 0.9rem; margin-top: 8px; }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
+/* Update loading state styles to match */
 .summary-loading,
 .summary-error,
-.summary-empty { width: 100%; padding: calc(1rem + 1.5vw); }
-.loading-content { padding: calc(2rem + 2vw) 0; }
+.summary-empty {
+  width: 100%;
+  padding: calc(1rem + 1.5vw);
+}
 
-.recent-list { display: grid; gap: 15px; margin-top: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-.prediction-trends { margin-top: calc(1rem + 1vw); }
-.prediction-graph  { height: calc(250px + 10vw); max-height: 400px; }
+.loading-content {
+  padding: calc(2rem + 2vw) 0;
+}
+
+/* Update recent scans list for better responsive layout */
+.recent-list {
+  display: grid;
+  gap: 15px;
+  margin-top: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+/* Prediction trends section (graph) */
+.prediction-trends {
+  margin-top: calc(1rem + 1vw);
+}
+
+.prediction-graph {
+  height: calc(250px + 10vw);
+  max-height: 400px;
+}
 
 @media (max-width: 1024px) {
-  .dashboard-content { gap: 30px; }
-  .dashboard-buttons { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-content {
+    gap: 30px;
+  }
+
+  .dashboard-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .dashboard-content { flex-direction: column; }
-  .dashboard-buttons { grid-template-columns: 1fr; width: 100%; }
-  .dashboard-buttons button { min-height: 100px; }
+  .dashboard-content {
+    flex-direction: column;
+  }
+
+  .dashboard-buttons {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .dashboard-buttons button {
+    min-height: 100px;
+  }
+
   .dashboard-buttons,
   .result-summary,
   .summary-loading,
   .summary-error,
-  .summary-empty { width: 100%; }
-  .dashboard-buttons { margin-top: 20px; max-width: none; }
-  .dashboard-buttons button { max-width: none; }
-  .summary-stats { grid-template-columns: 1fr; }
-  .recent-list   { grid-template-columns: 1fr; }
+  .summary-empty {
+    width: 100%;
+  }
+
+  .dashboard-buttons {
+    margin-top: 20px;
+    max-width: none; /* Allow buttons to take full width on mobile */
+  }
+
+  .dashboard-buttons button {
+    max-width: none; /* Allow buttons to take full width on mobile */
+  }
+
+  .summary-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .recent-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ─── Hospital preview card ────────────────────────────────────────────── */
