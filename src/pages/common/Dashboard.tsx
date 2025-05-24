@@ -10,7 +10,7 @@ import ResultSummary from "../../components/ResultSummary";
 import predictionServices from "../../services/predictionServices";
 import { PredictionResult } from "../../types/prediction";
 
-/* ──────────────── NEW: tiny Leaflet preview imports ──────────────── */
+/* ──────────────── Leaflet preview imports ──────────────── */
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -23,153 +23,190 @@ L.Icon.Default.mergeOptions({
 });
 /* ─────────────────────────────────────────────────────────────────── */
 
-const Dashboard = () => {
-    const navigate = useNavigate();
-    const [role, setRole] = useState("");
-    const { t } = useTranslation("dashboard");
-    const [results, setResults] = useState<PredictionResult[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+// Top controls component containing language selector and profile button
+const TopControls: React.FC = () => (
+  <div className="top-controls">
+    <LanguageSelector />
+    <ProfileButton />
+  </div>
+);
 
-    /* fetch role once */
-    useEffect(() => {
-        (async () => {
-            try {
-                const profile = await authService.fetchUserProfile();
-                setRole(profile.role);          // kept in case you need it later
-            } catch (err) {
-                console.error(t("errors.fetchRole"), err);
-            }
-        })();
-    }, [t]);
+// Header component with logo
+const DashboardHeader: React.FC<{ logoAlt: string }> = ({ logoAlt }) => (
+  <header className="dashboard-header">
+    <img
+      src="/images/logo.png"
+      alt={logoAlt}
+      className="dashboard-logo"
+    />
+  </header>
+);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [profile, predictionData] = await Promise.all([
-                    authService.fetchUserProfile(),
-                    predictionServices.getPredictionDetails(),
-                ]);
+// Navigation buttons component
+const NavigationButtons: React.FC<{
+  t: any;
+  navigate: (path: string) => void;
+}> = ({ t, navigate }) => (
+  <div className="dashboard-buttons">
+    <button onClick={() => navigate("/upload")}>
+      {t("uploadScan")}
+    </button>
+    <button onClick={() => navigate("/result")}>
+      {t("myResults")}
+    </button>
+    <button
+      className="full-width"
+      onClick={() => navigate("/about")}
+    >
+      {t("aboutAneurysm")}
+    </button>
+    <HospitalPreviewCard t={t} navigate={navigate} />
+  </div>
+);
 
-                setRole(profile.role);
-                if (Array.isArray(predictionData)) {
-                    setResults(predictionData);
-                } else {
-                    throw new Error("Invalid prediction data format");
-                }
-            } catch (err) {
-                console.error("Error fetching dashboard data:", err);
-                setError(t("errors.fetchData"));
-            } finally {
-                setLoading(false);
-            }
-        };
+// Hospital preview card with map
+const HospitalPreviewCard: React.FC<{
+  t: any;
+  navigate: (path: string) => void;
+}> = ({ t, navigate }) => (
+  <div
+    className="hospital-card full-width"
+    role="button"
+    tabIndex={0}
+    onClick={() => navigate("/find-hospital")}
+    onKeyDown={(e) => e.key === "Enter" && navigate("/find-hospital")}
+  >
+    <span className="hospital-card-label">
+      <i className="fas fa-hospital-alt" />{" "}
+      {t("Find Nearby Hospitals")}
+    </span>
 
-        fetchData();
-    }, [t]);
+    <MapContainer
+      center={[4.2, 102.0]}
+      zoom={5}
+      scrollWheelZoom={false}
+      doubleClickZoom={false}
+      dragging={false}
+      attributionControl={false}
+      zoomControl={false}
+      style={{
+        height: "200px",
+        width: "100%",
+        borderRadius: "12px",
+      }}
+    >
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <Marker position={[3.1201, 101.6544]} />
+      <Marker position={[5.4151, 100.3288]} />
+      <Marker position={[1.486, 103.7615]} />
+    </MapContainer>
+  </div>
+);
 
+// Loading state component for results summary
+const LoadingSummary: React.FC<{ t: any }> = ({ t }) => (
+  <div className="summary-loading">
+    <h3>{t("summary.title")}</h3>
+    <div className="loading-content">
+      <div className="loading-spinner" />
+      <p>{t("summary.loadingMessage")}</p>
+      <p className="loading-subtext">
+        {t("summary.loadingSubtext")}
+      </p>
+    </div>
+  </div>
+);
+
+// Error state component for results summary
+const ErrorSummary: React.FC<{ t: any; error: string }> = ({ t, error }) => (
+  <div className="summary-error">
+    <h3>{t("summary.title")}</h3>
+    <p>{error}</p>
+  </div>
+);
+
+// Empty state component for results summary
+const EmptySummary: React.FC<{ t: any }> = ({ t }) => (
+  <div className="summary-empty">
+    <h3>{t("summary.title")}</h3>
+    <p>{t("summary.noResults")}</p>
+  </div>
+);
+
+// Results section component
+const ResultsSection: React.FC<{
+  loading: boolean;
+  error: string;
+  results: PredictionResult[];
+  t: any;
+}> = ({ loading, error, results, t }) => {
+  if (loading) return <LoadingSummary t={t} />;
+  if (error) return <ErrorSummary t={t} error={error} />;
+  if (results.length > 0) {
     return (
-        <div className="dashboard-wrapper">
-            <div className="top-controls">
-                <LanguageSelector />
-                <ProfileButton />
-            </div>
-
-            <header className="dashboard-header">
-                <img
-                    src="/images/logo.png"
-                    alt={t("logoAlt")}
-                    className="dashboard-logo"
-                />
-            </header>
-
-            <main className="dashboard-content">
-                <div className="dashboard-buttons">
-                    <button onClick={() => navigate("/upload")}>
-                        {t("uploadScan")}
-                    </button>
-                    <button onClick={() => navigate("/result")}>
-                        {t("myResults")}
-                    </button>
-
-                    {/* ▼▼ NEW: give About full row ▼▼ */}
-                    <button
-                        className="full-width"
-                        onClick={() => navigate("/about")}
-                    >
-                        {t("aboutAneurysm")}
-                    </button>
-
-                    {/* ▼▼ NEW: hospital preview card ▼▼ */}
-                    <div
-                        className="hospital-card full-width"
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => navigate("/find-hospital")}
-                        onKeyDown={(e) =>
-                            e.key === "Enter" && navigate("/find-hospital")
-                        }
-                    >
-                        <span className="hospital-card-label">
-                            <i className="fas fa-hospital-alt" />{" "}
-                            {t("Find Nearby Hospitals")}
-                        </span>
-
-                        <MapContainer
-                            center={[4.2, 102.0]}
-                            zoom={5}
-                            scrollWheelZoom={false}
-                            doubleClickZoom={false}
-                            dragging={false}
-                            attributionControl={false}
-                            zoomControl={false}
-                            style={{
-                                height: "200px",
-                                width: "100%",
-                                borderRadius: "12px",
-                            }}
-                        >
-                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                            <Marker position={[3.1201, 101.6544]} />
-                            <Marker position={[5.4151, 100.3288]} />
-                            <Marker position={[1.486, 103.7615]} />
-                        </MapContainer>
-                    </div>
-                </div>
-
-                {loading ? (
-                    <div className="summary-loading">
-                        <h3>{t("summary.title")}</h3>
-                        <div className="loading-content">
-                            <div className="loading-spinner" />
-                            <p>{t("summary.loadingMessage")}</p>
-                            <p className="loading-subtext">
-                                {t("summary.loadingSubtext")}
-                            </p>
-                        </div>
-                    </div>
-                ) : error ? (
-                    <div className="summary-error">
-                        <h3>{t("summary.title")}</h3>
-                        <p>{error}</p>
-                    </div>
-                ) : results.length > 0 ? (
-                    <ResultSummary
-                        latestResult={results[0]}
-                        totalScans={results.length}
-                        recentResults={results.slice(0, 5)}
-                    />
-                ) : (
-                    <div className="summary-empty">
-                        <h3>{t("summary.title")}</h3>
-                        <p>{t("summary.noResults")}</p>
-                    </div>
-                )}
-            </main>
-
-            <Footer />
-        </div>
+      <ResultSummary
+        latestResult={results[0]}
+        totalScans={results.length}
+        recentResults={results.slice(0, 5)}
+      />
     );
+  }
+  return <EmptySummary t={t} />;
+};
+
+// Main Dashboard component
+const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const [role, setRole] = useState("");
+  const { t } = useTranslation("dashboard");
+  const [results, setResults] = useState<PredictionResult[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const [profile, predictionData] = await Promise.all([
+          authService.fetchUserProfile(),
+          predictionServices.getPredictionDetails(),
+        ]);
+
+        setRole(profile.role);
+        
+        if (Array.isArray(predictionData)) {
+          setResults(predictionData);
+        } else {
+          throw new Error("Invalid prediction data format");
+        }
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+        setError(t("errors.fetchData"));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [t]);
+
+  return (
+    <div className="dashboard-wrapper">
+      <TopControls />
+      <DashboardHeader logoAlt={t("logoAlt")} />
+
+      <main className="dashboard-content">
+        <NavigationButtons t={t} navigate={navigate} />
+        <ResultsSection 
+          loading={loading} 
+          error={error} 
+          results={results} 
+          t={t} 
+        />
+      </main>
+
+      <Footer />
+    </div>
+  );
 };
 
 export default Dashboard;
