@@ -28,7 +28,8 @@ i18n
             'result',
             'upload',
             'resultSummary',
-            'DoctorLocator'
+            'DoctorLocator',
+            'PrivacyPolicy'
         ],
         defaultNS: 'about',
         interpolation: {

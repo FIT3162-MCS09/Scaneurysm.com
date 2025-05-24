@@ -17,6 +17,8 @@ import About from "./pages/About";
 import SidebarStateHandler from "./handler/SidebarStateHandler";
 import DoctorLocator from "./pages/DoctorLocator";
 import PatientResult from "./pages/PatientResult";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -78,6 +80,8 @@ function App() {
               <Route path="/about-aneurysm" element={<AboutAneurysm />} />
               <Route path="/find-hospital" element={<DoctorLocator />} />
               <Route path="/patient/results/:patientId" element={<PatientResult />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/about-us" element={<AboutUs />} />
           </Routes>
         </div>
       </Router>
