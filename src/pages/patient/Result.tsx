@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import predictionServices from "../services/predictionServices";
-import SidebarPatient from "../components/SidebarPatient";
-import ProfileButton from "../components/ProfileButton";
-import ResultCard from "../components/ResultCard";
+import predictionServices from "../../services/predictionServices";
+import SidebarPatient from "../../components/SidebarPatient";
+import ProfileButton from "../../components/ProfileButton";
+import ResultCard from "../../components/ResultCard";
 import "./Result.css";
-import { authService } from "../services/authServices";
+import { authService } from "../../services/authServices";
 
 const Result = () => {
     const { t } = useTranslation("result");

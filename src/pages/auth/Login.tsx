@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./Login.css";
-import { patientService } from "../services/authServices";
-import LanguageSelector from "../components/LanguageSelector";
+import { patientService } from "../../services/authServices";
+import LanguageSelector from "../../components/LanguageSelector";
 
 const Login = () => {
     const navigate = useNavigate();

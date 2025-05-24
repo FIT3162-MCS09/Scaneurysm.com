@@ -2,8 +2,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./PrivacyPolicy.css";
-import SidebarPatient from "../components/SidebarPatient";
-import Footer from "../components/Footer";
+import SidebarPatient from "../../components/SidebarPatient";
+import Footer from "../../components/Footer";
 
 const PrivacyPolicy: React.FC = () => {
   /* i18n hook — pulls strings from translations/pages/privacyPolicy.ts */

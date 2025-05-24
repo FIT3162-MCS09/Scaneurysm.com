@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { authService } from "../services/authServices";
+import { authService } from "../../services/authServices";
 import "./ProfilePopup.css";
 
 interface ProfileData {

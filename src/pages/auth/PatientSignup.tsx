@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { patientService } from "../services/authServices";
-import { patientSchema } from "../schemas/patientSchema";
+import { patientService } from "../../services/authServices";
+import { patientSchema } from "../../schemas/patientSchema";
 import "./PatientSignup.css";
-import { searchDoctors } from "../services/searchServices";
+import { searchDoctors } from "../../services/searchServices";
 
 const PatientSignup = () => {
   const navigate = useNavigate();

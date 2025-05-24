@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import API from "../services/apiClient";
+import API from "../../services/apiClient";
 import "./PatientProfile.css";
 
 const PatientProfile = () => {

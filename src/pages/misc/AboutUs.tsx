@@ -5,8 +5,8 @@
 import React        from "react";
 import "./AboutUs.css";
 
-import SidebarPatient from "../components/SidebarPatient";
-import Footer         from "../components/Footer";
+import SidebarPatient from "../../components/SidebarPatient";
+import Footer         from "../../components/Footer";
 
 const AboutUs: React.FC = () => (
     <div className="about-us-container">

@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./AboutModel.css";
-import SidebarPatient from "../components/SidebarPatient";
-import Footer from "../components/Footer";
+import SidebarPatient from "../../components/SidebarPatient";
+import Footer from "../../components/Footer";
 
 const AboutModel = () => {
     const { t } = useTranslation("aboutModel");
