@@ -7,6 +7,9 @@ import ProfileButton from "../../components/ProfileButton";
 import ResultCard from "../../components/ResultCard";
 import "./Result.css";
 import { authService } from "../../services/authServices";
+import genAiService from "../../services/genAiServices";
+import ReactMarkdown from 'react-markdown';
+
 
 // Types
 interface Patient {
@@ -14,6 +17,19 @@ interface Patient {
   first_name: string;
   last_name: string;
   email: string;
+}
+
+interface AIReport {
+  generated_insight: string;
+  model_used: string;
+  source: string;
+  metadata: {
+    timestamp: string;
+    total_tokens: number;
+    prompt_tokens: number;
+    completion_tokens: number;
+  };
+  already_exists: boolean;
 }
 
 // Reusable component for page layout with common elements
@@ -24,7 +40,8 @@ const PageLayout: React.FC<{
   refreshText: string;
 }> = ({ title, children, onRefresh, refreshText }) => (
   <div className="result-container">
-    <ProfileButton />
+    {/*TODO: Not working yet in results page*/}
+    {/*<ProfileButton />*/}
     <Sidebar />
     <h1>{title}</h1>
     <button
@@ -90,6 +107,77 @@ const PatientCard: React.FC<{
     </div>
   </div>
 );
+
+// AI Report component
+const AiReportCard: React.FC<{ aiReport: AIReport | null; loading: boolean }> = ({ aiReport, loading }) => {
+  if (loading) {
+    return <LoadingIndicator primaryText="Loading AI report..." />;
+  }
+
+  if (!aiReport) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [isRequested, setIsRequested] = useState(false);
+
+    const handleWhitelistRequest = () => {
+      // Here you would typically make an API call to request whitelist access
+      // For now, just update the state
+      setIsRequested(true);
+    };
+
+    return (
+        <div className="result-card">
+          <div className="ai-report-header">
+            <h3>AI-Assisted Analysis <span className="latest-scan-badge">Latest Scan Only</span></h3>
+            <p>You are not whitelisted for this program.</p>
+            {isRequested ? (
+                <div className="whitelist-requested">
+                  <span className="checkmark">✓</span> Request submitted
+                </div>
+            ) : (
+                <button
+                    className="whitelist-button"
+                    onClick={handleWhitelistRequest}
+                >
+                  Request Whitelist
+                </button>
+            )}
+          </div>
+        </div>
+    );
+  }
+
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  return (
+      <div className="result-card ai-report">
+        <div className="ai-report-header">
+          <h3>AI-Assisted Analysis <span className="latest-scan-badge">Latest Scan Only</span></h3>
+          <div className="ai-model-info">
+            {/*<span className="model-name">Model: {aiReport.model_used}</span>*/}
+            <span className="report-time">Generated: {formatDate(aiReport.metadata.timestamp)}</span>
+          </div>
+          <p className="analysis-scope-note">This analysis pertains only to the most recent scan results.</p>
+        </div>
+
+        <div className="ai-report-content">
+          <ReactMarkdown>
+            {aiReport.generated_insight}
+          </ReactMarkdown>
+        </div>
+
+        <div className="ai-report-footer">
+          <p className="token-info">Analysis tokens: {aiReport.metadata.completion_tokens}</p>
+        </div>
+      </div>
+  );
+};
 
 // Doctor's view component
 const DoctorView: React.FC<{
@@ -160,29 +248,71 @@ const PatientView: React.FC<{
   loading: boolean;
   t: any;
   onAnalyzeAnother: () => void;
-}> = ({ results, loading, t, onAnalyzeAnother }) => (
-  <PageLayout 
-    title={t('title')} 
-    onRefresh={() => window.location.reload()}
-    refreshText={t('refresh')}
-  >
-    {loading ? (
-      <LoadingIndicator 
-        primaryText={t('analyzing')} 
-        secondaryText="This may take a few minutes" 
-      />
-    ) : results.length === 0 ? (
-      <div className="result-card">
-        <p>{t('noResults')}</p>
-      </div>
-    ) : (
-      results.map((result) => (
-        <ResultCard key={result.id} result={result} />
-      ))
-    )}
-    <button onClick={onAnalyzeAnother}>{t('analyzeAnother')}</button>
-  </PageLayout>
-);
+}> = ({ results, loading, t, onAnalyzeAnother }) => {
+  const [aiReport, setAiReport] = useState<AIReport | null>(null);
+  const [aiReportLoading, setAiReportLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchAiReport = async () => {
+      // Only fetch AI report if we have results
+      if (results.length > 0) {
+        setAiReportLoading(true);
+        try {
+          const report = await genAiService.getLatestGeneratedAiReport();
+          setAiReport(report);
+        } catch (error) {
+          console.error("Failed to fetch AI report:", error);
+          setAiReport(null);
+        } finally {
+          setAiReportLoading(false);
+        }
+      }
+    };
+
+    fetchAiReport();
+  }, [results]);
+
+  return (
+    <PageLayout 
+      title={t('title')} 
+      onRefresh={() => window.location.reload()}
+      refreshText={t('refresh')}
+    >
+      {loading ? (
+        <LoadingIndicator 
+          primaryText={t('analyzing')} 
+          secondaryText="This may take a few minutes" 
+        />
+      ) : results.length === 0 ? (
+        <div className="result-card">
+          <p>{t('noResults')}</p>
+        </div>
+      ) : (
+        <>
+          <div className="main-content-wrapper">
+            {/* AI Report Card - Now outside of results-container */}
+            <div className="ai-report-column">
+              <AiReportCard aiReport={aiReport} loading={aiReportLoading} />
+            </div>
+            
+            {/* Regular Results */}
+            <div className="results-container">
+              {results.map((result) => (
+                <ResultCard key={result.id} result={result} />
+              ))}
+            </div>
+          </div>
+          <button 
+            className="analyze-another-btn" 
+            onClick={onAnalyzeAnother}
+          >
+            {t('analyzeAnother')}
+          </button>
+        </>
+      )}
+    </PageLayout>
+  );
+};
 
 // Main container component
 const Result: React.FC = () => {
@@ -260,4 +390,3 @@ const Result: React.FC = () => {
 };
 
 export default Result;
-

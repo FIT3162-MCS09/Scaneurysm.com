@@ -23,9 +23,16 @@
 }
 
 .result-container {
-  max-width: 900px;
+  width: auto;
+  max-width: none;
   margin: 0 auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Changed from 'start' to 'center' */
+  position: relative;
+  left: 50%; /* Position from the left edge of the viewport */
+  transform: translateX(-50%); /* Move back by half its width */
 }
 
 .image-section img {
@@ -256,16 +263,6 @@ button:hover {
   transform: translateY(-2px);
 }
 
-.chart-container {
-  flex: 1;
-  max-width: 400px;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(28, 51, 52, 0.1);
-}
-
 .scores-container {
   flex: 1;
   padding: 1.5rem;
@@ -472,21 +469,329 @@ button:hover {
   .patients-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .patient-card {
     flex-direction: column;
     text-align: center;
     padding: 24px 16px;
   }
-  
+
   .patient-avatar {
     margin: 0 0 16px 0;
     width: 60px;
     height: 60px;
     font-size: 24px;
   }
-  
+
   .patient-info {
     margin-bottom: 16px;
   }
 }
+
+/* Update the main-content-wrapper and its child components */
+.main-content-wrapper {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  align-items: center;
+  width: auto; /* Let the width be determined by content */
+  max-width: none; /* Remove max width constraint */
+  background-color: #f9f9f9; /* This is the gray background */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  align-self: center; /* Prevents stretching */
+}
+
+.ai-report-column {
+  width: 400px;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  max-height: 80vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.results-container {
+  flex-grow: 0; /* Don't grow to fill available space */
+  flex-shrink: 0; /* Don't shrink */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 750px; /* Fixed width */
+}
+
+/* Keep the responsive layout */
+@media (max-width: 992px) {
+  .main-content-wrapper {
+    flex-direction: column;
+    width: auto;
+    padding: 20px;
+  }
+  
+  .ai-report-column {
+    width: 100%;
+    position: static;
+    max-height: none;
+  }
+  
+  .results-container {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.analyze-another-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.ai-report-content {
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.ai-report-content h1,
+.ai-report-content h2,
+.ai-report-content h3,
+.ai-report-content h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #1c3334;
+}
+
+.ai-report-content p {
+  margin-bottom: 1rem;
+}
+
+.ai-report-content ul,
+.ai-report-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ai-report-content code {
+  background-color: #f0f0f0;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.ai-report-content blockquote {
+  border-left: 4px solid #1c3334;
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #555;
+}
+
+.ai-report-content {
+  line-height: 1.7;
+  font-size: 1rem;
+  color: #2d3748;
+}
+
+/* Headings with a more attractive color gradient */
+.ai-report-content h1 {
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+  color: #1a365d;
+  font-size: 1.8rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.ai-report-content h2 {
+  margin-top: 1.6rem;
+  margin-bottom: 0.8rem;
+  color: #2a4365;
+  font-size: 1.5rem;
+}
+
+.ai-report-content h3 {
+  margin-top: 1.4rem;
+  margin-bottom: 0.7rem;
+  color: #2c5282;
+  font-size: 1.3rem;
+}
+
+.ai-report-content h4 {
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
+  color: #3182ce;
+  font-size: 1.1rem;
+}
+
+/* Paragraphs and lists */
+.ai-report-content p {
+  margin-bottom: 1rem;
+}
+
+.ai-report-content ul,
+.ai-report-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1.2rem;
+  color: #2d3748;
+}
+
+.ai-report-content li {
+  margin-bottom: 0.4rem;
+}
+
+/* Code blocks with better highlighting */
+.ai-report-content code {
+  background-color: #f7fafc;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  color: #805ad5;
+  border: 1px solid #e2e8f0;
+}
+
+.ai-report-content pre {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+  border: 1px solid #edf2f7;
+  margin-bottom: 1.2rem;
+}
+
+.ai-report-content pre code {
+  background-color: transparent;
+  color: #4a5568;
+  padding: 0;
+  border: none;
+}
+
+/* Blockquotes with enhanced styling */
+.ai-report-content blockquote {
+  border-left: 4px solid #4299e1;
+  padding: 0.8rem 1rem;
+  margin: 1rem 0;
+  background-color: #ebf8ff;
+  color: #2c5282;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Links */
+.ai-report-content a {
+  color: #3182ce;
+  text-decoration: none;
+  border-bottom: 1px dotted #3182ce;
+}
+
+.ai-report-content a:hover {
+  color: #2b6cb0;
+  border-bottom: 1px solid #2b6cb0;
+}
+
+/* Tables */
+.ai-report-content table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.ai-report-content th {
+  background-color: #e6f2ff;
+  padding: 0.6rem;
+  border: 1px solid #bee3f8;
+  text-align: left;
+  font-weight: 600;
+}
+
+.ai-report-content td {
+  padding: 0.6rem;
+  border: 1px solid #e2e8f0;
+}
+
+/* Horizontal rule */
+.ai-report-content hr {
+  height: 1px;
+  background-color: #e2e8f0;
+  border: none;
+  margin: 2rem 0;
+}
+
+/* Emphasis */
+.ai-report-content strong {
+  color: #1a365d;
+  font-weight: 600;
+}
+
+.ai-report-content em {
+  color: #2c5282;
+}
+
+.latest-scan-badge {
+  font-size: 0.7rem;
+  background-color: #ebf8ff;
+  color: #3182ce;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+  vertical-align: middle;
+  border: 1px solid #bee3f8;
+  font-weight: normal;
+}
+
+.analysis-scope-note {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 5px 0 0 0;
+  font-style: italic;
+}
+
+.ai-report-header {
+  margin-bottom: 16px;
+}
+
+.ai-report-header h3 {
+  color: #2b6cb0; /* A nice blue that matches your theme */
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+/* Make the badge align better with the heading */
+.latest-scan-badge {
+  font-size: 0.7rem;
+  background-color: #ebf8ff;
+  color: #3182ce;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+  vertical-align: middle;
+  border: 1px solid #bee3f8;
+  font-weight: normal;
+  display: inline-block;
+  position: relative;
+  top: -2px;
+}
+
+.whitelist-button {
+  background-color: #4CAF50;
+}
+
+.whitelist-requested {
+  display: flex;
+  align-items: center;
+  color: #2C5282;
+  font-weight: 500;
+}
+
+.checkmark {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  background-color: #48BB78;
+  color: white;
+  border-radius: 50%;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
