@@ -263,25 +263,6 @@ button:hover {
   transform: translateY(-2px);
 }
 
-.chart-container {
-  flex: 1;
-  min-width: 300px;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(28, 51, 52, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 300px;
-}
-
-.chart-container > * {
-  width: 100%;
-  height: 300px;
-}
-
 .scores-container {
   flex: 1;
   padding: 1.5rem;
@@ -788,5 +769,29 @@ button:hover {
   display: inline-block;
   position: relative;
   top: -2px;
+}
+
+.whitelist-button {
+  background-color: #4CAF50;
+}
+
+.whitelist-requested {
+  display: flex;
+  align-items: center;
+  color: #2C5282;
+  font-weight: 500;
+}
+
+.checkmark {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  background-color: #48BB78;
+  color: white;
+  border-radius: 50%;
+  margin-right: 8px;
+  font-size: 14px;
 }
 

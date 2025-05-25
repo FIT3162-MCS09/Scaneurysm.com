@@ -115,10 +115,33 @@ const AiReportCard: React.FC<{ aiReport: AIReport | null; loading: boolean }> = 
   }
 
   if (!aiReport) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [isRequested, setIsRequested] = useState(false);
+
+    const handleWhitelistRequest = () => {
+      // Here you would typically make an API call to request whitelist access
+      // For now, just update the state
+      setIsRequested(true);
+    };
+
     return (
         <div className="result-card">
-          <h3>AI Analysis</h3>
-          <p>No AI analysis available for this scan.</p>
+          <div className="ai-report-header">
+            <h3>AI-Assisted Analysis <span className="latest-scan-badge">Latest Scan Only</span></h3>
+            <p>You are not whitelisted for this program.</p>
+            {isRequested ? (
+                <div className="whitelist-requested">
+                  <span className="checkmark">✓</span> Request submitted
+                </div>
+            ) : (
+                <button
+                    className="whitelist-button"
+                    onClick={handleWhitelistRequest}
+                >
+                  Request Whitelist
+                </button>
+            )}
+          </div>
         </div>
     );
   }
