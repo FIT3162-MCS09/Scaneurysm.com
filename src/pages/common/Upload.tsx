@@ -54,7 +54,9 @@ const Upload = () => {
     if (droppedFile) {
       handleFile(droppedFile);
     }
-  };
+  }
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 
   const analyze = async () => {
     if (!file) {
@@ -76,6 +78,7 @@ const Upload = () => {
             console.error("Prediction error:", err);
             // Consider adding error logging or notification system
           });
+      await delay(30000); // Wait 30 seconds
       setProgress(75);
       navigate("/result/");
     } catch (err: any) {
