@@ -29,6 +29,7 @@ interface UserInfo {
   username: string;
   email: string;
   role: string;
+  gen_ai_whitelist ?: boolean; // optional, for future use
 }
 
 /* -----------------------------------------------------------
@@ -140,6 +141,7 @@ const authService = {
       username: res.data.username,
       email: res.data.email,
       role: res.data.role,
+      gen_ai_whitelist: res.data.gen_ai_whitelist
     };
 
     localStorage.setItem("user_info", JSON.stringify(userInfo));
