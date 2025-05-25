@@ -20,16 +20,21 @@ interface Patient {
 }
 
 interface AIReport {
-  generated_insight: string;
-  model_used: string;
-  source: string;
+  generated_insight?: string;
+  model_used?: string;
+  source?: string;
   metadata: {
     timestamp: string;
     total_tokens: number;
     prompt_tokens: number;
     completion_tokens: number;
   };
-  already_exists: boolean;
+  already_exists?: boolean;
+
+  // Fields for alternative format (processing status format)
+  status?: string;
+  request_id?: string;
+  prediction_id?: number;
 }
 
 // Reusable component for page layout with common elements
@@ -143,6 +148,17 @@ const AiReportCard: React.FC<{ aiReport: AIReport | null; loading: boolean }> = 
             )}
           </div>
         </div>
+    );
+  }
+
+  if (aiReport.status === "processing" && !aiReport.generated_insight) {
+    return (
+      <div className="result-card">
+        <div className="ai-report-header">
+        <h3>AI-Assisted Analysis <span className="latest-scan-badge">Latest Scan Only</span></h3>
+        <p>The AI Assisted Analysis is still processing please wait a moment</p>
+        </div>
+      </div>
     );
   }
 
