@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ShapQuadrantChart from "./ShapQuadrantChart";
 import "./ResultCard.css";
+import { createPortal } from "react-dom";
 
 interface ResultCardProps {
   result: any;
@@ -123,25 +124,26 @@ const VisualizationOverlay: React.FC<{
     }
   };
 
-  return (
-    <div 
-      className="fullscreen-overlay"
-      onClick={handleOverlayClick}
-    >
-      <div className="overlay-content">
-        <button 
-          className="close-button"
-          onClick={onClose}
-        >
-          &times;
-        </button>
-        <img
-          className="fullscreen-image"
-          src={imageUrl}
-          alt="SHAP Analysis Visualization (Fullscreen)"
-        />
-      </div>
-    </div>
+  return createPortal(
+      <div
+          className="fullscreen-overlay"
+          onClick={handleOverlayClick}
+      >
+        <div className="overlay-content">
+          <button
+              className="close-button"
+              onClick={onClose}
+          >
+            &times;
+          </button>
+          <img
+              className="fullscreen-image"
+              src={imageUrl}
+              alt="SHAP Analysis Visualization (Fullscreen)"
+          />
+        </div>
+      </div>,
+      document.body
   );
 };
 
