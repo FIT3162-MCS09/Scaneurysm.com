@@ -161,6 +161,16 @@ const AiReportCard: React.FC<{ aiReport: AIReport | null; loading: boolean }> = 
       </div>
     );
   }
+  else if (aiReport.status === "error") {
+    return (
+    <div className="result-card">
+      <div className="ai-report-header">
+        <h3>AI-Assisted Analysis <span className="latest-scan-badge">Latest Scan Only</span></h3>
+        <p>Previous analysis was incomplete. Please refresh to try again.</p>
+      </div>
+    </div>
+    )
+  }
 
   const formatDate = (dateString: string) => {
     try {
