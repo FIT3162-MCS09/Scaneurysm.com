@@ -19,7 +19,8 @@ export const aboutAneurysm = {
         feedback: "Give us feedback",
         privacy: "Privacy Policy",
         emergencyHelp: "Emergency Help",
-        connect: "Connect with us!"
+        connect: "Connect with us!",
+        description: "A brain aneurysm is a bulge in the wall of a blood vessel in the brain. It's a weakened area that can balloon and fill with blood. If it ruptures, it can cause a brain bleed, also known as a hemorrhagic stroke, which can lead to serious neurological damage or death."
     },
     es: {
         title: "Sobre los Aneurismas Cerebrales",
@@ -41,7 +42,8 @@ export const aboutAneurysm = {
         feedback: "Danos tu opinión",
         privacy: "Política de Privacidad",
         emergencyHelp: "Ayuda de Emergencia",
-        connect: "¡Conéctate con nosotros!"
+        connect: "¡Conéctate con nosotros!",
+        description: "Un aneurisma cerebral es una protuberancia en la pared de un vaso sanguíneo en el cerebro. Es un área debilitada que puede hincharse y llenarse de sangre. Si se rompe, puede causar una hemorragia cerebral, también conocida como accidente cerebrovascular hemorrágico, lo que puede llevar a daños neurológicos graves o la muerte."
     },
     ms: {
         title: "Mengenai Aneurisma Otak",
@@ -63,7 +65,8 @@ export const aboutAneurysm = {
         feedback: "Beri kami maklum balas",
         privacy: "Dasar Privasi",
         emergencyHelp: "Bantuan Kecemasan",
-        connect: "Berhubung dengan kami!"
+        connect: "Berhubung dengan kami!",
+        description: "Aneurisma otak adalah benjolan pada dinding saluran darah di otak. Ia adalah kawasan yang lemah yang boleh membengkak dan dipenuhi dengan darah. Jika ia pecah, ia boleh menyebabkan pendarahan otak, juga dikenali sebagai strok hemoragik, yang boleh menyebabkan kerosakan neurologi yang serius atau kematian."
     },
     zh: {
         title: "关于脑动脉瘤",
@@ -85,7 +88,8 @@ export const aboutAneurysm = {
         feedback: "给我们反馈",
         privacy: "隐私政策",
         emergencyHelp: "紧急帮助",
-        connect: "与我们联系！"
+        connect: "与我们联系！",
+        description: "脑动脉瘤是脑血管壁上的一个凸起。它是一个薄弱的区域，可以膨胀并充满血液。如果它破裂，可能会导致脑出血，也称为出血性中风，这可能导致严重的神经损伤或死亡。"
     },
     ta: {
         title: "மூளை அனியூரிசம் பற்றி",
@@ -107,7 +111,8 @@ export const aboutAneurysm = {
         feedback: "எங்களுக்கு கருத்துக்களை வழங்கவும்",
         privacy: "தனியுரிமைக் கொள்கை",
         emergencyHelp: "அவசர உதவி",
-        connect: "எங்களுடன் தொடர்பு கொள்ளுங்கள்!"
+        connect: "எங்களுடன் தொடர்பு கொள்ளுங்கள்!",
+        description: "மூளை அனியூரிசம் என்பது மூளையில் உள்ள இரத்தக் குழாய்களின் சுவரில் ஒரு துளை ஆகும். இது ஒரு பலவீனமான பகுதி ஆகும், இது வீங்கக்கூடியது மற்றும் இரத்தத்தால் நிரம்பக்கூடியது. இது உடைந்தால், இது மூளை இரத்தக்கசிவு அல்லது இரத்தக்கசிவு ஸ்ட்ரோக் என்று அழைக்கப்படும், இது கடுமையான நரம்பியல் சேதம் அல்லது மரணத்திற்கு வழிவகுக்கும்."
     },
     id: {
         title: "Tentang Aneurisma Otak",
@@ -129,6 +134,7 @@ export const aboutAneurysm = {
         feedback: "Berikan kami umpan balik",
         privacy: "Kebijakan Privasi",
         emergencyHelp: "Bantuan Darurat",
-        connect: "Terhubung dengan kami!"
+        connect: "Terhubung dengan kami!",
+        description: "Aneurisma otak adalah benjolan pada dinding pembuluh darah di otak. Ini adalah area yang lemah yang dapat membengkak dan terisi darah. Jika pecah, dapat menyebabkan pendarahan otak, juga dikenal sebagai stroke hemoragik, yang dapat menyebabkan kerusakan neurologis serius atau kematian."
     }
 };

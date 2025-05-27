@@ -26,11 +26,11 @@ const AboutUs: React.FC = () => (
             <h2>Meet the Team</h2>
 
             {/* Replace the placeholder with your real group photo later */}
-            <img
-                src="/images/team-placeholder.jpg"
-                alt="Kemala, Daiyaan, Shaquille & Rajkamal"
-                className="team-photo"
-            />
+            {/*<img*/}
+            {/*    src="/images/team-placeholder.jpg"*/}
+            {/*    alt="Kemala, Daiyaan, Shaquille & Rajkamal"*/}
+            {/*    className="team-photo"*/}
+            {/*/>*/}
 
             <ul className="team-list">
                 <li><strong>Kemala Aryne Rakhman</strong> — Team&nbsp;Leader &amp; AI&nbsp;Development</li>
